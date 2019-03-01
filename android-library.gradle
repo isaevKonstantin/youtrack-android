@@ -1,0 +1,23 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+  compileSdkVersion androidCompileSdkVersion
+
+  defaultConfig {
+    minSdkVersion androidMinSdkVersion
+    targetSdkVersion androidTargetSdkVersion
+    vectorDrawables.useSupportLibrary = true
+  }
+
+  libraryVariants.all {
+    it.generateBuildConfigProvider.configure {
+      it.enabled = false
+    }
+  }
+}
+
+androidExtensions {
+  experimental = true
+}
