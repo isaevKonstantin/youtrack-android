@@ -1,6 +1,5 @@
 ext {
   kotlinVersion = "1.3.21"
-
   kotlinLibrary = "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
   appCompat = "androidx.appcompat:appcompat:1.0.2"
@@ -10,6 +9,7 @@ ext {
   cardView = "androidx.cardview:cardview:1.0.0"
   constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
   swipeRefresh = "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+  ciceRone = "ru.terrakok.cicerone:cicerone:5.0.0"
 
   gson = "com.google.code.gson:gson:2.8.5"
 
