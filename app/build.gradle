@@ -23,7 +23,10 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(":app-ui-base")
+    implementation project(":app-ui-auth")
+
+    implementation appCompat
+    implementation ciceRone
 
 }

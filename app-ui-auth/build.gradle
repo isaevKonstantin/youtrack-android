@@ -1,6 +1,5 @@
 apply from: "${rootDir}/android-library.gradle"
 
-dependencies{
+dependencies {
     implementation appCompat
-    implementation ciceRone
 }
