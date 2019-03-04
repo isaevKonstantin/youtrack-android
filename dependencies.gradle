@@ -11,6 +11,11 @@ ext {
   swipeRefresh = "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
   ciceRone = "ru.terrakok.cicerone:cicerone:5.0.0"
 
+  dagger = 'com.google.dagger:dagger-android:2.15'
+  daggerAnnotationProcessor = 'com.google.dagger:dagger-android-processor:2.14.1'
+  daggerCompiler = 'com.google.dagger:dagger-compiler:2.14.1'
+  multiDex = 'com.android.support:multidex:1.0.3'
+
   gson = "com.google.code.gson:gson:2.8.5"
 
   retrofitVersion = "2.5.0"
