@@ -1,5 +1,8 @@
 apply from: "${rootDir}/android-library.gradle"
 
 dependencies {
+    implementation project(":app-ui-base")
     implementation appCompat
+    implementation constraintLayout
+
 }
