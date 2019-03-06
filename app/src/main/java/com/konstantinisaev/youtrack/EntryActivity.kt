@@ -14,13 +14,11 @@ class EntryActivity : BaseActivity() {
 
     @Inject
     lateinit var cicerone: Cicerone<Router>
-    @Inject
-    lateinit var router: Router
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_entry)
-        App.appComponent?.injectEntryActivity(this)
+        App.appComponent.injectEntryActivity(this)
         cicerone.navigatorHolder.setNavigator(SupportAppNavigator(this,R.id.flContainer))
         cicerone.router.navigateTo(object : SupportAppScreen(){
             override fun getFragment(): Fragment {

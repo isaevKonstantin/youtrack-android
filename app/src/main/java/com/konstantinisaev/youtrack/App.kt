@@ -11,7 +11,7 @@ import com.konstantinisaev.youtrack.di.DaggerAppComponent
 class App : MultiDexApplication() {
 
     companion object {
-        @JvmStatic var appComponent: AppComponent? = null
+        @JvmStatic lateinit var appComponent: AppComponent
         @SuppressLint("StaticFieldLeak")
         @JvmStatic lateinit var context: Context
     }
@@ -19,9 +19,7 @@ class App : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         context = applicationContext
-        if(appComponent==null){
-            appComponent = DaggerAppComponent.builder().
-                appModule(AppModule(this)).build()
-        }
+        appComponent = DaggerAppComponent.builder().
+            appModule(AppModule(this)).build()
     }
 }
