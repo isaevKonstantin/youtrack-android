@@ -1,6 +1,11 @@
 apply from: "${rootDir}/android-library.gradle"
 
+apply plugin: 'kotlin-kapt'
+
 dependencies{
     implementation appCompat
     implementation ciceRone
+    implementation lifecycle
+    implementation constraintLayout
+    kapt lifeCycleCompiler
 }

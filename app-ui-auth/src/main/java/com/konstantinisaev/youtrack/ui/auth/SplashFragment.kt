@@ -2,19 +2,12 @@ package com.konstantinisaev.youtrack.ui.auth
 
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import com.konstantinisaev.youtrack.ui.base.BaseFragment
 
-class SplashFragment : Fragment() {
+class SplashFragment : BaseFragment() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_splash, container, false)
-    }
+    override var layoutId = R.layout.fragment_splash
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
