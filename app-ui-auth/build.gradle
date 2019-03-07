@@ -7,7 +7,10 @@ dependencies {
     implementation appCompat
     implementation constraintLayout
     implementation dagger
+    implementation lifecycle
+    implementation coroutines
 
     kapt daggerCompiler
     kapt daggerAnnotationProcessor
+
 }

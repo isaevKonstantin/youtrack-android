@@ -4,8 +4,12 @@ package com.konstantinisaev.youtrack.ui.auth
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.konstantinisaev.youtrack.ui.auth.di.SplashDiProvider
-import com.konstantinisaev.youtrack.ui.base.BaseFragment
+import com.konstantinisaev.youtrack.ui.auth.viewmodels.ServerConfigViewModel
+import com.konstantinisaev.youtrack.ui.base.ui.BaseFragment
+import com.konstantinisaev.youtrack.ui.base.utils.toast
 import kotlinx.android.synthetic.main.fragment_splash.*
 
 private const val MAX_PROGRESS = 2000L
@@ -17,9 +21,12 @@ class SplashFragment : BaseFragment() {
 
     private var countDownTimer: CountDownTimer? = null
 
+    private lateinit var viewModel: ServerConfigViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         SplashDiProvider.injectFragment(this)
+        viewModel = ViewModelProviders.of(this,viewModelFactory)[ServerConfigViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,6 +43,8 @@ class SplashFragment : BaseFragment() {
                 pbSplash.progress = pbSplash.max
             }
         }.start()
+        viewModel.observe(this, Observer { toast(it) })
+        viewModel.doAsyncRequest("params")
 
     }
 
