@@ -1,20 +1,19 @@
 package com.konstantinisaev.youtrack.ui.auth.di
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.konstantinisaev.youtrack.ui.auth.SplashFragment
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.ServerConfigViewModel
 import com.konstantinisaev.youtrack.ui.base.ViewModelFactory
 import com.konstantinisaev.youtrack.ui.base.ViewModelKey
-import dagger.Binds
-import dagger.Component
-import dagger.Module
-import dagger.Provides
+import com.konstantinisaev.youtrack.ui.base.di.BaseModule
+import dagger.*
 import dagger.multibindings.IntoMap
 import javax.inject.Singleton
 
 
-@Component(modules = [SplashModule::class,SplashViewModelsModule::class])
+@Component(modules = [SplashModule::class,SplashViewModelsModule::class,BaseModule::class])
 @Singleton
 internal interface SplashComponent{
 
@@ -25,7 +24,8 @@ internal interface SplashComponent{
 
         fun build(): SplashComponent
 
-        fun splashModule(splashModule: SplashModule): Builder
+        @BindsInstance
+        fun context(context: Context): Builder
     }
 }
 
@@ -50,13 +50,28 @@ abstract class SplashViewModelsModule {
 
 }
 
-internal object SplashDiProvider {
+internal class SplashDiProvider private constructor(){
 
-    private val splashComponent: SplashComponent by lazy {
-        DaggerSplashComponent.builder().splashModule(SplashModule()).build()
+
+    fun injectFragment(splashFragment: SplashFragment){
+        splashComponent.injectFragment(splashFragment)
     }
 
-    fun injectFragment(splashFragment: SplashFragment) = splashComponent.injectFragment(splashFragment)
+    companion object {
+
+        private lateinit var splashComponent: SplashComponent
+
+        private val splashDiProvider by lazy{
+            SplashDiProvider()
+        }
+
+        fun getInstance(context: Context) : SplashDiProvider {
+            splashComponent = DaggerSplashComponent.builder().context(context).build()
+            return splashDiProvider
+        }
+
+    }
+
 
 
 }
