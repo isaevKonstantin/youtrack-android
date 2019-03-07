@@ -1,16 +1,18 @@
 package com.konstantinisaev.youtrack.ui.auth.viewmodels
 
 import com.konstantinisaev.youtrack.ui.base.BaseViewModel
+import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import javax.inject.Inject
 
 class ServerConfigViewModel @Inject constructor(
 //	private val coroutineContextHolder: CoroutineContextHolder,
 //	private val apiProvider: ApiProvider,
-//	private val preferenceHelper: PreferenceHelper
+	private val basePreferencesAdapter: BasePreferencesAdapter
 
 ) : BaseViewModel<String,String>(){
 
-    override fun execute(params: String) : String {
+    override fun execute(params: String?) : String {
+        val url = basePreferencesAdapter.getUrl() ?: ""
         return ""
     }
 
@@ -30,8 +32,8 @@ class ServerConfigViewModel @Inject constructor(
 //						} else {
 //							"$serverUrl/"
 //						}
-//						preferenceHelper.setUrl(savedUrl)
-//						preferenceHelper.serverConfig = configResp.body()
+//						basePreferencesAdapter.setUrl(savedUrl)
+//						basePreferencesAdapter.serverConfig = configResp.body()
 //						apiProvider.enableAppCredentialsInHeader(configResp.body()!!.mobile.serviceId,configResp.body()!!.mobile.serviceSecret)
 //
 //						viewResponse = viewResponse.copy(error = ViewError.EMPTY,data = ServerVersionViewResult(0,""))

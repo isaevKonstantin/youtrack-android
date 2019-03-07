@@ -17,7 +17,7 @@ abstract class BaseViewModel<P,R> : ViewModel() {
         reinitializeJob()
     }
 
-    fun doAsyncRequest(params: P){
+    fun doAsyncRequest(params: P? = null){
         if(job.isCompleted){
             reinitializeJob()
         }
@@ -27,7 +27,7 @@ abstract class BaseViewModel<P,R> : ViewModel() {
         }
     }
 
-    abstract fun execute(params: P) : R
+    abstract fun execute(params: P? = null) : R
 
     fun observe(owner: LifecycleOwner,observer: Observer<R>){
         liveData.observe(owner,observer)
