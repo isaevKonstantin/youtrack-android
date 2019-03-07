@@ -1,4 +1,4 @@
-package com.konstantinisaev.youtrack.ui.base
+package com.konstantinisaev.youtrack.ui.base.viewmodels
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -8,10 +8,12 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel<P,R> : ViewModel() {
+abstract class BaseViewModel<P> : ViewModel() {
 
-    private val liveData = SingleLiveEvent<R>()
+    private val liveData = SingleLiveEvent<ViewState>()
     private lateinit var job: Job
+    var lastViewState: ViewState = ViewState.Init()
+        protected set
 
     init {
         reinitializeJob()
@@ -23,13 +25,14 @@ abstract class BaseViewModel<P,R> : ViewModel() {
         }
         GlobalScope.launch(Dispatchers.IO + job) {
             val resp = execute(params)
+            lastViewState = resp
             liveData.postValue(resp)
         }
     }
 
-    abstract fun execute(params: P? = null) : R
+    abstract fun execute(params: P? = null) : ViewState
 
-    fun observe(owner: LifecycleOwner,observer: Observer<R>){
+    fun observe(owner: LifecycleOwner,observer: Observer<ViewState>){
         liveData.observe(owner,observer)
     }
 

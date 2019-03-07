@@ -1,4 +1,4 @@
-package com.konstantinisaev.youtrack.ui.base
+package com.konstantinisaev.youtrack.ui.base.viewmodels
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.LifecycleOwner
