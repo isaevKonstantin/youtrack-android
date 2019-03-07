@@ -27,13 +27,11 @@ abstract class BaseFragment : Fragment()  {
     }
 
     protected fun toast(@StringRes resId: Int){
-        val context = this.context ?: return
-        context.toast(resId)
+        context?.toast(resId)
     }
 
     protected fun toast(msg: String){
-        val context = this.context ?: return
-        context.toast(msg)
+        context?.toast(msg)
     }
 
 }
