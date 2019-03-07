@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.konstantinisaev.youtrack.ui.auth.SplashFragment
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.ServerConfigViewModel
-import com.konstantinisaev.youtrack.ui.base.ViewModelFactory
-import com.konstantinisaev.youtrack.ui.base.ViewModelKey
+import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelFactory
+import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelKey
 import com.konstantinisaev.youtrack.ui.base.di.BaseModule
 import dagger.*
 import dagger.multibindings.IntoMap

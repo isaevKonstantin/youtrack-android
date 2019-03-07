@@ -1,7 +1,8 @@
 package com.konstantinisaev.youtrack.ui.auth.viewmodels
 
-import com.konstantinisaev.youtrack.ui.base.BaseViewModel
+import com.konstantinisaev.youtrack.ui.base.viewmodels.BaseViewModel
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
+import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import javax.inject.Inject
 
 class ServerConfigViewModel @Inject constructor(
@@ -9,11 +10,11 @@ class ServerConfigViewModel @Inject constructor(
 //	private val apiProvider: ApiProvider,
 	private val basePreferencesAdapter: BasePreferencesAdapter
 
-) : BaseViewModel<String,String>(){
+) : BaseViewModel<String>(){
 
-    override fun execute(params: String?) : String {
-        val url = basePreferencesAdapter.getUrl() ?: ""
-        return ""
+    override fun execute(params: String?) : ViewState {
+        val url = takeIf { basePreferencesAdapter.getUrl() .isNotEmpty() } ?: return ViewState.Empty()
+        return ViewState.Empty()
     }
 
 

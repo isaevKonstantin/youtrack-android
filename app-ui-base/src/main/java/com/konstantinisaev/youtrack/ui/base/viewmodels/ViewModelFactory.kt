@@ -1,4 +1,4 @@
-package com.konstantinisaev.youtrack.ui.base
+package com.konstantinisaev.youtrack.ui.base.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
