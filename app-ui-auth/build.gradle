@@ -1,8 +1,13 @@
 apply from: "${rootDir}/android-library.gradle"
 
+apply plugin: 'kotlin-kapt'
+
 dependencies {
     implementation project(":app-ui-base")
     implementation appCompat
     implementation constraintLayout
+    implementation dagger
 
+    kapt daggerCompiler
+    kapt daggerAnnotationProcessor
 }

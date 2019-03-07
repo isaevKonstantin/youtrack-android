@@ -1,7 +1,6 @@
 package com.konstantinisaev.youtrack
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDexApplication
 import com.konstantinisaev.youtrack.di.AppComponent
@@ -20,6 +19,6 @@ class App : MultiDexApplication() {
         super.onCreate()
         context = applicationContext
         appComponent = DaggerAppComponent.builder().
-            appModule(AppModule(this)).build()
+            appModule(AppModule()).build()
     }
 }
