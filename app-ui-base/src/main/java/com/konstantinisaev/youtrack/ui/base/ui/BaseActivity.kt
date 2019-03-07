@@ -1,4 +1,4 @@
-package com.konstantinisaev.youtrack.ui.base
+package com.konstantinisaev.youtrack.ui.base.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

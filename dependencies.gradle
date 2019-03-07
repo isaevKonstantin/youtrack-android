@@ -19,6 +19,7 @@ ext {
   daggerCompiler = 'com.google.dagger:dagger-compiler:2.14.1'
   multiDex = 'com.android.support:multidex:1.0.3'
 
+  coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1"
   gson = "com.google.code.gson:gson:2.8.5"
 
   retrofitVersion = "2.5.0"

@@ -3,7 +3,7 @@ package com.konstantinisaev.youtrack
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.konstantinisaev.youtrack.ui.auth.SplashFragment
-import com.konstantinisaev.youtrack.ui.base.BaseActivity
+import com.konstantinisaev.youtrack.ui.base.ui.BaseActivity
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.support.SupportAppNavigator

@@ -7,5 +7,11 @@ dependencies{
     implementation ciceRone
     implementation lifecycle
     implementation constraintLayout
+    implementation coroutines
+    implementation dagger
+    implementation timber
+
     kapt lifeCycleCompiler
+    kapt daggerCompiler
+    kapt daggerAnnotationProcessor
 }
