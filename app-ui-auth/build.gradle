@@ -1,6 +1,8 @@
 apply from: "${rootDir}/android-library.gradle"
 
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 dependencies {
     implementation project(":app-ui-base")
@@ -9,7 +11,9 @@ dependencies {
     implementation dagger
     implementation lifecycle
     implementation coroutines
+    implementation material
 
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt daggerCompiler
     kapt daggerAnnotationProcessor
 
