@@ -10,7 +10,7 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/splash_act_logo_text"
+            android:text="@string/splash_logo_text"
             android:textAllCaps="true"
             style="@style/YouTrackMainTheme.LogoTv"
             app:layout_constraintBottom_toBottomOf="parent"

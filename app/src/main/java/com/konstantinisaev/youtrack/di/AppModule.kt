@@ -1,5 +1,7 @@
 package com.konstantinisaev.youtrack.di
 
+import com.konstantinisaev.youtrack.navigation.SplashRouterImp
+import com.konstantinisaev.youtrack.ui.base.utils.SplashRouter
 import dagger.Module
 import dagger.Provides
 import ru.terrakok.cicerone.Cicerone
@@ -15,9 +17,11 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideRouter(cicerone: Cicerone<Router>) : Router {
-        return cicerone.router
-    }
+    fun provideRouter(cicerone: Cicerone<Router>) : Router = cicerone.router
+
+    @Singleton
+    @Provides
+    fun provideSplashRouter(router: Router) : SplashRouter = SplashRouterImp(router)
 
 
 }

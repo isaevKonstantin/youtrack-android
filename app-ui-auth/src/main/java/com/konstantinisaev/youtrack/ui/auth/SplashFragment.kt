@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.konstantinisaev.youtrack.ui.auth.di.SplashDiProvider
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.ServerConfigViewModel
 import com.konstantinisaev.youtrack.ui.base.ui.BaseFragment
+import com.konstantinisaev.youtrack.ui.base.utils.Routers
+import com.konstantinisaev.youtrack.ui.base.utils.SplashRouter
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import kotlinx.android.synthetic.main.fragment_splash.*
 
@@ -43,7 +45,7 @@ class SplashFragment : BaseFragment() {
             override fun onFinish() {
                 pbSplash.progress = pbSplash.max
                 when(viewModel.lastViewState){
-                    is ViewState.Empty -> toast("new Empty")
+                    is ViewState.Empty -> Routers.splashRouter.showServerUrl()
 
                 }
             }
