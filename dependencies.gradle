@@ -1,5 +1,6 @@
 ext {
   kotlinVersion = "1.3.21"
+
   kotlinLibrary = "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
   appCompat = "androidx.appcompat:appcompat:1.0.2"
@@ -20,8 +21,13 @@ ext {
   multiDex = 'com.android.support:multidex:1.0.3'
 
   coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1"
+  coroutinesAdapter =  "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
   gson = "com.google.code.gson:gson:2.8.5"
+  retrofit = "com.squareup.retrofit2:retrofit:2.5.0"
+  gsonConverter = "com.squareup.retrofit2:converter-gson:2.5.0"
+  okhttpInterceptor =  "com.squareup.okhttp3:logging-interceptor:3.12.1"
 
-  retrofitVersion = "2.5.0"
-  okhttpVersion = "3.12.1"
+  mockito = "org.mockito:mockito-core:2.23.0"
+  junit = "junit:junit:4.12"
+  assertJ = "org.assertj:assertj-core:3.11.1"
 }

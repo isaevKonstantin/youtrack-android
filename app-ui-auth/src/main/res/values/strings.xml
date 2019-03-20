@@ -2,5 +2,6 @@
 
     <string name="splash_logo_text">Youtrack</string>
     <string name="auth_check_url_hint">Enter url</string>
+    <string name="auth_check_url_toolbar">Youtrack configuration</string>
 
 </resources>

@@ -2,3 +2,4 @@ include ':app'
 
 include ':app-ui-base'
 include ':app-ui-auth'
+include ':core-api'
