@@ -3,7 +3,6 @@ package com.konstantinisaev.youtrack.core.api
 import kotlinx.coroutines.runBlocking
 import okhttp3.logging.HttpLoggingInterceptor
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Assert.assertTrue
 import org.junit.BeforeClass
 import org.junit.Test
 
@@ -11,9 +10,10 @@ class ApiProviderTest {
 
     @Test
     fun initializationTest() {
-        println(respServerConfig)
+        assertThat(respServerConfig.mobile).isNotNull
+        assertThat(respServerConfig.ring).isNotNull
+        assertThat(respServerConfig.version).isNotEmpty()
     }
-
 
     companion object {
 
@@ -25,12 +25,11 @@ class ApiProviderTest {
         @BeforeClass
         @JvmStatic
         fun setup() {
-
-            assertTrue(System.getenv().containsKey("debug_url"))
+            val debugUrlKey = "debug_url"
+            assertThat(System.getenv().containsKey(debugUrlKey)).isTrue()
             println(System.getenv())
-            testUrl = System.getenv()["debug_url"] as String
+            testUrl = System.getenv()[debugUrlKey] as String
 
-            println(testUrl)
             val loggingInterceptor = HttpLoggingInterceptor()
             loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             apiProvider.init(
@@ -44,19 +43,16 @@ class ApiProviderTest {
         }
 
         private suspend fun getVersion() {
-            val resp = apiProvider.getServerVersion("$testUrl${ApiEndpoints.YOUTRACK.url}/rest/workflow/version")
+            val resp = apiProvider.getServerVersion("$testUrl${ApiEndpoints.YOUTRACK.url}/${ApiEndpoints.VERSION.url}")
                     .await()
             assertThat(resp.isSuccessful).isTrue()
             assertThat(resp.body()).isNotNull
         }
 
         private suspend fun getServerConfig() {
-            val configResp = apiProvider.getServerConfig("${testUrl}youtrack/api/config").await()
-            assertTrue(configResp.isSuccessful)
+            val configResp = apiProvider.getServerConfig("$testUrl${ApiEndpoints.YOUTRACK.url}/${ApiEndpoints.CONFIG.url}").await()
             assertThat(configResp.isSuccessful).isTrue()
-            assertThat(configResp.body()?.mobile).isNotNull
-            assertThat(configResp.body()?.ring).isNotNull
-            assertThat(configResp.body()?.version).isNotEmpty()
+            assertThat(configResp.body()).isNotNull
             respServerConfig = configResp.body()!!
         }
     }

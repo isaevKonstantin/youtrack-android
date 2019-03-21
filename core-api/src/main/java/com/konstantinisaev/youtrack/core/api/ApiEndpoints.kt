@@ -4,6 +4,7 @@ enum class ApiEndpoints(val url: String){
 	YOUTRACK("youtrack"),
 	SERVER_CONFIG("api/config?fields=ring(url,serviceId),mobile(serviceSecret,serviceId),version,statisticsEnabled"),
 	VERSION("rest/workflow/version"),
+	CONFIG("api/config"),
 	LOGIN("api/rest/oauth2/token"),
 
 	GET_CURRENT_USER("rest/user/current"),
