@@ -1,7 +1,6 @@
 package com.konstantinisaev.youtrack.core.api
 
 import kotlinx.coroutines.Deferred
-import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 import retrofit2.http.Url
@@ -9,10 +8,10 @@ import retrofit2.http.Url
 interface HttpRepository {
 
     @GET("")
-    fun getServerVersion(@Url url: String) : Deferred<Response<ServerVersionDTO>>
+    fun getServerVersion(@Url url: String) : Deferred<ServerVersionDTO>
 
     @GET("")
-    fun getServerConfig(@Url url: String,@Query("fields")fields: String? = Fields.SERVER_CONFIG) : Deferred<Response<ServerConfigDTO>>
+    fun getServerConfig(@Url url: String,@Query("fields")fields: String? = Fields.SERVER_CONFIG) : Deferred<ServerConfigDTO>
 
 
 //    @POST("")

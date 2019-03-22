@@ -6,15 +6,22 @@ apply plugin: 'kotlin-android-extensions'
 
 dependencies {
     implementation project(":app-ui-base")
+    implementation project(":core-api")
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation appCompat
     implementation constraintLayout
     implementation dagger
     implementation lifecycle
     implementation coroutines
+    implementation coroutinesAndroid
     implementation material
 
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt daggerCompiler
     kapt daggerAnnotationProcessor
+
+    testImplementation junit
+    testImplementation mockito
+    testImplementation assertJ
+    testImplementation archCoreTesting
 
 }

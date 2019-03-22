@@ -3,11 +3,12 @@ package com.konstantinisaev.youtrack.ui.auth.di
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.konstantinisaev.youtrack.ui.auth.CheckUrlFragment
 import com.konstantinisaev.youtrack.ui.auth.SplashFragment
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.ServerConfigViewModel
+import com.konstantinisaev.youtrack.ui.base.di.BaseModule
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelFactory
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelKey
-import com.konstantinisaev.youtrack.ui.base.di.BaseModule
 import dagger.*
 import dagger.multibindings.IntoMap
 import javax.inject.Singleton
@@ -17,7 +18,9 @@ import javax.inject.Singleton
 @Singleton
 internal interface SplashComponent{
 
-    fun injectFragment(splashFragment: SplashFragment)
+    fun injectFragment(fragment: SplashFragment)
+
+    fun injectFragment(fragment: CheckUrlFragment)
 
     @Component.Builder
     interface Builder {
@@ -55,6 +58,10 @@ internal class SplashDiProvider private constructor(){
 
     fun injectFragment(splashFragment: SplashFragment){
         splashComponent.injectFragment(splashFragment)
+    }
+
+    fun injectFragment(checkUrlFragment: CheckUrlFragment){
+        splashComponent.injectFragment(checkUrlFragment)
     }
 
     companion object {
