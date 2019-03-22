@@ -31,6 +31,8 @@ class ServerConfigViewModel @Inject constructor(
                     "$serverUrl/"
                 }
                 basePreferencesAdapter.setUrl(savedUrl)
+                basePreferencesAdapter.setServerConfig(configDTO)
+                apiProvider.enableAppCredentialsInHeader(configDTO.mobile.serviceId,configDTO.mobile.serviceSecret)
                 viewState = ViewState.Success(data = "")
                 break
             }catch (ex: Exception){

@@ -75,7 +75,9 @@ class ServerConfigViewModelTest {
             MobileConfigDTO("1","1",""),RingConfigDTO("","",""),false,"") })
         urlViewModel.doAsyncRequest("")
         verify(apiProvider, times(1)).getServerConfig(ArgumentMatchers.anyString())
+        verify(apiProvider, times(1)).enableAppCredentialsInHeader(ArgumentMatchers.anyString(), ArgumentMatchers.anyString())
         verify(basePreferencesAdapter, times(1)).setUrl(ArgumentMatchers.anyString())
+        verify(basePreferencesAdapter, times(1)).setServerConfig(ArgumentMatchers.any())
         assertThat(urlViewModel.lastViewState is ViewState.Success<*>).isTrue()
     }
 }

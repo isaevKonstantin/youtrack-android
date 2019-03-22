@@ -17,7 +17,7 @@ class BaseModule {
 
     @Provides
     @Singleton
-    fun provideBasePreferenceAdapter(context: Context) = BasePreferencesAdapter(context)
+    fun provideBasePreferenceAdapter(context: Context) = BasePreferencesAdapter.getInstance(context)
 
     @Provides
     @Singleton
