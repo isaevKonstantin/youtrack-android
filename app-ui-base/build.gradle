@@ -3,6 +3,7 @@ apply from: "${rootDir}/android-library.gradle"
 apply plugin: 'kotlin-kapt'
 
 dependencies{
+    implementation project(":core-api")
     implementation appCompat
     implementation ciceRone
     implementation lifecycle
@@ -10,6 +11,7 @@ dependencies{
     implementation coroutines
     implementation dagger
     implementation timber
+    implementation gson
 
     kapt lifeCycleCompiler
     kapt daggerCompiler

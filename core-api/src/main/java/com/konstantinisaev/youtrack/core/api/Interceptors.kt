@@ -13,7 +13,7 @@ class JsonInterceptor : Interceptor {
 	}
 }
 
-class ServerCredentialsInterceptor : Interceptor{
+class ServerCredentialsInterceptor : Interceptor {
 
 	private var serverCredentials: Credentials.ServerCredentials? = null
 	private var userCredentials: Credentials.UserCredentials? = null

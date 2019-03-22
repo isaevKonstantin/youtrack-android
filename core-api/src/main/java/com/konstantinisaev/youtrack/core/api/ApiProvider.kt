@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -19,7 +20,7 @@ class ApiProvider {
     private lateinit var credentialsInterceptor: ServerCredentialsInterceptor
 
     fun init(apiUrl: String, interceptors: Array<Interceptor>) {
-        okHttpClient = initOkHttp(interceptors)
+        okHttpClient = initOkHttp()
         retrofit = Retrofit.Builder()
                 .baseUrl(apiUrl)
                 .addConverterFactory(GsonConverterFactory.create(GsonBuilder().serializeNulls().create()))
@@ -29,12 +30,14 @@ class ApiProvider {
         httpRepository = retrofit.create(HttpRepository::class.java)
     }
 
-    private fun initOkHttp(interceptors: Array<Interceptor>): OkHttpClient {
+    private fun initOkHttp(): OkHttpClient {
         val builder = OkHttpClient.Builder()
+        credentialsInterceptor = ServerCredentialsInterceptor()
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        val interceptors = listOf(credentialsInterceptor,loggingInterceptor,JsonInterceptor())
+
         for (interceptor in interceptors) {
-            if(interceptor is ServerCredentialsInterceptor){
-                credentialsInterceptor = interceptor
-            }
             builder.addInterceptor(interceptor)
         }
 
