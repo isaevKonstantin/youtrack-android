@@ -6,6 +6,7 @@ import androidx.multidex.MultiDexApplication
 import com.konstantinisaev.youtrack.di.AppComponent
 import com.konstantinisaev.youtrack.di.AppModule
 import com.konstantinisaev.youtrack.di.DaggerAppComponent
+import com.konstantinisaev.youtrack.ui.base.utils.Settings
 
 class App : MultiDexApplication() {
 
@@ -20,5 +21,6 @@ class App : MultiDexApplication() {
         context = applicationContext
         appComponent = DaggerAppComponent.builder().
             appModule(AppModule()).build()
+        Settings.debugUrl = BuildConfig.DEBUG_SERVER_URL
     }
 }

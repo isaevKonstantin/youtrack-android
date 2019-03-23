@@ -1,0 +1,17 @@
+ext{
+
+    debugServerUrl = parseDebugUrl()
+}
+
+
+def parseDebugUrl(){
+    Properties properties = new Properties()
+    File file = project.file("${rootDir}/core-api/local.properties")
+    if(file.exists()){
+        properties.load(file.newDataInputStream())
+        return properties.getProperty("debug_url")
+    }else{
+        return ""
+    }
+}
+
