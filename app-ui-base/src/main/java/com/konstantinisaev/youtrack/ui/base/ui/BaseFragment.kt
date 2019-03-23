@@ -1,7 +1,6 @@
 package com.konstantinisaev.youtrack.ui.base.ui
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.konstantinisaev.youtrack.ui.base.utils.toast
-import com.konstantinisaev.youtrack.ui.base.viewmodels.BaseViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import javax.inject.Inject
 
@@ -22,7 +20,7 @@ abstract class BaseFragment : Fragment()  {
     @Inject
     protected lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val handlers = hashMapOf<ViewState,HashMap<Class<Any>,(ViewState) -> Unit>>()
+    private val handlers = hashMapOf<Class<*>,HashMap<Class<*>,(ViewState) -> Unit>>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,11 +34,11 @@ abstract class BaseFragment : Fragment()  {
         handlers.clear()
     }
 
-    protected fun registerHandler(viewState: ViewState,clazz: Class<Any>,handler: (ViewState) -> Unit){
-        if(handlers.containsKey(viewState)){
-            handlers.getValue(viewState)[clazz] = handler
+    protected fun registerHandler(viewStateClazz: Class<*>,clazz: Class<*>,handler: (ViewState) -> Unit){
+        if(handlers.containsKey(viewStateClazz)){
+            handlers.getValue(viewStateClazz)[clazz] = handler
         }else{
-            handlers[viewState] = hashMapOf(clazz to handler)
+            handlers[viewStateClazz] = hashMapOf(clazz to handler)
         }
     }
 
@@ -54,10 +52,10 @@ abstract class BaseFragment : Fragment()  {
 
     protected fun observe(viewState: ViewState){
         val owner = viewState.owner ?: return
-        if(!handlers.containsKey(viewState)){
+        if(!handlers.containsKey(viewState.javaClass)){
             return
         }
-        val handlersMap = handlers.getValue(viewState)
+        val handlersMap = handlers.getValue(viewState.javaClass)
         handlersMap[owner]?.invoke(viewState)
     }
 

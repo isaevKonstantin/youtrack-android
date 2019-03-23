@@ -48,6 +48,10 @@ class ApiProvider {
         return builder.build()
     }
 
+    fun isInitialized(): Boolean {
+        return this::okHttpClient.isInitialized
+    }
+
     fun enableAppCredentialsInHeader(clientId: String, clientSecret: String){
         credentialsInterceptor.initServiceCredentials(clientId,clientSecret)
     }
