@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.konstantinisaev.youtrack.ui.auth.di.SplashDiProvider
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.ServerConfigViewModel
 import com.konstantinisaev.youtrack.ui.base.ui.BaseFragment
+import com.konstantinisaev.youtrack.ui.base.utils.Settings
 import com.konstantinisaev.youtrack.ui.base.utils.UrlValidator
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import com.konstantinisaev.youtrack.ui.base.widget.afterTextChanged
@@ -24,6 +25,7 @@ class CheckUrlFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         SplashDiProvider.getInstance(checkNotNull(context)).injectFragment(this)
         viewModel = ViewModelProviders.of(this,viewModelFactory)[ServerConfigViewModel::class.java]
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,6 +47,16 @@ class CheckUrlFragment : BaseFragment() {
         }
         bCheckUrl.setOnClickListener {
             viewModel.doAsyncRequest(edtUrl.text.toString())
+        }
+        edtUrl.setOnLongClickListener {
+            if(Settings.debugUrl.isNotEmpty()){
+                edtUrl.setText(Settings.debugUrl)
+                edtUrl.setSelection(edtUrl.text?.length ?: 0)
+                return@setOnLongClickListener true
+            }else{
+                return@setOnLongClickListener false
+
+            }
         }
 
         registerHandler(ViewState.Error::class.java,viewModel::class.java,{viewState ->

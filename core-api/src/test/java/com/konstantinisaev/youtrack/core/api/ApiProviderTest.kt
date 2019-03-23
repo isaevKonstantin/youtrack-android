@@ -27,6 +27,7 @@ class ApiProviderTest {
             val debugUrlKey = "debug_url"
             assertThat(System.getenv().containsKey(debugUrlKey)).isTrue()
             testUrl = System.getenv()[debugUrlKey] as String
+            println(testUrl)
 
             apiProvider.init(
                 testUrl,
