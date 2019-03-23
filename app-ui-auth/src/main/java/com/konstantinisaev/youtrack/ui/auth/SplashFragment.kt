@@ -44,7 +44,8 @@ class SplashFragment : BaseFragment() {
             override fun onFinish() {
                 pbSplash.progress = pbSplash.max
                 when(viewModel.lastViewState){
-                    is ViewState.Empty -> Routers.splashRouter.showServerUrl()
+                    is ViewState.Empty -> Routers.authRouter.showServerUrl()
+                    is ViewState.Success<*> -> Routers.authRouter.showServerUrl()
 
                 }
             }

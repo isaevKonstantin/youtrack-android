@@ -1,15 +1,17 @@
 ext{
 
-    debugServerUrl = parseDebugUrl()
+    debugServerUrl = parseLocalProperties("debug_url")
+    debugLogin = parseLocalProperties("debug_login")
+    debugPassword = parseLocalProperties("debug_password")
 }
 
 
-def parseDebugUrl(){
+def parseLocalProperties(String key){
     Properties properties = new Properties()
     File file = project.file("${rootDir}/core-api/local.properties")
     if(file.exists()){
         properties.load(file.newDataInputStream())
-        return properties.getProperty("debug_url")
+        return properties.getProperty(key)
     }else{
         return ""
     }

@@ -3,5 +3,9 @@
     <string name="splash_logo_text">Youtrack</string>
     <string name="auth_check_url_hint">Enter url</string>
     <string name="auth_check_url_toolbar">Youtrack configuration</string>
+    <string name="auth_login_toolbar">Authorization</string>
 
+    <string name="auth_edt_login_hint">Enter login</string>
+    <string name="auth_edt_password_hint">Enter password</string>
+    <string name="auth_auth_btn_text">Authorize</string>
 </resources>

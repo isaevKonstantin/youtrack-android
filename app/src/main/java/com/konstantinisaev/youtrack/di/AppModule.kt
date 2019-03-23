@@ -1,7 +1,7 @@
 package com.konstantinisaev.youtrack.di
 
-import com.konstantinisaev.youtrack.navigation.SplashRouterImp
-import com.konstantinisaev.youtrack.ui.base.utils.SplashRouter
+import com.konstantinisaev.youtrack.navigation.AuthRouterImp
+import com.konstantinisaev.youtrack.ui.base.utils.AuthRouter
 import dagger.Module
 import dagger.Provides
 import ru.terrakok.cicerone.Cicerone
@@ -21,7 +21,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideSplashRouter(router: Router) : SplashRouter = SplashRouterImp(router)
+    fun provideSplashRouter(router: Router) : AuthRouter = AuthRouterImp(router)
 
 
 }

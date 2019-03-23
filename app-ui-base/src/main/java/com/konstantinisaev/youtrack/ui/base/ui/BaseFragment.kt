@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.konstantinisaev.youtrack.ui.base.utils.toast
@@ -39,6 +41,17 @@ abstract class BaseFragment : Fragment()  {
             handlers.getValue(viewStateClazz)[clazz] = handler
         }else{
             handlers[viewStateClazz] = hashMapOf(clazz to handler)
+        }
+    }
+
+    protected fun setToolbar(toolbar: Toolbar, title: String,backNavigation: Boolean){
+        (activity as AppCompatActivity).apply {
+            setSupportActionBar(toolbar)
+            supportActionBar?.title = title
+            supportActionBar?.setDisplayHomeAsUpEnabled(backNavigation)
+            if(backNavigation){
+                toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+            }
         }
     }
 

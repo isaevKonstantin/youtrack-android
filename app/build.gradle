@@ -17,18 +17,24 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "DEBUG_SERVER_URL", ""
+        buildConfigField "String", "DEBUG_LOGIN", ""
+        buildConfigField "String", "DEBUG_PASSWORD", ""
+
     }
 
     buildTypes {
 
         debug{
             buildConfigField "String", "DEBUG_SERVER_URL", "\"${debugServerUrl}\""
+            buildConfigField "String", "DEBUG_LOGIN", "\"${debugLogin}\""
+            buildConfigField "String", "DEBUG_PASSWORD", "\"${debugPassword}\""
         }
 
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "DEBUG_SERVER_URL", ""
         }
     }
 }

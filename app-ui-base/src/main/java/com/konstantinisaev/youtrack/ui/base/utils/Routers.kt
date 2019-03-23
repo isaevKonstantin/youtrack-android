@@ -1,13 +1,15 @@
 package com.konstantinisaev.youtrack.ui.base.utils
 
-object Routers{
+object Routers {
 
-    lateinit var splashRouter: SplashRouter
+    lateinit var authRouter: AuthRouter
 }
 
-interface SplashRouter {
+interface AuthRouter {
 
     fun showSplash()
 
     fun showServerUrl()
+
+    fun showAuth()
 }

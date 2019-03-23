@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+		android:layout_height="match_parent"
+		android:layout_width="match_parent"
+		android:orientation="vertical"
+		xmlns:tools="http://schemas.android.com/tools"
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		tools:context=".AuthFragment">
+	<com.google.android.material.appbar.AppBarLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+		<androidx.appcompat.widget.Toolbar
+				android:id="@+id/toolbar"
+				android:layout_width="match_parent"
+				app:theme = "@style/YouTrackMainTheme.Toolbar"
+				android:layout_height="?android:attr/actionBarSize"/>
+
+	</com.google.android.material.appbar.AppBarLayout>
+
+	<ScrollView
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:fillViewport="true">
+
+		<androidx.constraintlayout.widget.ConstraintLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:paddingLeft="30dp"
+				android:paddingRight="30dp">
+
+			<androidx.appcompat.widget.AppCompatEditText
+					android:id="@+id/edtLogin"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:maxLines="1"
+					android:layout_above="@id/edtPassword"
+					android:hint="@string/auth_edt_login_hint"
+					android:inputType="text"
+					android:layout_marginBottom="20dp"
+					android:gravity="start"
+					android:layout_marginTop="40dp"
+					android:padding="10dp"
+					android:theme="@style/YouTrackMainTheme.EdtAuth"
+					app:layout_constraintBottom_toTopOf="@id/edtPassword"
+					app:layout_constraintLeft_toLeftOf="parent"
+					app:layout_constraintRight_toRightOf="parent"
+					app:layout_constraintTop_toTopOf="parent"
+					tools:ignore="LabelFor" />
+
+			<androidx.appcompat.widget.AppCompatEditText
+					android:id="@+id/edtPassword"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:maxLines="1"
+					android:padding="10dp"
+					android:hint="@string/auth_edt_password_hint"
+					android:layout_marginBottom="10dp"
+					android:inputType="textPassword"
+					android:theme="@style/YouTrackMainTheme.EdtAuth"
+					android:gravity="start"
+					app:layout_constraintLeft_toLeftOf="parent"
+					app:layout_constraintRight_toRightOf="parent"
+					app:layout_constraintTop_toBottomOf="@id/edtLogin"
+					tools:ignore="LabelFor" />
+
+			<Button
+					android:id="@+id/bLogin"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:textSize="@dimen/text14"
+					android:text="@string/auth_auth_btn_text"
+					android:minWidth="150dp"
+					style="@style/YouTrackMainTheme.Btn"
+					android:textAllCaps="true"
+					android:layout_centerHorizontal="true"
+					app:layout_constraintLeft_toLeftOf="parent"
+					app:layout_constraintRight_toRightOf="parent"
+					app:layout_constraintBottom_toBottomOf="parent"
+					android:layout_marginBottom="40dp"/>
+
+		</androidx.constraintlayout.widget.ConstraintLayout>
+
+	</ScrollView>
+
+</LinearLayout>
+

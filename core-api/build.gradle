@@ -4,6 +4,8 @@ apply from: "${rootDir}/utils.gradle"
 
 test {
     environment 'debug_url',debugServerUrl
+    environment 'debug_login',debugLogin
+    environment 'debug_password',debugPassword
 }
 dependencies {
 

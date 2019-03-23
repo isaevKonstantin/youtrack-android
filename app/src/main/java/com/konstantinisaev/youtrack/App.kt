@@ -21,6 +21,6 @@ class App : MultiDexApplication() {
         context = applicationContext
         appComponent = DaggerAppComponent.builder().
             appModule(AppModule()).build()
-        Settings.debugUrl = BuildConfig.DEBUG_SERVER_URL
+        Settings.setDebugSettings(BuildConfig.DEBUG_SERVER_URL,BuildConfig.DEBUG_LOGIN,BuildConfig.DEBUG_PASSWORD)
     }
 }
