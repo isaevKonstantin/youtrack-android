@@ -10,6 +10,7 @@ import com.konstantinisaev.youtrack.ui.auth.di.SplashDiProvider
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.ServerConfigViewModel
 import com.konstantinisaev.youtrack.ui.base.ui.BaseFragment
 import com.konstantinisaev.youtrack.ui.base.utils.UrlValidator
+import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import com.konstantinisaev.youtrack.ui.base.widget.afterTextChanged
 import kotlinx.android.synthetic.main.fragment_check_url.*
 
@@ -45,6 +46,16 @@ class CheckUrlFragment : BaseFragment() {
         bCheckUrl.setOnClickListener {
             viewModel.doAsyncRequest(edtUrl.text.toString())
         }
+
+        registerHandler(ViewState.Error::class.java,viewModel::class.java,{viewState ->
+            toast("error")
+        })
+        registerHandler(ViewState.ValidationError::class.java,viewModel::class.java,{viewState ->
+            toast("validation")
+        })
+        registerHandler(ViewState.Success::class.java,viewModel::class.java,{viewState ->
+            toast("success")
+        })
 
         viewModel.observe(this, Observer { observe(it) })
     }

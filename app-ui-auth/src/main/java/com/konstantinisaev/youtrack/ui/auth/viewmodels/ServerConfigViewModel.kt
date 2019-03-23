@@ -19,11 +19,14 @@ class ServerConfigViewModel @Inject constructor(
         val formattedUrl = url.takeIf { it.isNotEmpty() } ?: return ViewState.Empty()
         val urls = UrlFormatter.formatToHostUrls(formattedUrl)
         var viewState: ViewState = ViewState.Empty()
+        if(!apiProvider.isInitialized()){
+            apiProvider.init("http://default.com", arrayOf())
+        }
         for (serverUrl in urls) {
             try {
                 val configDTO = apiProvider.getServerConfig(UrlFormatter.formatToServerConfigUrl(serverUrl)).await()
                 if(configDTO.mobile.serviceId.isEmpty() || configDTO.mobile.serviceSecret.isEmpty()){
-                    return ViewState.Error()
+                    return ViewState.Error(ownerClass = this::class.java)
                 }
                 val savedUrl = if(serverUrl.endsWith("/")){
                     serverUrl
@@ -33,11 +36,11 @@ class ServerConfigViewModel @Inject constructor(
                 basePreferencesAdapter.setUrl(savedUrl)
                 basePreferencesAdapter.setServerConfig(configDTO)
                 apiProvider.enableAppCredentialsInHeader(configDTO.mobile.serviceId,configDTO.mobile.serviceSecret)
-                viewState = ViewState.Success(data = "")
+                viewState = ViewState.Success(ownerClass = this::class.java,data = "")
                 break
             }catch (ex: Exception){
                 ex.printStackTrace()
-                viewState = ViewState.Error()
+                viewState = ViewState.Error(ownerClass = this::class.java)
             }
         }
         return viewState
