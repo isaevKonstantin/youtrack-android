@@ -30,7 +30,7 @@ class CheckUrlFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setToolbar(toolbar,getString(R.string.auth_check_url_toolbar),true)
+        setToolbarWithBackNavigation(toolbar,getString(R.string.auth_check_url_toolbar))
 
         edtUrl.afterTextChanged {
             if(UrlValidator.validate(it)){
