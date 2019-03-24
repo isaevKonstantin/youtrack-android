@@ -22,6 +22,7 @@ class ServerConfigViewModel @Inject constructor(
         if(!apiProvider.isInitialized()){
             apiProvider.init("http://default.com", arrayOf())
         }
+        apiProvider.clearServerCredentials()
         for (serverUrl in urls) {
             try {
                 val configDTO = apiProvider.getServerConfig(UrlFormatter.formatToServerConfigUrl(serverUrl)).await()

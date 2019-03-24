@@ -2,7 +2,7 @@ package com.konstantinisaev.youtrack.core.api
 
 import okhttp3.Interceptor
 import okhttp3.Response
-import java.util.*
+import sun.misc.BASE64Decoder
 
 class JsonInterceptor : Interceptor {
 	override fun intercept(chain: Interceptor.Chain?): Response {
@@ -22,6 +22,10 @@ class ServerCredentialsInterceptor : Interceptor {
 		serverCredentials = Credentials.ServerCredentials(clientSecret,clientId)
 	}
 
+	fun clearServiceCredentials(){
+		serverCredentials = null
+	}
+
 	fun initUserCredentials(accessToken: String,tokenType: String){
 		userCredentials = Credentials.UserCredentials(accessToken,tokenType)
 	}
@@ -29,7 +33,7 @@ class ServerCredentialsInterceptor : Interceptor {
 	override fun intercept(chain: Interceptor.Chain?): Response {
 		val requestBuilder = chain!!.request().newBuilder()
 		if (serverCredentials != null) {
-			val decodedStr = Base64.getDecoder().decode("${serverCredentials!!.clientId} : ${serverCredentials!!.clientSecret}")
+			val decodedStr = BASE64Decoder().decodeBuffer("${serverCredentials!!.clientId} : ${serverCredentials!!.clientSecret}")
 			requestBuilder.header(AUTHORIZATION_HEADER, "Basic $decodedStr")
 		}
 		if (userCredentials != null) {

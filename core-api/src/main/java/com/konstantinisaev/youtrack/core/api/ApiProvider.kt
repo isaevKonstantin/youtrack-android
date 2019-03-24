@@ -56,6 +56,10 @@ class ApiProvider {
         credentialsInterceptor.initServiceCredentials(clientId,clientSecret)
     }
 
+    fun clearServerCredentials(){
+        credentialsInterceptor.clearServiceCredentials()
+    }
+
     fun enableUserCredentialsInHeader(accessToken: String,tokenType: String){
         credentialsInterceptor.initUserCredentials(accessToken,tokenType)
     }
