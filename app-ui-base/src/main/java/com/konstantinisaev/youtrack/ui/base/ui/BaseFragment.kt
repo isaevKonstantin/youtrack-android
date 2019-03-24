@@ -44,14 +44,12 @@ abstract class BaseFragment : Fragment()  {
         }
     }
 
-    protected fun setToolbar(toolbar: Toolbar, title: String,backNavigation: Boolean){
+    protected fun setToolbarWithBackNavigation(toolbar: Toolbar, title: String){
         (activity as AppCompatActivity).apply {
             setSupportActionBar(toolbar)
             supportActionBar?.title = title
-            supportActionBar?.setDisplayHomeAsUpEnabled(backNavigation)
-            if(backNavigation){
-                toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
-            }
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
         }
     }
 
