@@ -23,6 +23,7 @@ abstract class BaseViewModel<P>(private val coroutineContextHolder: CoroutineCon
     }
 
     fun doAsyncRequest(params: P? = null){
+        lastViewState = ViewState.Empty()
         validator?.apply {
             validate(params).takeIf { !it }?.let {
                 lastViewState = ViewState.ValidationError(msgId = validator.errorId)
@@ -33,7 +34,6 @@ abstract class BaseViewModel<P>(private val coroutineContextHolder: CoroutineCon
         if(job.isCompleted){
             reinitializeJob()
         }
-        lastViewState = ViewState.Empty()
         GlobalScope.launch(coroutineContextHolder.io() + job) {
             try {
                 val resp = execute(params)

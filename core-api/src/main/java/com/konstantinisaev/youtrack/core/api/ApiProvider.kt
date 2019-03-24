@@ -68,7 +68,7 @@ class ApiProvider {
 
     fun getServerConfig(url: String) = httpRepository.getServerConfig(url)
 
-//    fun login(url: String,login: String,password: String,scope: String) = httpRepository.login(url,"offline","password",login,password,scope)
+    fun login(url: String,login: String,password: String,scope: String) = httpRepository.login(url,"offline","password",login,password,scope)
 //
 //    fun refreshToken(url: String,token: String) = httpRepository.refreshToken(url,"refresh_token",token)
 //

@@ -2,6 +2,7 @@ package com.konstantinisaev.youtrack.core.api
 
 import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 import retrofit2.http.Url
 
@@ -14,13 +15,13 @@ interface HttpRepository {
     fun getServerConfig(@Url url: String,@Query("fields")fields: String? = Fields.SERVER_CONFIG) : Deferred<ServerConfigDTO>
 
 
-//    @POST("")
-//    fun login(@Url url: String,@Query("access_type") accessType: String, @Query("grant_type") grantType: String,
-//              @Query("username") userName: String, @Query("password") password: String, @Query("scope") scope: String) : Deferred<Response<RespAuthToken>>
+    @POST("")
+    fun login(@Url url: String,@Query("access_type") accessType: String, @Query("grant_type") grantType: String,
+              @Query("username") userName: String, @Query("password") password: String, @Query("scope") scope: String) : Deferred<AuthTokenDTO>
 //
 //    @POST("")
 //    fun refreshToken(@Url url: String, @Query("grant_type") grantType: String,
-//              @Query("refresh_token") token: String) : Deferred<Response<RespAuthToken>>
+//              @Query("refresh_token") token: String) : Deferred<Response<AuthTokenDTO>>
 //
 //    @GET("")
 //    fun getCurrentUser(@Url url: String) : Deferred<Response<CurrentUserDTO>>
