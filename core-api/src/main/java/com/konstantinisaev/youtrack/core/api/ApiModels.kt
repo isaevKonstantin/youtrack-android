@@ -1,5 +1,7 @@
 package com.konstantinisaev.youtrack.core.api
 
+import com.google.gson.annotations.SerializedName
+
 data class ServerVersionDTO @JvmOverloads constructor(var id: Int = 0, var name: String? = null, var version: String? = null, var build: Int = 0)
 
 data class ServerConfigDTO(val version: String, val mobile: MobileConfigDTO, val ring: RingConfigDTO, val statisticsEnabled: Boolean, val type: String)
@@ -7,9 +9,9 @@ data class ServerConfigDTO(val version: String, val mobile: MobileConfigDTO, val
 data class MobileConfigDTO(val serviceSecret: String, val serviceId: String, val type:String)
 
 data class RingConfigDTO(val serviceId: String, val url: String, val type: String)
-//
-//data class RespAuthToken(@SerializedName("access_token") val accessToken: String, @SerializedName("token_type") val tokenType: String,
-//                         @SerializedName("expires_in")val expiresIn: Int, @SerializedName("refresh_token") val refreshToken: String, val scope: String)
+
+data class AuthTokenDTO(@SerializedName("access_token") val accessToken: String, @SerializedName("token_type") val tokenType: String,
+                        @SerializedName("expires_in")val expiresIn: Int, @SerializedName("refresh_token") val refreshToken: String, val scope: String)
 //
 //data class CurrentUserDTO(val id: String?, val fullName: String?, val login: String?, val email: String?, val guest: Boolean, val online: Boolean, val avatar: String?, val avatarUrl: String?)
 //
