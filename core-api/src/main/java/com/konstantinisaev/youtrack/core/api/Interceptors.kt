@@ -2,7 +2,6 @@ package com.konstantinisaev.youtrack.core.api
 
 import okhttp3.Interceptor
 import okhttp3.Response
-import java.util.*
 
 class JsonInterceptor : Interceptor {
 	override fun intercept(chain: Interceptor.Chain?): Response {
@@ -18,8 +17,8 @@ class ServerCredentialsInterceptor : Interceptor {
 	private var serverCredentials: Credentials.ServerCredentials? = null
 	private var userCredentials: Credentials.UserCredentials? = null
 
-	fun initServiceCredentials(clientId: String, clientSecret: String){
-		serverCredentials = Credentials.ServerCredentials(clientSecret,clientId)
+	fun initServiceCredentials(base64Credentials: String){
+		serverCredentials = Credentials.ServerCredentials(base64Credentials)
 	}
 
 	fun clearServiceCredentials(){
@@ -33,7 +32,7 @@ class ServerCredentialsInterceptor : Interceptor {
 	override fun intercept(chain: Interceptor.Chain?): Response {
 		val requestBuilder = chain!!.request().newBuilder()
 		if (serverCredentials != null) {
-			val decodedStr = Base64.getEncoder().encodeToString("${serverCredentials!!.clientId}:${serverCredentials!!.clientSecret}".toByteArray())
+			val decodedStr = serverCredentials!!.base64Credentials
 			requestBuilder.header(AUTHORIZATION_HEADER, "Basic $decodedStr")
 		}
 		if (userCredentials != null) {
@@ -48,7 +47,7 @@ class ServerCredentialsInterceptor : Interceptor {
 
 private sealed class Credentials{
 
-	class ServerCredentials(val clientSecret: String = "",val clientId: String = "") : Credentials()
+	class ServerCredentials(val base64Credentials: String) : Credentials()
 	class UserCredentials(val accessToken: String = "",val tokenType: String = "") : Credentials()
 }
 
