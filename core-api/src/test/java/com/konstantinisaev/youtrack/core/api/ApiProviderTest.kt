@@ -4,6 +4,7 @@ import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.BeforeClass
 import org.junit.Test
+import java.util.*
 
 class ApiProviderTest {
 
@@ -43,7 +44,7 @@ class ApiProviderTest {
             runBlocking {
                 getVersion()
                 getServerConfig()
-                apiProvider.enableAppCredentialsInHeader(respServerConfig.mobile.serviceId, respServerConfig.mobile.serviceSecret)
+                apiProvider.enableAppCredentialsInHeader(Base64.getEncoder().encodeToString("${respServerConfig.mobile.serviceId}:${respServerConfig.mobile.serviceSecret}".toByteArray()))
                 getToken(System.getenv()[debugLoginKey] as String,System.getenv()[debugPasswordKey] as String,"${respServerConfig.mobile.serviceId} ${respServerConfig.ring.serviceId}")
             }
         }

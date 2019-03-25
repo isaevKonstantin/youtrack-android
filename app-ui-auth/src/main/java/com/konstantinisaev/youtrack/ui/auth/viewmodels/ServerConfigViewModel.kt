@@ -4,6 +4,7 @@ import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
 import com.konstantinisaev.youtrack.core.api.UrlFormatter
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
+import com.konstantinisaev.youtrack.ui.base.utils.Base64Converter
 import com.konstantinisaev.youtrack.ui.base.viewmodels.BaseViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import javax.inject.Inject
@@ -11,6 +12,7 @@ import javax.inject.Inject
 class ServerConfigViewModel @Inject constructor(
     private val apiProvider: ApiProvider,
     private val basePreferencesAdapter: BasePreferencesAdapter,
+    private val base64Converter: Base64Converter,
     coroutineHolder: CoroutineContextHolder
 ) : BaseViewModel<String>(coroutineHolder){
 
@@ -36,7 +38,7 @@ class ServerConfigViewModel @Inject constructor(
                 }
                 basePreferencesAdapter.setUrl(savedUrl)
                 basePreferencesAdapter.setServerConfig(configDTO)
-                apiProvider.enableAppCredentialsInHeader(configDTO.mobile.serviceId,configDTO.mobile.serviceSecret)
+                apiProvider.enableAppCredentialsInHeader(base64Converter.convertToBase64("${configDTO.mobile.serviceId}:${configDTO.mobile.serviceSecret}"))
                 viewState = ViewState.Success(ownerClass = this::class.java,data = "")
                 break
             }catch (ex: Exception){

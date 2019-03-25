@@ -52,8 +52,8 @@ class ApiProvider {
         return this::okHttpClient.isInitialized
     }
 
-    fun enableAppCredentialsInHeader(clientId: String, clientSecret: String){
-        credentialsInterceptor.initServiceCredentials(clientId,clientSecret)
+    fun enableAppCredentialsInHeader(base64Credentials: String){
+        credentialsInterceptor.initServiceCredentials(base64Credentials)
     }
 
     fun clearServerCredentials(){

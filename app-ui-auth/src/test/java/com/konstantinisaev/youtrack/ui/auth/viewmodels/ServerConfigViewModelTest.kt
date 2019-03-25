@@ -3,6 +3,7 @@ package com.konstantinisaev.youtrack.ui.auth.viewmodels
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.konstantinisaev.youtrack.core.api.*
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
+import com.konstantinisaev.youtrack.ui.base.utils.Base64Converter
 import com.konstantinisaev.youtrack.ui.base.viewmodels.BaseViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import kotlinx.coroutines.*
@@ -31,6 +32,8 @@ class ServerConfigViewModelTest {
     private lateinit var apiProvider: ApiProvider
     @Mock
     private lateinit var basePreferencesAdapter: BasePreferencesAdapter
+    @Mock
+    private lateinit var base64Converter: Base64Converter
 
     private val testCoroutineContextHolder = object : CoroutineContextHolder() {
         override fun io(): CoroutineDispatcher = Dispatchers.Unconfined
@@ -39,7 +42,7 @@ class ServerConfigViewModelTest {
 
     @Before
     fun setUp() {
-        urlViewModel = ServerConfigViewModel(apiProvider,basePreferencesAdapter, testCoroutineContextHolder)
+        urlViewModel = ServerConfigViewModel(apiProvider,basePreferencesAdapter, base64Converter,testCoroutineContextHolder)
         Dispatchers
     }
 
@@ -71,11 +74,12 @@ class ServerConfigViewModelTest {
     @Test
     fun `given valid config should save it and produce success state`() {
         `when`(basePreferencesAdapter.getUrl()).thenReturn("http://1.com")
+        `when`(base64Converter.convertToBase64(ArgumentMatchers.anyString())).thenReturn("")
         `when`(apiProvider.getServerConfig(ArgumentMatchers.anyString())).thenReturn(GlobalScope.async { ServerConfigDTO("",
             MobileConfigDTO("1","1",""),RingConfigDTO("","",""),false,"") })
         urlViewModel.doAsyncRequest("")
         verify(apiProvider, times(1)).getServerConfig(ArgumentMatchers.anyString())
-        verify(apiProvider, times(1)).enableAppCredentialsInHeader(ArgumentMatchers.anyString(), ArgumentMatchers.anyString())
+        verify(apiProvider, times(1)).enableAppCredentialsInHeader(ArgumentMatchers.anyString())
         verify(basePreferencesAdapter, times(1)).setUrl(ArgumentMatchers.anyString())
         verify(basePreferencesAdapter, times(1)).setServerConfig(ArgumentMatchers.any())
         assertThat(urlViewModel.lastViewState is ViewState.Success<*>).isTrue()
