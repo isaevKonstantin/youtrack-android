@@ -3,11 +3,13 @@ package com.konstantinisaev.youtrack.ui.base.data
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import com.konstantinisaev.youtrack.core.api.AuthTokenDTO
 import com.konstantinisaev.youtrack.core.api.ServerConfigDTO
 
 private const val COMMON_PREFERENCE_NAME = "base_preferences"
 private const val SERVER_URL = "base_server_url"
 private const val SERVER_CONFIG = "base_server_config"
+private const val TOKEN = "token"
 
 class BasePreferencesAdapter private constructor() {
 
@@ -45,5 +47,24 @@ class BasePreferencesAdapter private constructor() {
         }
         val configStr = gson.toJson(serverConfig)
         sharedPreferences.edit().putString(SERVER_CONFIG,configStr).apply()
+    }
+
+    fun getAuthToken(): AuthTokenDTO? {
+        val tokenStr = sharedPreferences.getString(TOKEN,"").orEmpty()
+        return if(tokenStr.isNotEmpty()){
+            gson.fromJson(tokenStr,AuthTokenDTO::class.java)
+        }else{
+            null
+        }
+
+    }
+
+    fun setAuthToken(authToken: AuthTokenDTO?){
+        authToken ?: let {
+            sharedPreferences.edit().putString(TOKEN,"").apply()
+            return
+        }
+        val tokenStr = gson.toJson(authToken)
+        sharedPreferences.edit().putString(TOKEN,tokenStr).apply()
     }
 }

@@ -19,12 +19,12 @@ class CheckUrlFragment : BaseFragment() {
 
     override var layoutId = R.layout.fragment_check_url
 
-    private lateinit var viewModel: ServerConfigViewModel
+    private lateinit var serverConfigViewModel: ServerConfigViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         SplashDiProvider.getInstance(checkNotNull(context)).injectFragment(this)
-        viewModel = ViewModelProviders.of(this,viewModelFactory)[ServerConfigViewModel::class.java]
+        serverConfigViewModel = ViewModelProviders.of(this,viewModelFactory)[ServerConfigViewModel::class.java]
 
     }
 
@@ -43,8 +43,9 @@ class CheckUrlFragment : BaseFragment() {
         }
 
         bCheckUrl.setOnClickListener {
-            viewModel.doAsyncRequest(edtUrl.text.toString())
+            serverConfigViewModel.doAsyncRequest(edtUrl.text.toString())
         }
+
         edtUrl.setOnLongClickListener {
             if(Settings.debugUrl.isNotEmpty()){
                 edtUrl.setText(Settings.debugUrl)
@@ -52,20 +53,19 @@ class CheckUrlFragment : BaseFragment() {
                 return@setOnLongClickListener true
             }else{
                 return@setOnLongClickListener false
-
             }
         }
 
-        registerHandler(ViewState.Error::class.java,viewModel::class.java) { _->
+        registerHandler(ViewState.Error::class.java,serverConfigViewModel::class.java) {
             toast("error")
         }
-        registerHandler(ViewState.ValidationError::class.java,viewModel::class.java) { _ ->
+        registerHandler(ViewState.ValidationError::class.java,serverConfigViewModel::class.java) {
             toast("validation")
         }
-        registerHandler(ViewState.Success::class.java,viewModel::class.java) { _ ->
+        registerHandler(ViewState.Success::class.java,serverConfigViewModel::class.java) {
             Routers.authRouter.showAuth()
         }
 
-        viewModel.observe(this, Observer { observe(it) })
+        serverConfigViewModel.observe(this, Observer { observe(it) })
     }
 }

@@ -1,12 +1,19 @@
 package com.konstantinisaev.youtrack.ui.auth.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.konstantinisaev.youtrack.core.api.*
+import com.konstantinisaev.youtrack.core.api.ApiProvider
+import com.konstantinisaev.youtrack.core.api.MobileConfigDTO
+import com.konstantinisaev.youtrack.core.api.RingConfigDTO
+import com.konstantinisaev.youtrack.core.api.ServerConfigDTO
+import com.konstantinisaev.youtrack.ui.auth.testCoroutineContextHolder
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.utils.Base64Converter
 import com.konstantinisaev.youtrack.ui.base.viewmodels.BaseViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Rule
@@ -35,11 +42,6 @@ class ServerConfigViewModelTest {
     @Mock
     private lateinit var base64Converter: Base64Converter
 
-    private val testCoroutineContextHolder = object : CoroutineContextHolder() {
-        override fun io(): CoroutineDispatcher = Dispatchers.Unconfined
-        override fun main(): CoroutineDispatcher = Dispatchers.Unconfined
-    }
-
     @Before
     fun setUp() {
         urlViewModel = ServerConfigViewModel(apiProvider,basePreferencesAdapter, base64Converter,testCoroutineContextHolder)
@@ -58,7 +60,7 @@ class ServerConfigViewModelTest {
     fun `given empty url should produce empty state`() {
         `when`(basePreferencesAdapter.getUrl()).thenReturn("")
         urlViewModel.doAsyncRequest(params = "")
-        assertThat(urlViewModel.lastViewState is ViewState.Empty).isTrue()
+        assertThat(urlViewModel.lastViewState).isInstanceOf(ViewState.Empty::class.java)
     }
 
     @Test
@@ -68,7 +70,7 @@ class ServerConfigViewModelTest {
             MobileConfigDTO("","",""),RingConfigDTO("","",""),false,"") })
         urlViewModel.doAsyncRequest("")
         verify(apiProvider, times(1)).getServerConfig(ArgumentMatchers.anyString())
-        assertThat(urlViewModel.lastViewState is ViewState.Error).isTrue()
+        assertThat(urlViewModel.lastViewState).isInstanceOf(ViewState.Error::class.java)
     }
 
     @Test
@@ -82,6 +84,6 @@ class ServerConfigViewModelTest {
         verify(apiProvider, times(1)).enableAppCredentialsInHeader(ArgumentMatchers.anyString())
         verify(basePreferencesAdapter, times(1)).setUrl(ArgumentMatchers.anyString())
         verify(basePreferencesAdapter, times(1)).setServerConfig(ArgumentMatchers.any())
-        assertThat(urlViewModel.lastViewState is ViewState.Success<*>).isTrue()
+        assertThat(urlViewModel.lastViewState).isInstanceOf(ViewState.Success::class.java)
     }
 }

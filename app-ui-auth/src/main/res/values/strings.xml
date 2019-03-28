@@ -8,4 +8,11 @@
     <string name="auth_edt_login_hint">Enter login</string>
     <string name="auth_edt_password_hint">Enter password</string>
     <string name="auth_auth_btn_text">Authorize</string>
+
+    <string name="auth_empty_server_config_error">Invalid server config</string>
+    <string name="auth_empty_credentials_error">Invalid credentials</string>
+    <string name="auth_empty_token_error">Invalid token</string>
+    <string name="auth_empty_login_error">Empty login</string>
+    <string name="auth_empty_password_error">Empty password</string>
+
 </resources>

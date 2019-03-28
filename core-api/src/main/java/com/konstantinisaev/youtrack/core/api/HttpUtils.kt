@@ -10,4 +10,21 @@ object UrlFormatter {
     }
 
     fun formatToServerConfigUrl(baseUrl: String) = "$baseUrl/${ApiEndpoints.SERVER_CONFIG.url}"
+
+    fun formatToLoginUrl(baseUrl: String, hubUrl: String): String{
+        var url = baseUrl
+        if(!url.endsWith("/")){
+            url = "$url/"
+        }
+        if(url.endsWith("${ApiEndpoints.YOUTRACK}/")){
+            url = url.replace("${ApiEndpoints.YOUTRACK}/","")
+        }
+        url = if(hubUrl.startsWith("/")){
+            "$url${hubUrl.substring(1,hubUrl.length)}"
+        }else{
+            "$url$hubUrl"
+        }
+        return "$url/${ApiEndpoints.LOGIN.url}"
+    }
+
 }
