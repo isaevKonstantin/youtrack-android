@@ -42,10 +42,10 @@ class AuthFragment : BaseFragment() {
         bLogin.setOnClickListener { authByLoginPasswordViewModel.doAsyncRequest(AuthByLoginPasswordParam(edtLogin.text.toString(),edtPassword.text.toString())) }
 
         registerHandler(ViewState.Error::class.java,authByLoginPasswordViewModel::class.java) {
-            toast("error")
+            showError(it as ViewState.Error)
         }
         registerHandler(ViewState.ValidationError::class.java,authByLoginPasswordViewModel::class.java) {
-            toast("validation")
+            toast((it as ViewState.ValidationError).msgId)
         }
         registerHandler(ViewState.Success::class.java,authByLoginPasswordViewModel::class.java) {
             Routers.authRouter.showMain()

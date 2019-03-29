@@ -3,4 +3,6 @@
     <string name="base_send">Send</string>
     <string name="auth_check_url_invalid_error">Invalid url</string>
 
+    <string name="http_error_unauthorized">Unauthorized error</string>
+    <string name="error_runtime">Unexpected error</string>
 </resources>

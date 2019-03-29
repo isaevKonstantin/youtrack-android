@@ -2,6 +2,7 @@ package com.konstantinisaev.youtrack.core.api
 
 import okhttp3.Interceptor
 import okhttp3.Response
+import java.net.HttpURLConnection
 
 class JsonInterceptor : Interceptor {
 	override fun intercept(chain: Interceptor.Chain?): Response {
@@ -43,6 +44,23 @@ class ServerCredentialsInterceptor : Interceptor {
 		}
 		return chain.proceed(requestBuilder.build())
 	}
+}
+
+class ErrorInterceptor : Interceptor {
+
+	override fun intercept(chain: Interceptor.Chain): Response {
+		val request = chain.request()
+		val response = chain.proceed(request);
+
+		when {
+			response.code() == HttpURLConnection.HTTP_UNAUTHORIZED -> throw HttpProtocolException.Unauthorized(response.message())
+			response.code() == HttpURLConnection.HTTP_FORBIDDEN -> throw HttpProtocolException.Forbidden(response.message())
+			response.code() == HttpURLConnection.HTTP_BAD_REQUEST -> throw HttpProtocolException.BadRequest(response.message())
+			else -> return response
+		}
+	}
+
+
 }
 
 private sealed class Credentials{

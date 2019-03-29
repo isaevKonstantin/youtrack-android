@@ -35,7 +35,7 @@ class ApiProvider {
         credentialsInterceptor = ServerCredentialsInterceptor()
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-        val interceptors = listOf(credentialsInterceptor,loggingInterceptor,JsonInterceptor())
+        val interceptors = listOf(credentialsInterceptor,loggingInterceptor,JsonInterceptor(),ErrorInterceptor())
 
         for (interceptor in interceptors) {
             builder.addInterceptor(interceptor)

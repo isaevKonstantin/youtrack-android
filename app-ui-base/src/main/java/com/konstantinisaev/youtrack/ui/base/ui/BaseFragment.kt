@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.konstantinisaev.youtrack.core.api.HttpProtocolException
+import com.konstantinisaev.youtrack.ui.base.R
 import com.konstantinisaev.youtrack.ui.base.utils.toast
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import javax.inject.Inject
@@ -68,6 +70,14 @@ abstract class BaseFragment : Fragment()  {
         }
         val handlersMap = handlers.getValue(viewState.javaClass)
         handlersMap[owner]?.invoke(viewState)
+    }
+
+    protected fun showError(errorState: ViewState.Error){
+        when(errorState.reasonException){
+            is HttpProtocolException.Unauthorized, is HttpProtocolException.Forbidden, is HttpProtocolException.BadRequest -> toast(R.string.http_error_unauthorized)
+            else -> toast(R.string.error_runtime)
+        }
+
     }
 
 }

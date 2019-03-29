@@ -26,7 +26,7 @@ abstract class BaseViewModel<P>(private val coroutineContextHolder: CoroutineCon
         lastViewState = ViewState.Empty()
         validator?.apply {
             validate(params).takeIf { !it }?.let {
-                lastViewState = ViewState.ValidationError(msgId = validator.errorId)
+                lastViewState = ViewState.ValidationError(this@BaseViewModel::class.java,msgId = validator.errorId)
                 liveData.postValue(lastViewState)
                 return
             }
@@ -41,7 +41,7 @@ abstract class BaseViewModel<P>(private val coroutineContextHolder: CoroutineCon
                 liveData.postValue(resp)
             }catch (ex: Exception){
                 ex.printStackTrace()
-                lastViewState = ViewState.Error()
+                lastViewState = ViewState.Error(this@BaseViewModel::class.java,reasonException = ex)
                 liveData.postValue(lastViewState)
             }
         }

@@ -12,6 +12,4 @@ class Base64ConverterImp : Base64Converter{
     override fun convertToBase64(data: String) : String{
         return Base64.encodeToString(data.toByteArray(), Base64.NO_WRAP)
     }
-
-
 }
