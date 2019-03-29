@@ -8,8 +8,9 @@ import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.utils.Validator
 import com.konstantinisaev.youtrack.ui.base.viewmodels.BaseViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
+import javax.inject.Inject
 
-class AuthByLoginPasswordViewModel(
+class AuthByLoginPasswordViewModel @Inject constructor(
     private val apiProvider: ApiProvider,
     private val basePreferencesAdapter: BasePreferencesAdapter,
     coroutineHolder: CoroutineContextHolder

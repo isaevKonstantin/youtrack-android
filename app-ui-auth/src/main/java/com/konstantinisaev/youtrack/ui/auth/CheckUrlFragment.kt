@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.konstantinisaev.youtrack.ui.auth.di.SplashDiProvider
+import com.konstantinisaev.youtrack.ui.auth.di.AuthDiProvider
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.ServerConfigViewModel
 import com.konstantinisaev.youtrack.ui.base.ui.BaseFragment
 import com.konstantinisaev.youtrack.ui.base.utils.Routers
@@ -23,7 +23,7 @@ class CheckUrlFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SplashDiProvider.getInstance(checkNotNull(context)).injectFragment(this)
+        AuthDiProvider.getInstance(checkNotNull(context)).injectFragment(this)
         serverConfigViewModel = ViewModelProviders.of(this,viewModelFactory)[ServerConfigViewModel::class.java]
 
     }

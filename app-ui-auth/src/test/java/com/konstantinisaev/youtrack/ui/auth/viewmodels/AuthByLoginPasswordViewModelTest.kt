@@ -38,6 +38,14 @@ class AuthByLoginPasswordViewModelTest {
     @Mock
     private lateinit var basePreferencesAdapter: BasePreferencesAdapter
 
+    private val serverConfigDTO = ServerConfigDTO(
+        "version",
+        MobileConfigDTO("secret", "id", "type"),
+        RingConfigDTO("id", "url", "type"),
+        false,
+        "type"
+    )
+
     @Before
     fun setUp() {
         authViewModel = AuthByLoginPasswordViewModel(apiProvider,basePreferencesAdapter, testCoroutineContextHolder)
@@ -72,14 +80,7 @@ class AuthByLoginPasswordViewModelTest {
 
     @Test
     fun `given error credentials should produce error state`() {
-        `when`(basePreferencesAdapter.getServerConfig()).thenReturn(
-            ServerConfigDTO(
-                "version",
-                MobileConfigDTO("secret","id","type"),
-                RingConfigDTO("id","url","type"),
-                false,
-                "type"
-            ))
+        `when`(basePreferencesAdapter.getServerConfig()).thenReturn(serverConfigDTO)
         `when`(basePreferencesAdapter.getUrl()).thenReturn("url")
         `when`(apiProvider.login(ArgumentMatchers.anyString(), ArgumentMatchers.anyString(), ArgumentMatchers.anyString(),
             ArgumentMatchers.anyString())).thenThrow(RuntimeException("test"))
@@ -89,14 +90,7 @@ class AuthByLoginPasswordViewModelTest {
 
     @Test
     fun `given valid credentials should produce success state`() {
-        `when`(basePreferencesAdapter.getServerConfig()).thenReturn(
-            ServerConfigDTO(
-                "version",
-                MobileConfigDTO("secret","id","type"),
-                RingConfigDTO("id","url","type"),
-                false,
-                "type"
-            ))
+        `when`(basePreferencesAdapter.getServerConfig()).thenReturn(serverConfigDTO)
         `when`(basePreferencesAdapter.getUrl()).thenReturn("url")
         `when`(apiProvider.login(ArgumentMatchers.anyString(), ArgumentMatchers.anyString(), ArgumentMatchers.anyString(),
             ArgumentMatchers.anyString())).thenReturn(GlobalScope.async {  AuthTokenDTO("","",1,"","") })

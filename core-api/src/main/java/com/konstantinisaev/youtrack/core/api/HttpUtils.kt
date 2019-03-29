@@ -16,8 +16,8 @@ object UrlFormatter {
         if(!url.endsWith("/")){
             url = "$url/"
         }
-        if(url.endsWith("${ApiEndpoints.YOUTRACK}/")){
-            url = url.replace("${ApiEndpoints.YOUTRACK}/","")
+        if(url.endsWith("${ApiEndpoints.YOUTRACK.url}/")){
+            url = url.replace("${ApiEndpoints.YOUTRACK.url}/","")
         }
         url = if(hubUrl.startsWith("/")){
             "$url${hubUrl.substring(1,hubUrl.length)}"

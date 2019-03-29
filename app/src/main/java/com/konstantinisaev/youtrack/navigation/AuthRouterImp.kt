@@ -27,6 +27,15 @@ class AuthRouterImp @Inject constructor(private val router: Router) : AuthRouter
         })
     }
 
+    override fun showMain() {
+        router.replaceScreen(object : SupportAppScreen(){
+            override fun getFragment(): Fragment {
+                return CheckUrlFragment()
+            }
+        })
+
+    }
+
     override fun showSplash() {
         router.navigateTo(object : SupportAppScreen(){
             override fun getFragment(): Fragment {

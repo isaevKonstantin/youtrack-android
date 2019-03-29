@@ -12,4 +12,6 @@ interface AuthRouter {
     fun showServerUrl()
 
     fun showAuth()
+
+    fun showMain()
 }
