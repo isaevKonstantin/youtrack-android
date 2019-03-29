@@ -1,7 +1,7 @@
 package com.konstantinisaev.youtrack
 
 import android.os.Bundle
-import com.konstantinisaev.youtrack.ui.base.ui.BaseActivity
+import com.konstantinisaev.youtrack.ui.base.screens.BaseActivity
 import com.konstantinisaev.youtrack.ui.base.utils.AuthRouter
 import com.konstantinisaev.youtrack.ui.base.utils.Routers
 import ru.terrakok.cicerone.Cicerone

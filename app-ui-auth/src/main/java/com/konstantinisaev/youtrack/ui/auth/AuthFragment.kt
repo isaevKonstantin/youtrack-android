@@ -9,7 +9,7 @@ import com.konstantinisaev.youtrack.ui.auth.di.AuthDiProvider
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.AuthByLoginPasswordParam
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.AuthByLoginPasswordValidator
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.AuthByLoginPasswordViewModel
-import com.konstantinisaev.youtrack.ui.base.ui.BaseFragment
+import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
 import com.konstantinisaev.youtrack.ui.base.utils.Routers
 import com.konstantinisaev.youtrack.ui.base.utils.Settings
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState

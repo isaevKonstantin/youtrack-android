@@ -1,6 +1,7 @@
 package com.konstantinisaev.youtrack.navigation
 
 import androidx.fragment.app.Fragment
+import com.konstantinisaev.youtrack.issuelist.IssueListContainerFragment
 import com.konstantinisaev.youtrack.ui.auth.AuthFragment
 import com.konstantinisaev.youtrack.ui.auth.CheckUrlFragment
 import com.konstantinisaev.youtrack.ui.auth.SplashFragment
@@ -28,9 +29,9 @@ class AuthRouterImp @Inject constructor(private val router: Router) : AuthRouter
     }
 
     override fun showMain() {
-        router.replaceScreen(object : SupportAppScreen(){
+        router.newRootScreen(object : SupportAppScreen(){
             override fun getFragment(): Fragment {
-                return CheckUrlFragment()
+                return IssueListContainerFragment()
             }
         })
 

@@ -1,0 +1,26 @@
+apply from: "${rootDir}/android-library.gradle"
+
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+dependencies {
+    implementation project(":app-ui-base")
+    implementation project(":core-api")
+
+    implementation appCompat
+    implementation constraintLayout
+    implementation dagger
+    implementation lifecycle
+    implementation coroutines
+    implementation coroutinesAndroid
+    implementation material
+
+    kapt daggerCompiler
+    kapt daggerAnnotationProcessor
+
+    testImplementation junit
+    testImplementation mockito
+    testImplementation assertJ
+    testImplementation archCoreTesting
+}
