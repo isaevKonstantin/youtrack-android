@@ -10,7 +10,6 @@ import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.utils.Base64Converter
 import com.konstantinisaev.youtrack.ui.base.viewmodels.BaseViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -45,7 +44,6 @@ class ServerConfigViewModelTest {
     @Before
     fun setUp() {
         urlViewModel = ServerConfigViewModel(apiProvider,basePreferencesAdapter, base64Converter,testCoroutineContextHolder)
-        Dispatchers
     }
 
     @Test

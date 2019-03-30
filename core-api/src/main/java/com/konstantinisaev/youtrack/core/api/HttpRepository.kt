@@ -18,10 +18,10 @@ interface HttpRepository {
     @POST("")
     fun login(@Url url: String,@Query("access_type") accessType: String, @Query("grant_type") grantType: String,
               @Query("username") userName: String, @Query("password") password: String, @Query("scope") scope: String) : Deferred<AuthTokenDTO>
-//
-//    @POST("")
-//    fun refreshToken(@Url url: String, @Query("grant_type") grantType: String,
-//              @Query("refresh_token") token: String) : Deferred<Response<AuthTokenDTO>>
+
+    @POST("")
+    fun refreshToken(@Url url: String, @Query("grant_type") grantType: String,
+              @Query("refresh_token") token: String) : Deferred<AuthTokenDTO>
 //
 //    @GET("")
 //    fun getCurrentUser(@Url url: String) : Deferred<Response<CurrentUserDTO>>

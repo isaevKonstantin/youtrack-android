@@ -7,6 +7,7 @@ import com.konstantinisaev.youtrack.ui.auth.AuthFragment
 import com.konstantinisaev.youtrack.ui.auth.CheckUrlFragment
 import com.konstantinisaev.youtrack.ui.auth.SplashFragment
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.AuthByLoginPasswordViewModel
+import com.konstantinisaev.youtrack.ui.auth.viewmodels.RefreshTokenViewModel
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.ServerConfigViewModel
 import com.konstantinisaev.youtrack.ui.base.di.BaseModule
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelFactory
@@ -50,6 +51,11 @@ abstract class AuthViewModelsModule {
     @IntoMap
     @ViewModelKey(ServerConfigViewModel::class)
     internal abstract fun bindServerUrlViewModel(serverConfigViewModel: ServerConfigViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RefreshTokenViewModel::class)
+    internal abstract fun bindRefreshTokenViewModel(refreshTokenViewModel: RefreshTokenViewModel): ViewModel
 
     @Binds
     @IntoMap

@@ -60,11 +60,14 @@ class ApiProviderTest {
             if(hub.startsWith("/")){
                 hub = hub.substring(1,hub.length)
             }
-
-            val authTokenDto = apiProvider.login("$testUrl${hub}/${ApiEndpoints.LOGIN.url}",login,password,serviceId)
+            val loginUrl = UrlFormatter.formatToLoginUrl(testUrl,hub)
+            val authTokenDto = apiProvider.login(loginUrl,login,password,serviceId)
                     .await()
             assertThat(authTokenDto).isNotNull
             this.authTokenDTO = authTokenDto
+            val newAuthTokenDTO = apiProvider.refreshToken(loginUrl,authTokenDto.refreshToken).await()
+            assertThat(newAuthTokenDTO).isNotNull
+            this.authTokenDTO = newAuthTokenDTO
         }
 
         private suspend fun getServerConfig() {

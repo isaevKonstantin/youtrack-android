@@ -7,7 +7,7 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.konstantinisaev.youtrack.ui.auth.di.AuthDiProvider
-import com.konstantinisaev.youtrack.ui.auth.viewmodels.ServerConfigViewModel
+import com.konstantinisaev.youtrack.ui.auth.viewmodels.RefreshTokenViewModel
 import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
 import com.konstantinisaev.youtrack.ui.base.utils.Routers
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
@@ -22,12 +22,12 @@ class SplashFragment : BaseFragment() {
 
     private var countDownTimer: CountDownTimer? = null
 
-    private lateinit var viewModel: ServerConfigViewModel
+    private lateinit var viewModel: RefreshTokenViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AuthDiProvider.getInstance(checkNotNull(context)).injectFragment(this)
-        viewModel = ViewModelProviders.of(this,viewModelFactory)[ServerConfigViewModel::class.java]
+        viewModel = ViewModelProviders.of(this,viewModelFactory)[RefreshTokenViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,8 +44,8 @@ class SplashFragment : BaseFragment() {
             override fun onFinish() {
                 pbSplash.progress = pbSplash.max
                 when(viewModel.lastViewState){
-                    is ViewState.Empty -> Routers.authRouter.showServerUrl()
-                    is ViewState.Success<*> -> Routers.authRouter.showServerUrl()
+                    is ViewState.Empty, is ViewState.Error -> Routers.authRouter.showServerUrl()
+                    is ViewState.Success<*> -> Routers.authRouter.showMain()
 
                 }
             }
