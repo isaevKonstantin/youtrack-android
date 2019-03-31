@@ -35,4 +35,11 @@
         <item name="colorControlHighlight">@color/green</item>
     </style>
 
+    <style name="YouTrackMainTheme.TextViewMediumTextPrimaryColor">
+        <item name="android:textSize">@dimen/text16</item>
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
+
 </resources>

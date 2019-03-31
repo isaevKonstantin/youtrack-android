@@ -1,6 +1,7 @@
 include ':app'
 
+include ':core-api'
+include ':core-rv'
 include ':app-ui-base'
 include ':app-ui-auth'
-include ':core-api'
 include ':app-ui-issue-list'

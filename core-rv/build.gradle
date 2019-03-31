@@ -1,0 +1,10 @@
+apply from: "${rootDir}/android-library.gradle"
+
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+dependencies {
+    implementation project(":app-ui-base")
+    implementation recyclerView
+}
