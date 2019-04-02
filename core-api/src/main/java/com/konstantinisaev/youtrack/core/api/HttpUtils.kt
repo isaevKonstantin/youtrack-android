@@ -27,4 +27,19 @@ object UrlFormatter {
         return "$url/${ApiEndpoints.LOGIN.url}"
     }
 
+    fun formatToImageUrl(baseUrl: String,imageUrl: String): String {
+        val formattedImageUrl = if(imageUrl.startsWith("/")){
+            imageUrl.replaceFirst("/","")
+        }else{
+            imageUrl
+        }
+        val formattedBaseUrl = if(baseUrl.endsWith("${ApiEndpoints.YOUTRACK.url}/")){
+            baseUrl.replace("${ApiEndpoints.YOUTRACK.url}/","")
+        }else{
+            baseUrl
+        }
+        return "$formattedBaseUrl$formattedImageUrl"
+    }
+
+
 }

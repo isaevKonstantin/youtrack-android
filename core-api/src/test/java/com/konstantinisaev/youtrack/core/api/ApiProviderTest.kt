@@ -9,11 +9,20 @@ import java.util.*
 class ApiProviderTest {
 
     @Test
-    fun initializationTest() {
+    fun `should be initialized`() {
         assertThat(respServerConfig.mobile).isNotNull
         assertThat(respServerConfig.ring).isNotNull
         assertThat(respServerConfig.version).isNotEmpty()
         assertThat(authTokenDTO.accessToken).isNotEmpty()
+    }
+
+    @Test
+    fun `should return not empty profile`() {
+        runBlocking {
+            apiProvider.enableUserCredentialsInHeader(authTokenDTO.accessToken, authTokenDTO.tokenType)
+            val resp = apiProvider.getProfile("${testUrl}${ApiEndpoints.YOUTRACK.url}/").await()
+            assertThat(resp.email).isNotEmpty()
+        }
     }
 
     companion object {
@@ -22,7 +31,6 @@ class ApiProviderTest {
         private lateinit var respServerConfig: ServerConfigDTO
         private lateinit var authTokenDTO: AuthTokenDTO
         private lateinit var testUrl: String
-        private val serverCredentialsInterceptor = ServerCredentialsInterceptor()
 
         @BeforeClass
         @JvmStatic

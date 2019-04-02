@@ -12,9 +12,14 @@ data class RingConfigDTO(val serviceId: String, val url: String, val type: Strin
 
 data class AuthTokenDTO(@SerializedName("access_token") val accessToken: String, @SerializedName("token_type") val tokenType: String,
                         @SerializedName("expires_in")val expiresIn: Int, @SerializedName("refresh_token") val refreshToken: String, val scope: String)
-//
-//data class CurrentUserDTO(val id: String?, val fullName: String?, val login: String?, val email: String?, val guest: Boolean, val online: Boolean, val avatar: String?, val avatarUrl: String?)
-//
+
+data class CurrentUserDTO(val id: String?, val fullName: String?, val login: String?, val email: String?, val guest: Boolean, val online: Boolean, val avatar: String?, val avatarUrl: String?) {
+
+    lateinit var formattedImageUrl: String
+
+    lateinit var initials: String
+}
+
 //data class ProjectDTO(val id: String?, val name: String?, val shortName: String?,val type: String?,val archived: Boolean)
 //
 //data class IssueDTO(val id: String?, val idReadable: String?, val summary: String?, val resolved: String?, val created: String?, val updated: String?, val description: String?,

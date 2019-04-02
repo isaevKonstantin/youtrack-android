@@ -22,9 +22,9 @@ interface HttpRepository {
     @POST("")
     fun refreshToken(@Url url: String, @Query("grant_type") grantType: String,
               @Query("refresh_token") token: String) : Deferred<AuthTokenDTO>
-//
-//    @GET("")
-//    fun getCurrentUser(@Url url: String) : Deferred<Response<CurrentUserDTO>>
+
+    @GET("")
+    fun getCurrentUser(@Url url: String) : Deferred<CurrentUserDTO>
 //
 //    @GET("")
 //    fun getProjects(@Url url: String,@Query("fields") fields: String? = Fields.PROJECT) : Deferred<Response<List<ProjectDTO>>>

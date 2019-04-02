@@ -71,9 +71,9 @@ class ApiProvider {
     fun login(url: String,login: String,password: String,scope: String) = httpRepository.login(url,"offline","password",login,password,scope)
 
     fun refreshToken(url: String,token: String) = httpRepository.refreshToken(url,"refresh_token",token)
-//
-//    fun getProfile(baseUrl: String) = httpRepository.getCurrentUser("$baseUrl${ApiEndpoints.GET_CURRENT_USER.url}")
-//
+
+    fun getProfile(baseUrl: String) = httpRepository.getCurrentUser("$baseUrl${ApiEndpoints.GET_CURRENT_USER.url}")
+
 //    fun getProjects(baseUrl: String) = httpRepository.getProjects("$baseUrl${ApiEndpoints.GET_PROJECTS.url}")
 //
 //    fun getAllIssues(baseUrl: String, query: String? = null, top: Int = DEFAULT_ISSUE_LIST_SIZE, skip: Int = 0) = httpRepository.getAllIssues("$baseUrl${ApiEndpoints.GET_ALL_ISSUES.url}",query = query,top =  top,skip = skip)
