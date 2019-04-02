@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:background="@color/green"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		android:paddingStart="16dp"
+		android:paddingEnd="16dp">
+
+	<ImageView
+			android:id="@+id/imgProfileLogo"
+			android:layout_width="40dp"
+			android:layout_height="40dp"
+			app:layout_constraintLeft_toLeftOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			android:layout_marginTop="20dp"
+			android:visibility="invisible"
+			android:contentDescription="@null"/>
+
+	<TextView
+			android:id="@+id/tvProfileInitials"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:gravity="center"
+			app:layout_constraintLeft_toLeftOf="@id/imgProfileLogo"
+			app:layout_constraintRight_toRightOf="@id/imgProfileLogo"
+			app:layout_constraintTop_toTopOf="@id/imgProfileLogo"
+			app:layout_constraintBottom_toBottomOf="@id/imgProfileLogo"
+			android:background="@drawable/drw_nav_profile"
+			style="@style/YouTrackMainTheme.NavProfileInitials"
+			android:visibility="invisible"
+			tools:text = "TU"/>
+
+	<TextView
+			android:id="@+id/tvNavProfileName"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintLeft_toLeftOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/imgProfileLogo"
+			style="@style/YouTrackMainTheme.NavProfileText"
+			android:paddingBottom="20dp"
+			android:paddingTop="20dp"
+			tools:text = "Test user"
+	/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

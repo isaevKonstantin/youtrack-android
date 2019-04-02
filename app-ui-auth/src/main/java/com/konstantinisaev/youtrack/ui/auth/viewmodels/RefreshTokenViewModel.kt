@@ -25,6 +25,7 @@ class RefreshTokenViewModel @Inject constructor(
         apiProvider.enableAppCredentialsInHeader(base64Converter.convertToBase64("${configDTO.mobile.serviceId}:${configDTO.mobile.serviceSecret}"))
         val url = UrlFormatter.formatToLoginUrl(basePreferencesAdapter.getUrl(), configDTO.ring.url)
         val newTokenDTO = apiProvider.refreshToken(url,authTokenDTO.refreshToken).await()
+        apiProvider.enableUserCredentialsInHeader(newTokenDTO.accessToken,newTokenDTO.tokenType)
         basePreferencesAdapter.setAuthToken(newTokenDTO)
         return ViewState.Success(this::class.java,"")
     }

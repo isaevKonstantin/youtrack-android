@@ -22,6 +22,7 @@ class AuthByLoginPasswordViewModel @Inject constructor(
         val loginUrl = UrlFormatter.formatToLoginUrl(baseUrl, config.ring.url)
         val authTokenDTO = apiProvider.login(loginUrl,params!!.login,params.password,"${config.ring.serviceId} ${config.mobile.serviceId}").await()
         basePreferencesAdapter.setAuthToken(authTokenDTO)
+        apiProvider.enableUserCredentialsInHeader(authTokenDTO.accessToken,authTokenDTO.tokenType)
         return ViewState.Success(ownerClass = this::class.java,data = "")
     }
 }

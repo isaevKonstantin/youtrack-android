@@ -23,7 +23,7 @@ class CheckUrlFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AuthDiProvider.getInstance(checkNotNull(context)).injectFragment(this)
+        AuthDiProvider.getInstance().injectFragment(this)
         serverConfigViewModel = ViewModelProviders.of(this,viewModelFactory)[ServerConfigViewModel::class.java]
 
     }

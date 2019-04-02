@@ -25,7 +25,7 @@ class AuthFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AuthDiProvider.getInstance(checkNotNull(context)).injectFragment(this)
+        AuthDiProvider.getInstance().injectFragment(this)
         authByLoginPasswordViewModel = ViewModelProviders.of(this,viewModelFactory)[AuthByLoginPasswordViewModel::class.java]
     }
 

@@ -79,7 +79,7 @@ class BaseRvAdapter(private var clickListener: BaseRvClickListener? = null) : Re
 @Suppress("UNCHECKED_CAST", "IMPLICIT_CAST_TO_ANY")
 private fun createViewHolder(type: Int, view: View) : BaseRvViewHolder<BaseRvItem> {
     val holder = when(type){
-//        R.layout.vh_nav_profile -> NavProfileViewHolder(view)
+        R.layout.vh_nav_profile -> NavProfileViewHolder(view)
         R.layout.vh_nav_text_item -> NavTextViewHolder(view)
 //        R.layout.vh_issue_single -> IssueMainViewHolder(view)
 //        R.layout.vh_text_header -> TextHeaderViewHolder(view)
@@ -124,8 +124,8 @@ abstract class BaseRvViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(ite
 @Suppress("UNUSED_PARAMETER")
 class RvTypeFactory{
 
-//    fun type(rvItem: NavProfileRvItem) = R.layout.vh_nav_profile
-//
+    fun type(rvItem: NavProfileRvItem) = R.layout.vh_nav_profile
+
     fun type(rvItem: NavTextRvItem) = R.layout.vh_nav_text_item
 //
 //    fun type(rvItem: IssueRvItem) = R.layout.vh_issue_single

@@ -96,6 +96,7 @@ class AuthByLoginPasswordViewModelTest {
             ArgumentMatchers.anyString())).thenReturn(GlobalScope.async {  AuthTokenDTO("","",1,"","") })
         authViewModel.doAsyncRequest(AuthByLoginPasswordParam("1","1"))
         Mockito.verify(basePreferencesAdapter, times(1)).setAuthToken(ArgumentMatchers.any(AuthTokenDTO::class.java))
+        Mockito.verify(apiProvider, times(1)).enableUserCredentialsInHeader(ArgumentMatchers.anyString(),ArgumentMatchers.anyString())
         assertThat(authViewModel.lastViewState).isInstanceOf(ViewState.Success::class.java)
     }
 }

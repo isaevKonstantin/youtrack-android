@@ -26,7 +26,7 @@ class SplashFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AuthDiProvider.getInstance(checkNotNull(context)).injectFragment(this)
+        AuthDiProvider.getInstance().injectFragment(this)
         viewModel = ViewModelProviders.of(this,viewModelFactory)[RefreshTokenViewModel::class.java]
     }
 

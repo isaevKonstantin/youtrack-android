@@ -19,7 +19,7 @@ class App : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         context = applicationContext
-        appComponent = DaggerAppComponent.builder().
+        appComponent = DaggerAppComponent.builder().context(context).
             appModule(AppModule()).build()
         Settings.setDebugSettings(BuildConfig.DEBUG_SERVER_URL,BuildConfig.DEBUG_LOGIN,BuildConfig.DEBUG_PASSWORD)
     }

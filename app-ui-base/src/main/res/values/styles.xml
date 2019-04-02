@@ -41,5 +41,17 @@
         <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 
+    <style name="YouTrackMainTheme.NavProfileText">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/text14</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="YouTrackMainTheme.NavProfileInitials">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/text16</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
 
 </resources>

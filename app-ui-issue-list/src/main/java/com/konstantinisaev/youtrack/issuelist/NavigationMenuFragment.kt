@@ -2,22 +2,28 @@ package com.konstantinisaev.youtrack.issuelist
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.konstantinisaev.youtrack.core.rv.BaseRvAdapter
-import com.konstantinisaev.youtrack.core.rv.BaseRvClickListener
-import com.konstantinisaev.youtrack.core.rv.BaseRvItem
-import com.konstantinisaev.youtrack.core.rv.NavTextRvItem
+import com.konstantinisaev.youtrack.core.api.CurrentUserDTO
+import com.konstantinisaev.youtrack.core.rv.*
+import com.konstantinisaev.youtrack.issuelist.di.IssueListDiProvider
 import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
+import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import kotlinx.android.synthetic.main.fragment_navigation.*
 
+@Suppress("UNCHECKED_CAST")
 class NavigationMenuFragment : BaseFragment() {
 
     override val layoutId = R.layout.fragment_navigation
 
     private lateinit var navRvAdapter: BaseRvAdapter
+    private lateinit var profileViewModel: ProfileViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        IssueListDiProvider.getInstance().injectFragment(this)
+        profileViewModel = ViewModelProviders.of(this,viewModelFactory)[ProfileViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,6 +41,19 @@ class NavigationMenuFragment : BaseFragment() {
 //        rvNavigation.addItemDecoration(NavItemDecoration())
         rvNavigation.adapter = navRvAdapter
         val navTextItems = resources.getStringArray(R.array.nav_items).map { NavTextRvItem(it) }
-        navRvAdapter.addAll(navTextItems)
+        val items = mutableListOf<BaseRvItem>(NavProfileRvItem())
+        items.addAll(navTextItems)
+        navRvAdapter.addAll(items)
+
+        registerHandler(ViewState.Error::class.java,profileViewModel::class.java) {
+            showError(it as ViewState.Error)
+        }
+        registerHandler(ViewState.Success::class.java,profileViewModel::class.java) {
+            val userDTO = ((it as ViewState.Success<CurrentUserDTO>).data)
+            navRvAdapter.update(0,NavProfileRvItem(userDTO.fullName.orEmpty(),userDTO.initials,userDTO.formattedImageUrl))
+        }
+        profileViewModel.observe(this, Observer { observe(it) })
+
+        profileViewModel.doAsyncRequest()
     }
 }

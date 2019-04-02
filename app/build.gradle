@@ -45,6 +45,7 @@ dependencies {
     implementation project(":app-ui-base")
     implementation project(":app-ui-auth")
     implementation project(":app-ui-issue-list")
+    implementation project(":core-api")
 
     implementation appCompat
     implementation ciceRone

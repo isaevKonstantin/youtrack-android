@@ -2,15 +2,17 @@ package com.konstantinisaev.youtrack.ui.auth.di
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import com.konstantinisaev.youtrack.core.api.ApiProvider
+import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
 import com.konstantinisaev.youtrack.ui.auth.AuthFragment
 import com.konstantinisaev.youtrack.ui.auth.CheckUrlFragment
 import com.konstantinisaev.youtrack.ui.auth.SplashFragment
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.AuthByLoginPasswordViewModel
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.RefreshTokenViewModel
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.ServerConfigViewModel
-import com.konstantinisaev.youtrack.ui.base.di.BaseModule
-import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelFactory
+import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
+import com.konstantinisaev.youtrack.ui.base.di.BaseModelsModule
+import com.konstantinisaev.youtrack.ui.base.utils.Base64Converter
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelKey
 import dagger.Binds
 import dagger.BindsInstance
@@ -20,8 +22,8 @@ import dagger.multibindings.IntoMap
 import javax.inject.Singleton
 
 
-@Component(modules = [AuthViewModelsModule::class,BaseModule::class])
 @Singleton
+@Component(modules = [AuthViewModelsModule::class,BaseModelsModule::class])
 internal interface AuthComponent{
 
     fun injectFragment(fragment: SplashFragment)
@@ -37,15 +39,24 @@ internal interface AuthComponent{
 
         @BindsInstance
         fun context(context: Context): Builder
+
+        @BindsInstance
+        fun apiProvider(apiProvider: ApiProvider) : Builder
+
+        @BindsInstance
+        fun preferenceAdapter(basePreferencesAdapter: BasePreferencesAdapter) : Builder
+
+        @BindsInstance
+        fun coroutineContextHolder(coroutineContextHolder: CoroutineContextHolder) : Builder
+
+        @BindsInstance
+        fun base64Converter(base64Converter: Base64Converter) : Builder
     }
 }
 
 @Suppress("unused")
 @Module
 abstract class AuthViewModelsModule {
-
-    @Binds
-    internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
     @Binds
     @IntoMap
@@ -64,7 +75,7 @@ abstract class AuthViewModelsModule {
 
 }
 
-internal class AuthDiProvider private constructor(){
+class AuthDiProvider private constructor(){
 
 
     fun injectFragment(splashFragment: SplashFragment){
@@ -83,19 +94,22 @@ internal class AuthDiProvider private constructor(){
 
         private lateinit var authComponent: AuthComponent
 
-        private val splashDiProvider by lazy {
+        private val authDiProvider by lazy {
             AuthDiProvider()
         }
 
-        fun getInstance(context: Context) : AuthDiProvider {
+        fun init(context: Context,apiProvider: ApiProvider,basePreferencesAdapter: BasePreferencesAdapter,coroutineContextHolder: CoroutineContextHolder,base64Converter: Base64Converter){
             if(!this::authComponent.isInitialized){
-                authComponent = DaggerAuthComponent.builder().context(context).build()
+                authComponent = DaggerAuthComponent.builder().context(context).
+                    apiProvider(apiProvider).preferenceAdapter(basePreferencesAdapter).
+                    coroutineContextHolder(coroutineContextHolder).base64Converter(base64Converter).build()
             }
-            return splashDiProvider
+        }
+
+
+        fun getInstance() : AuthDiProvider {
+            return authDiProvider
         }
     }
-
-
-
 }
 

@@ -7,4 +7,7 @@ apply plugin: 'kotlin-android-extensions'
 dependencies {
     implementation project(":app-ui-base")
     implementation recyclerView
+    implementation constraintLayout
+    implementation picasso
+    implementation picassoTransformation
 }
