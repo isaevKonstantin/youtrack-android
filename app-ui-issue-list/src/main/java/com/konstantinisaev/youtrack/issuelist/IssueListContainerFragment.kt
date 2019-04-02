@@ -3,6 +3,7 @@ package com.konstantinisaev.youtrack.issuelist
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.konstantinisaev.youtrack.issuelist.di.IssueListDiProvider
 import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
@@ -35,7 +36,12 @@ class IssueListContainerFragment : BaseFragment() {
         setToolbarWithBackNavigation(toolbar,getString(R.string.nav_rv_issues))
         initDrawer()
         cicerone.navigatorHolder.setNavigator(SupportAppNavigator(activity,childFragmentManager,R.id.flContainer))
-
+        childFragmentManager.addOnBackStackChangedListener {
+            if(layDrawer.isDrawerOpen(GravityCompat.START)){
+                layDrawer.closeDrawer(GravityCompat.START)
+            }
+            updateToolbar(childFragmentManager.findFragmentById(R.id.flContainer))
+        }
         savedInstanceState ?: mainRouter.showIssueList()
     }
 
@@ -69,19 +75,21 @@ class IssueListContainerFragment : BaseFragment() {
 
     private fun updateToolbar(fragment: Fragment?){
         fragment ?: let { return }
-//        when(fragment){
-//            is IssueListFragment -> {
+        when(fragment){
+            is IssueListFragment -> {
 //                val savedQuery = PreferenceHelper.getInstance(this).getSavedQuery()
 //                if(savedQuery.isNotEmpty()){
 //                    supportActionBar?.title = savedQuery
 //                }else{
 //                    supportActionBar?.title = getString(R.string.nav_rv_issues)
 //                }
-//            }
-//            is AgileBoardsFragment -> supportActionBar?.title = getString(R.string.nav_rv_agile_boards)
-//            is SettingsFragment -> supportActionBar?.title = getString(R.string.nav_rv_settings)
-//            is AboutFragment -> supportActionBar?.title = getString(R.string.nav_rv_about)
-//        }
+                toolbar.title = getString(R.string.nav_rv_issues)
+
+            }
+            is AgileBoardsFragment -> toolbar.title = getString(R.string.nav_rv_agile_boards)
+            is SettingsFragment -> toolbar.title = getString(R.string.nav_rv_settings)
+            is AboutFragment -> toolbar.title = getString(R.string.nav_rv_about)
+        }
     }
 
 
