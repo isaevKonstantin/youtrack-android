@@ -1,5 +1,6 @@
 package com.konstantinisaev.youtrack.core.rv
 
+import android.graphics.Rect
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
@@ -120,6 +121,21 @@ abstract class BaseRvViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(ite
     }
 
 }
+
+class MarginItemDecoration(private val topMargin: Int = 0, private val bottomMargin: Int = 0,
+                           private val leftMargin: Int = 0, private val rightMargin: Int = 0
+) : RecyclerView.ItemDecoration(){
+
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+        super.getItemOffsets(outRect, view, parent, state)
+        if(parent.getChildAdapterPosition(view) == 0){
+            outRect.set(leftMargin, 0, rightMargin, bottomMargin)
+        }else{
+            outRect.set(leftMargin, topMargin, rightMargin, bottomMargin)
+        }
+    }
+}
+
 
 @Suppress("UNUSED_PARAMETER")
 class RvTypeFactory{

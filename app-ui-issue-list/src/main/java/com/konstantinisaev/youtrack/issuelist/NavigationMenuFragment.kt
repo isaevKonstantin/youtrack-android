@@ -8,6 +8,7 @@ import com.konstantinisaev.youtrack.core.api.CurrentUserDTO
 import com.konstantinisaev.youtrack.core.rv.*
 import com.konstantinisaev.youtrack.issuelist.di.IssueListDiProvider
 import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
+import com.konstantinisaev.youtrack.ui.base.utils.DeviceUtils
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import kotlinx.android.synthetic.main.fragment_navigation.*
 
@@ -37,7 +38,10 @@ class NavigationMenuFragment : BaseFragment() {
 //                }
             }
         })
-//        rvNavigation.addItemDecoration(NavItemDecoration())
+        rvNavigation.addItemDecoration(MarginItemDecoration(
+            topMargin = DeviceUtils.convertDpToPixel(8f, checkNotNull(context)),
+            bottomMargin = DeviceUtils.convertDpToPixel(8f,checkNotNull(context))))
+
         rvNavigation.adapter = navRvAdapter
         val navTextItems = resources.getStringArray(R.array.nav_items).map { NavTextRvItem(it) }
         val items = mutableListOf<BaseRvItem>(NavProfileRvItem())
