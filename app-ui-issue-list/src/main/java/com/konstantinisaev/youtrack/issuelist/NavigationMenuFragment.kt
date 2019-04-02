@@ -45,10 +45,10 @@ class NavigationMenuFragment : BaseFragment() {
         navRvAdapter.addAll(items)
 
         registerHandler(ViewState.Error::class.java,profileViewModel) {
-            showError(it as ViewState.Error)
+            showError(it)
         }
         registerHandler(ViewState.Success::class.java,profileViewModel) {
-            val userDTO = ((it as ViewState.Success<CurrentUserDTO>).data)
+            val userDTO = it.data as CurrentUserDTO
             navRvAdapter.update(0,NavProfileRvItem(userDTO.fullName.orEmpty(),userDTO.initials,userDTO.formattedImageUrl))
         }
         profileViewModel.doAsyncRequest()

@@ -58,7 +58,7 @@ class CheckUrlFragment : BaseFragment() {
         }
 
         registerHandler(ViewState.Error::class.java,serverConfigViewModel) {
-            showError(it as ViewState.Error)
+            showError(it)
         }
         registerHandler(ViewState.Success::class.java,serverConfigViewModel) {
             authRouter.showAuth()

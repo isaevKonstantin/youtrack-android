@@ -42,11 +42,12 @@ abstract class BaseFragment : Fragment()  {
         handlers.clear()
     }
 
-    protected fun registerHandler(viewStateClazz: Class<out ViewState>, baseViewModel: BaseViewModel<*>, handler: (ViewState) -> Unit){
+    @Suppress("UNCHECKED_CAST")
+    protected fun <T : ViewState> registerHandler(viewStateClazz: Class<out T>, baseViewModel: BaseViewModel<*>, handler: (T) -> Unit){
         if(!handlers.containsKey(viewStateClazz)){
             handlers[viewStateClazz] = hashMapOf()
         }
-        handlers.getValue(viewStateClazz)[baseViewModel.javaClass] = handler
+        handlers.getValue(viewStateClazz)[baseViewModel.javaClass] = handler as (ViewState) -> Unit
         if(!observersClass.contains(baseViewModel.javaClass)){
             baseViewModel.observe(this, Observer { observe(it) })
             observersClass.add(baseViewModel.javaClass)
