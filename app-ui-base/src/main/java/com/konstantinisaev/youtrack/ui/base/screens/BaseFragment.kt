@@ -9,10 +9,12 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.konstantinisaev.youtrack.core.api.HttpProtocolException
 import com.konstantinisaev.youtrack.ui.base.R
 import com.konstantinisaev.youtrack.ui.base.utils.toast
+import com.konstantinisaev.youtrack.ui.base.viewmodels.BaseViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import javax.inject.Inject
 
@@ -24,7 +26,9 @@ abstract class BaseFragment : Fragment()  {
     @Inject
     protected lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val handlers = hashMapOf<Class<*>,HashMap<Class<*>,(ViewState) -> Unit>>()
+    private val observersClass = mutableSetOf<Class<out BaseViewModel<*>>>()
+
+    private val handlers = hashMapOf<Class<out ViewState>,HashMap<Class<*>,(ViewState) -> Unit>>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,11 +42,14 @@ abstract class BaseFragment : Fragment()  {
         handlers.clear()
     }
 
-    protected fun registerHandler(viewStateClazz: Class<*>,clazz: Class<*>,handler: (ViewState) -> Unit){
-        if(handlers.containsKey(viewStateClazz)){
-            handlers.getValue(viewStateClazz)[clazz] = handler
-        }else{
-            handlers[viewStateClazz] = hashMapOf(clazz to handler)
+    protected fun registerHandler(viewStateClazz: Class<out ViewState>, baseViewModel: BaseViewModel<*>, handler: (ViewState) -> Unit){
+        if(!handlers.containsKey(viewStateClazz)){
+            handlers[viewStateClazz] = hashMapOf()
+        }
+        handlers.getValue(viewStateClazz)[baseViewModel.javaClass] = handler
+        if(!observersClass.contains(baseViewModel.javaClass)){
+            baseViewModel.observe(this, Observer { observe(it) })
+            observersClass.add(baseViewModel.javaClass)
         }
     }
 
@@ -63,14 +70,6 @@ abstract class BaseFragment : Fragment()  {
         context?.toast(msg)
     }
 
-    protected fun observe(viewState: ViewState){
-        val owner = viewState.owner ?: return
-        if(!handlers.containsKey(viewState.javaClass)){
-            return
-        }
-        val handlersMap = handlers.getValue(viewState.javaClass)
-        handlersMap[owner]?.invoke(viewState)
-    }
 
     protected fun showError(errorState: ViewState.Error){
         when(errorState.reasonException){
@@ -78,6 +77,15 @@ abstract class BaseFragment : Fragment()  {
             else -> toast(R.string.error_runtime)
         }
 
+    }
+
+    private fun observe(viewState: ViewState){
+        val owner = viewState.owner ?: return
+        if(!handlers.containsKey(viewState.javaClass)){
+            return
+        }
+        val handlersMap = handlers.getValue(viewState.javaClass)
+        handlersMap[owner]?.invoke(viewState)
     }
 
 }

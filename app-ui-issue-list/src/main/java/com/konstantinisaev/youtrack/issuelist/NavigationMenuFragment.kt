@@ -2,7 +2,6 @@ package com.konstantinisaev.youtrack.issuelist
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.konstantinisaev.youtrack.core.api.CurrentUserDTO
@@ -45,15 +44,13 @@ class NavigationMenuFragment : BaseFragment() {
         items.addAll(navTextItems)
         navRvAdapter.addAll(items)
 
-        registerHandler(ViewState.Error::class.java,profileViewModel::class.java) {
+        registerHandler(ViewState.Error::class.java,profileViewModel) {
             showError(it as ViewState.Error)
         }
-        registerHandler(ViewState.Success::class.java,profileViewModel::class.java) {
+        registerHandler(ViewState.Success::class.java,profileViewModel) {
             val userDTO = ((it as ViewState.Success<CurrentUserDTO>).data)
             navRvAdapter.update(0,NavProfileRvItem(userDTO.fullName.orEmpty(),userDTO.initials,userDTO.formattedImageUrl))
         }
-        profileViewModel.observe(this, Observer { observe(it) })
-
         profileViewModel.doAsyncRequest()
     }
 }

@@ -3,7 +3,6 @@ package com.konstantinisaev.youtrack.ui.auth
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.konstantinisaev.youtrack.ui.auth.di.AuthDiProvider
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.AuthByLoginPasswordParam
@@ -41,18 +40,15 @@ class AuthFragment : BaseFragment() {
 
         bLogin.setOnClickListener { authByLoginPasswordViewModel.doAsyncRequest(AuthByLoginPasswordParam(edtLogin.text.toString(),edtPassword.text.toString())) }
 
-        registerHandler(ViewState.Error::class.java,authByLoginPasswordViewModel::class.java) {
+        registerHandler(ViewState.Error::class.java,authByLoginPasswordViewModel) {
             showError(it as ViewState.Error)
         }
-        registerHandler(ViewState.ValidationError::class.java,authByLoginPasswordViewModel::class.java) {
+        registerHandler(ViewState.ValidationError::class.java,authByLoginPasswordViewModel) {
             toast((it as ViewState.ValidationError).msgId)
         }
-        registerHandler(ViewState.Success::class.java,authByLoginPasswordViewModel::class.java) {
+        registerHandler(ViewState.Success::class.java,authByLoginPasswordViewModel) {
             Routers.authRouter.showMain()
         }
-
-        authByLoginPasswordViewModel.observe(this, Observer { observe(it) })
-
     }
 
     private fun fillDebugCredentialsIfAvailable(edt: EditText, credentials: String){

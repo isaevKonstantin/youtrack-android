@@ -4,7 +4,6 @@ package com.konstantinisaev.youtrack.ui.auth
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.konstantinisaev.youtrack.ui.auth.di.AuthDiProvider
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.RefreshTokenViewModel
@@ -51,8 +50,6 @@ class SplashFragment : BaseFragment() {
             }
 
         }.start()
-
-        viewModel.observe(this, Observer { observe(it) })
         viewModel.doAsyncRequest()
 
     }

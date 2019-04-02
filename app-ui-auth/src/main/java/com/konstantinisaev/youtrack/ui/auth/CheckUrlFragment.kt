@@ -3,7 +3,6 @@ package com.konstantinisaev.youtrack.ui.auth
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.konstantinisaev.youtrack.ui.auth.di.AuthDiProvider
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.ServerConfigViewModel
@@ -56,13 +55,11 @@ class CheckUrlFragment : BaseFragment() {
             }
         }
 
-        registerHandler(ViewState.Error::class.java,serverConfigViewModel::class.java) {
+        registerHandler(ViewState.Error::class.java,serverConfigViewModel) {
             showError(it as ViewState.Error)
         }
-        registerHandler(ViewState.Success::class.java,serverConfigViewModel::class.java) {
+        registerHandler(ViewState.Success::class.java,serverConfigViewModel) {
             Routers.authRouter.showAuth()
         }
-
-        serverConfigViewModel.observe(this, Observer { observe(it) })
     }
 }
