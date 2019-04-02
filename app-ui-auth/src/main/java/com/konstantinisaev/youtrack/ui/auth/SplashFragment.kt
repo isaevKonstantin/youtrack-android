@@ -8,9 +8,10 @@ import androidx.lifecycle.ViewModelProviders
 import com.konstantinisaev.youtrack.ui.auth.di.AuthDiProvider
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.RefreshTokenViewModel
 import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
-import com.konstantinisaev.youtrack.ui.base.utils.Routers
+import com.konstantinisaev.youtrack.ui.base.utils.AuthRouter
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import kotlinx.android.synthetic.main.fragment_splash.*
+import javax.inject.Inject
 
 private const val MAX_PROGRESS = 2000L
 private const val INTERVAL = 200L
@@ -22,6 +23,8 @@ class SplashFragment : BaseFragment() {
     private var countDownTimer: CountDownTimer? = null
 
     private lateinit var viewModel: RefreshTokenViewModel
+    @Inject
+    lateinit var authRouter: AuthRouter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,8 +46,8 @@ class SplashFragment : BaseFragment() {
             override fun onFinish() {
                 pbSplash.progress = pbSplash.max
                 when(viewModel.lastViewState){
-                    is ViewState.Empty, is ViewState.Error -> Routers.authRouter.showServerUrl()
-                    is ViewState.Success<*> -> Routers.authRouter.showMain()
+                    is ViewState.Empty, is ViewState.Error -> authRouter.showServerUrl()
+                    is ViewState.Success<*> -> authRouter.showMain()
 
                 }
             }

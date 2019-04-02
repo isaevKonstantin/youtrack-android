@@ -1,7 +1,6 @@
 package com.konstantinisaev.youtrack.navigation
 
 import androidx.fragment.app.Fragment
-import com.konstantinisaev.youtrack.App
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
 import com.konstantinisaev.youtrack.issuelist.IssueListContainerFragment
@@ -21,8 +20,8 @@ class AuthRouterImp @Inject constructor(private val router: Router,private val b
                                         private val apiProvider: ApiProvider,private val base64Converter: Base64Converter,private val coroutineContextHolder: CoroutineContextHolder) : AuthRouter {
 
     init {
-        IssueListDiProvider.init(App.context,apiProvider,basePreferencesAdapter,coroutineContextHolder)
-        AuthDiProvider.init(App.context,apiProvider,basePreferencesAdapter,coroutineContextHolder,base64Converter)
+        IssueListDiProvider.init(this,apiProvider,basePreferencesAdapter,coroutineContextHolder)
+        AuthDiProvider.init(this,apiProvider,basePreferencesAdapter,coroutineContextHolder,base64Converter)
     }
 
     override fun showServerUrl() {

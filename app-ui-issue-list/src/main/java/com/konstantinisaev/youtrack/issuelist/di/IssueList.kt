@@ -1,6 +1,5 @@
 package com.konstantinisaev.youtrack.issuelist.di
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
@@ -8,6 +7,7 @@ import com.konstantinisaev.youtrack.issuelist.NavigationMenuFragment
 import com.konstantinisaev.youtrack.issuelist.ProfileViewModel
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.di.BaseModelsModule
+import com.konstantinisaev.youtrack.ui.base.utils.AuthRouter
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelKey
 import dagger.Binds
 import dagger.BindsInstance
@@ -29,7 +29,7 @@ internal interface IssueListComponent{
         fun build(): IssueListComponent
 
         @BindsInstance
-        fun context(context: Context): Builder
+        fun authRouter(authRouter: AuthRouter): Builder
 
         @BindsInstance
         fun apiProvider(apiProvider: ApiProvider) : Builder
@@ -68,9 +68,9 @@ class IssueListDiProvider private constructor(){
             IssueListDiProvider()
         }
 
-        fun init(context: Context,apiProvider: ApiProvider,basePreferencesAdapter: BasePreferencesAdapter,coroutineContextHolder: CoroutineContextHolder){
+        fun init(authRouter: AuthRouter,apiProvider: ApiProvider,basePreferencesAdapter: BasePreferencesAdapter,coroutineContextHolder: CoroutineContextHolder){
             if(!this::component.isInitialized){
-                component = DaggerIssueListComponent.builder().context(context).apiProvider(apiProvider).preferenceAdapter(basePreferencesAdapter).coroutineContextHolder(coroutineContextHolder).build()
+                component = DaggerIssueListComponent.builder().authRouter(authRouter).apiProvider(apiProvider).preferenceAdapter(basePreferencesAdapter).coroutineContextHolder(coroutineContextHolder).build()
             }
         }
 

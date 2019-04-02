@@ -1,6 +1,5 @@
 package com.konstantinisaev.youtrack.ui.auth.di
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
@@ -12,6 +11,7 @@ import com.konstantinisaev.youtrack.ui.auth.viewmodels.RefreshTokenViewModel
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.ServerConfigViewModel
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.di.BaseModelsModule
+import com.konstantinisaev.youtrack.ui.base.utils.AuthRouter
 import com.konstantinisaev.youtrack.ui.base.utils.Base64Converter
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelKey
 import dagger.Binds
@@ -38,7 +38,7 @@ internal interface AuthComponent{
         fun build(): AuthComponent
 
         @BindsInstance
-        fun context(context: Context): Builder
+        fun authRouter(authRouter: AuthRouter): Builder
 
         @BindsInstance
         fun apiProvider(apiProvider: ApiProvider) : Builder
@@ -98,9 +98,9 @@ class AuthDiProvider private constructor(){
             AuthDiProvider()
         }
 
-        fun init(context: Context,apiProvider: ApiProvider,basePreferencesAdapter: BasePreferencesAdapter,coroutineContextHolder: CoroutineContextHolder,base64Converter: Base64Converter){
+        fun init(authRouter: AuthRouter,apiProvider: ApiProvider,basePreferencesAdapter: BasePreferencesAdapter,coroutineContextHolder: CoroutineContextHolder,base64Converter: Base64Converter){
             if(!this::authComponent.isInitialized){
-                authComponent = DaggerAuthComponent.builder().context(context).
+                authComponent = DaggerAuthComponent.builder().authRouter(authRouter).
                     apiProvider(apiProvider).preferenceAdapter(basePreferencesAdapter).
                     coroutineContextHolder(coroutineContextHolder).base64Converter(base64Converter).build()
             }

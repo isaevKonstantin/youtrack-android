@@ -7,24 +7,26 @@ import androidx.lifecycle.ViewModelProviders
 import com.konstantinisaev.youtrack.ui.auth.di.AuthDiProvider
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.ServerConfigViewModel
 import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
-import com.konstantinisaev.youtrack.ui.base.utils.Routers
+import com.konstantinisaev.youtrack.ui.base.utils.AuthRouter
 import com.konstantinisaev.youtrack.ui.base.utils.Settings
 import com.konstantinisaev.youtrack.ui.base.utils.UrlValidator
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import com.konstantinisaev.youtrack.ui.base.widget.afterTextChanged
 import kotlinx.android.synthetic.main.fragment_check_url.*
+import javax.inject.Inject
 
 class CheckUrlFragment : BaseFragment() {
 
     override var layoutId = R.layout.fragment_check_url
 
     private lateinit var serverConfigViewModel: ServerConfigViewModel
+    @Inject
+    lateinit var authRouter: AuthRouter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AuthDiProvider.getInstance().injectFragment(this)
         serverConfigViewModel = ViewModelProviders.of(this,viewModelFactory)[ServerConfigViewModel::class.java]
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,7 +61,7 @@ class CheckUrlFragment : BaseFragment() {
             showError(it as ViewState.Error)
         }
         registerHandler(ViewState.Success::class.java,serverConfigViewModel) {
-            Routers.authRouter.showAuth()
+            authRouter.showAuth()
         }
     }
 }

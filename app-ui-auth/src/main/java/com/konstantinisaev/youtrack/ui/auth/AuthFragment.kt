@@ -9,18 +9,20 @@ import com.konstantinisaev.youtrack.ui.auth.viewmodels.AuthByLoginPasswordParam
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.AuthByLoginPasswordValidator
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.AuthByLoginPasswordViewModel
 import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
-import com.konstantinisaev.youtrack.ui.base.utils.Routers
+import com.konstantinisaev.youtrack.ui.base.utils.AuthRouter
 import com.konstantinisaev.youtrack.ui.base.utils.Settings
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import com.konstantinisaev.youtrack.ui.base.widget.afterTextChanged
 import kotlinx.android.synthetic.main.fragment_auth.*
+import javax.inject.Inject
 
 class AuthFragment : BaseFragment() {
 
     override val layoutId = R.layout.fragment_auth
 
     private lateinit var authByLoginPasswordViewModel: AuthByLoginPasswordViewModel
-
+    @Inject
+    lateinit var authRouter: AuthRouter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +49,7 @@ class AuthFragment : BaseFragment() {
             toast((it as ViewState.ValidationError).msgId)
         }
         registerHandler(ViewState.Success::class.java,authByLoginPasswordViewModel) {
-            Routers.authRouter.showMain()
+            authRouter.showMain()
         }
     }
 
