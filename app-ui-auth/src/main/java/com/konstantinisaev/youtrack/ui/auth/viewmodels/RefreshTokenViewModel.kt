@@ -19,14 +19,14 @@ class RefreshTokenViewModel @Inject constructor(
     override suspend fun execute(params: String?): ViewState {
         val configDTO = basePreferencesAdapter.getServerConfig()
         val authTokenDTO = basePreferencesAdapter.getAuthToken()
-        if(configDTO == null || authTokenDTO == null ){
+        if(configDTO == null || authTokenDTO?.refreshToken == null ){
             return ViewState.Empty(this::class.java)
         }
         apiProvider.enableAppCredentialsInHeader(base64Converter.convertToBase64("${configDTO.mobile.serviceId}:${configDTO.mobile.serviceSecret}"))
         val url = UrlFormatter.formatToLoginUrl(basePreferencesAdapter.getUrl(), configDTO.ring.url)
         val newTokenDTO = apiProvider.refreshToken(url,authTokenDTO.refreshToken).await()
         apiProvider.enableUserCredentialsInHeader(newTokenDTO.accessToken,newTokenDTO.tokenType)
-        basePreferencesAdapter.setAuthToken(newTokenDTO)
+        basePreferencesAdapter.setAuthToken(newTokenDTO.copy(refreshToken = authTokenDTO.refreshToken))
         return ViewState.Success(this::class.java,"")
     }
 

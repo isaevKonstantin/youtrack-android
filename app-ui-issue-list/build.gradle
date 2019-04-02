@@ -17,6 +17,7 @@ dependencies {
     implementation coroutinesAndroid
     implementation material
     implementation recyclerView
+    implementation ciceRone
 
     kapt daggerCompiler
     kapt daggerAnnotationProcessor

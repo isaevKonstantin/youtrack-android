@@ -53,5 +53,39 @@
         <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 
+    <style name="YouTrackMainTheme.TextViewMediumTitlePrimaryColorMedium" parent="YouTrackMainTheme.TextViewMediumTextPrimaryColor">
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textSize">@dimen/text16</item>
+    </style>
+
+    <style name="YouTrackMainTheme.TextViewMediumTitlePrimaryColorRegular" parent="YouTrackMainTheme.TextViewMediumTextPrimaryColor">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">@dimen/text16</item>
+    </style>
+
+    <style name="YouTrackMainTheme.TextViewMediumTitleGreenColorRegular" parent="YouTrackMainTheme.TextViewMediumTextPrimaryColor">
+        <item name="android:textColor">@color/primary</item>
+    </style>
+
+    <style name="YouTrackMainTheme.TextViewSmallTitlePrimaryColorRegular" parent="YouTrackMainTheme.TextViewMediumTextPrimaryColor">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">@dimen/text14</item>
+    </style>
+
+    <style name="YouTrackMainTheme.TextViewMediumTextSecondaryColor" parent="YouTrackMainTheme.TextViewMediumTextPrimaryColor">
+        <item name="android:textColor">@color/secondary_text</item>
+    </style>
+
+    <style name="YouTrackMainTheme.TextViewSmallTextSecondaryColor" parent="YouTrackMainTheme.TextViewMediumTextPrimaryColor">
+        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:textSize">@dimen/text14</item>
+    </style>
+
+    <style name="ToolbarFilterSubTitleAppearance" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">@dimen/text16</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
 
 </resources>

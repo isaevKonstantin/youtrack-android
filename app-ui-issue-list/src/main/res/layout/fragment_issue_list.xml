@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+													 xmlns:tools="http://schemas.android.com/tools"
+													 xmlns:app="http://schemas.android.com/apk/res-auto"
+													 android:layout_width="match_parent"
+													 android:layout_height="match_parent"
+													 tools:context=".IssueListFragment"
+													 android:orientation="vertical">
+
+	<com.google.android.material.appbar.AppBarLayout
+			android:id="@+id/layAppBar"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+	>
+		<androidx.appcompat.widget.Toolbar
+				android:id="@+id/tlbFilter"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:background="@android:color/white"
+				app:layout_scrollFlags="scroll|enterAlways|snap"
+				app:contentInsetLeft="0dp"
+				app:contentInsetStart="0dp"
+		>
+			<androidx.constraintlayout.widget.ConstraintLayout
+					android:layout_width="match_parent"
+					android:layout_height="?android:attr/actionBarSize">
+
+				<ImageView
+						android:id="@+id/imgFilterSort"
+						android:layout_width="wrap_content"
+						android:layout_height="0dp"
+						app:layout_constraintLeft_toLeftOf="parent"
+						app:layout_constraintTop_toTopOf="parent"
+						app:layout_constraintBottom_toBottomOf="parent"
+						app:srcCompat="@drawable/ic_filter_list_24dp"
+						app:layout_constraintRight_toLeftOf="@id/tvFilterSortHeader"
+						android:paddingStart="16dp"
+						tools:ignore="ContentDescription,RtlSymmetry" />
+
+				<TextView
+						android:id="@+id/tvFilterSortHeader"
+						android:layout_width="0dp"
+						android:layout_height="0dp"
+						app:layout_constraintTop_toTopOf="parent"
+						app:layout_constraintBottom_toTopOf="@id/tvFilterSortBody"
+						app:layout_constraintRight_toLeftOf="@id/imgFilterCount"
+						app:layout_constraintLeft_toRightOf="@id/imgFilterSort"
+						android:paddingEnd="8dp"
+						android:paddingStart="8dp"
+						style="@style/YouTrackMainTheme.TextViewSmallTitlePrimaryColorRegular"
+						android:gravity="center_vertical"
+						android:text = "@string/issues_list_sort"/>
+
+				<TextView
+						android:id="@+id/tvFilterSortBody"
+						android:layout_width="0dp"
+						android:layout_height="0dp"
+						app:layout_constraintLeft_toLeftOf="@id/tvFilterSortHeader"
+						app:layout_constraintRight_toRightOf="@id/tvFilterSortHeader"
+						app:layout_constraintTop_toBottomOf="@id/tvFilterSortHeader"
+						app:layout_constraintBottom_toBottomOf="parent"
+						android:visibility="invisible"
+						android:paddingEnd="8dp"
+						android:paddingStart="8dp"
+						tools:text = "Date,Issue Id"
+						android:gravity="top"
+						tools:visibility="visible"
+						android:maxLines="1"
+						style="@style/YouTrackMainTheme.TextViewSmallTextSecondaryColor"
+				/>
+
+				<ImageView
+						android:id="@+id/imgFilterCount"
+						android:layout_width="wrap_content"
+						android:layout_height="0dp"
+						app:srcCompat="@drawable/ic_filter_list_24dp"
+						app:layout_constraintLeft_toRightOf="@id/tvFilterSortHeader"
+						app:layout_constraintTop_toTopOf="parent"
+						app:layout_constraintBottom_toBottomOf="parent"
+						app:layout_constraintRight_toLeftOf="@id/tvFilterCountHeader"
+						android:paddingStart="16dp"
+						tools:ignore="ContentDescription,RtlSymmetry" />
+
+				<TextView
+						android:id="@+id/tvFilterCountHeader"
+						android:layout_width="0dp"
+						android:layout_height="0dp"
+						app:layout_constraintTop_toTopOf="parent"
+						app:layout_constraintBottom_toTopOf="@id/tvFilterCountBody"
+						app:layout_constraintRight_toLeftOf="@id/imgIssueListSwitcher"
+						app:layout_constraintLeft_toRightOf="@id/imgFilterCount"
+						android:paddingEnd="8dp"
+						android:paddingStart="8dp"
+						style="@style/YouTrackMainTheme.TextViewSmallTitlePrimaryColorRegular"
+						android:gravity="center_vertical"
+						android:text = "@string/issues_list_filter"/>
+
+				<TextView
+						android:id="@+id/tvFilterCountBody"
+						android:layout_width="0dp"
+						android:layout_height="0dp"
+						app:layout_constraintLeft_toLeftOf="@id/tvFilterCountHeader"
+						app:layout_constraintRight_toRightOf="@id/tvFilterCountHeader"
+						app:layout_constraintTop_toBottomOf="@id/tvFilterCountHeader"
+						app:layout_constraintBottom_toBottomOf="parent"
+						android:visibility="invisible"
+						android:paddingEnd="8dp"
+						android:paddingStart="8dp"
+						tools:text = "12 issues"
+						android:gravity="top"
+						tools:visibility="visible"
+						style="@style/YouTrackMainTheme.TextViewSmallTextSecondaryColor"
+				/>
+
+				<ImageView
+						android:id="@+id/imgIssueListSwitcher"
+						android:layout_width="wrap_content"
+						android:minWidth="40dp"
+						android:layout_height="0dp"
+						android:paddingLeft="8dp"
+						android:paddingRight="8dp"
+						app:layout_constraintTop_toTopOf="parent"
+						app:layout_constraintBottom_toBottomOf="parent"
+						app:layout_constraintLeft_toRightOf="@id/tvFilterCountHeader"
+						app:layout_constraintRight_toLeftOf="@id/imgIssueListShare"
+						android:contentDescription="@null" />
+
+				<ImageView
+						android:id="@+id/imgIssueListShare"
+						android:layout_width="wrap_content"
+						android:layout_height="0dp"
+						app:srcCompat="@drawable/ic_share_24dp"
+						android:paddingLeft="8dp"
+						android:paddingRight="8dp"
+						app:layout_constraintTop_toTopOf="parent"
+						app:layout_constraintBottom_toBottomOf="parent"
+						app:layout_constraintLeft_toRightOf="@id/imgIssueListSwitcher"
+						android:layout_marginEnd="16dp"
+						app:layout_constraintRight_toRightOf="parent"
+						android:contentDescription="@null"/>
+			</androidx.constraintlayout.widget.ConstraintLayout>
+
+		</androidx.appcompat.widget.Toolbar>
+	</com.google.android.material.appbar.AppBarLayout>
+
+	<ProgressBar
+			android:id="@+id/pbIssueList"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:visibility="gone"
+			android:indeterminate="true"
+	/>
+
+	<androidx.recyclerview.widget.RecyclerView
+			android:id="@+id/rvIssues"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:paddingBottom="16dp"
+			android:clipToPadding="false"
+			app:layout_behavior="@string/appbar_scrolling_view_behavior"
+	/>
+
+	<com.google.android.material.floatingactionbutton.FloatingActionButton
+			android:id="@+id/fabAddIssue"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:fabSize="auto"
+			android:layout_marginBottom="16dp"
+			android:layout_marginEnd="16dp"
+			app:srcCompat="@drawable/ic_add_white_24dp"
+			app:layout_anchorGravity="bottom|end|right"
+			app:layout_anchor="@id/rvIssues"
+	/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -13,7 +13,7 @@ import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import kotlinx.android.synthetic.main.fragment_splash.*
 import javax.inject.Inject
 
-private const val MAX_PROGRESS = 2000L
+private const val MAX_PROGRESS = 5000L
 private const val INTERVAL = 200L
 
 class SplashFragment : BaseFragment() {

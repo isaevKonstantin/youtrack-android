@@ -3,6 +3,7 @@ package com.konstantinisaev.youtrack
 import android.os.Bundle
 import com.konstantinisaev.youtrack.ui.base.screens.BaseActivity
 import com.konstantinisaev.youtrack.ui.base.utils.AuthRouter
+import com.konstantinisaev.youtrack.ui.base.utils.MainRouter
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
@@ -15,6 +16,9 @@ class EntryActivity : BaseActivity() {
 
     @Inject
     lateinit var authRouter: AuthRouter
+
+    @Inject
+    lateinit var mainRouter: MainRouter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

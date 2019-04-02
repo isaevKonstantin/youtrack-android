@@ -1,13 +1,15 @@
 package com.konstantinisaev.youtrack.di
 
-import android.content.Context
+import com.konstantinisaev.youtrack.App.Companion.context
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
 import com.konstantinisaev.youtrack.navigation.AuthRouterImp
+import com.konstantinisaev.youtrack.navigation.MainRouterImp
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.utils.AuthRouter
 import com.konstantinisaev.youtrack.ui.base.utils.Base64Converter
 import com.konstantinisaev.youtrack.ui.base.utils.Base64ConverterImp
+import com.konstantinisaev.youtrack.ui.base.utils.MainRouter
 import dagger.Module
 import dagger.Provides
 import ru.terrakok.cicerone.Cicerone
@@ -27,8 +29,13 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideSplashRouter(router: Router,base64Converter: Base64Converter,basePreferencesAdapter: BasePreferencesAdapter,apiProvider: ApiProvider,coroutineContextHolder: CoroutineContextHolder) : AuthRouter =
+    fun provideAuthRouter(router: Router, base64Converter: Base64Converter, basePreferencesAdapter: BasePreferencesAdapter, apiProvider: ApiProvider, coroutineContextHolder: CoroutineContextHolder) : AuthRouter =
         AuthRouterImp(router,basePreferencesAdapter,apiProvider,base64Converter,coroutineContextHolder)
+
+    @Singleton
+    @Provides
+    fun provideMainRouter(cicerone: Cicerone<Router>, basePreferencesAdapter: BasePreferencesAdapter, apiProvider: ApiProvider, coroutineContextHolder: CoroutineContextHolder) : MainRouter =
+        MainRouterImp(cicerone,basePreferencesAdapter,apiProvider,coroutineContextHolder)
 
     @Singleton
     @Provides
@@ -36,7 +43,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideBasePreferenceAdapter(context: Context) = BasePreferencesAdapter.getInstance(context)
+    fun provideBasePreferenceAdapter() = BasePreferencesAdapter.getInstance(context)
 
     @Provides
     @Singleton

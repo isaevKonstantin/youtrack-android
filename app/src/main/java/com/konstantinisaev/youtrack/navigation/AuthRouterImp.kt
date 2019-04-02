@@ -4,7 +4,6 @@ import androidx.fragment.app.Fragment
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
 import com.konstantinisaev.youtrack.issuelist.IssueListContainerFragment
-import com.konstantinisaev.youtrack.issuelist.di.IssueListDiProvider
 import com.konstantinisaev.youtrack.ui.auth.AuthFragment
 import com.konstantinisaev.youtrack.ui.auth.CheckUrlFragment
 import com.konstantinisaev.youtrack.ui.auth.SplashFragment
@@ -16,11 +15,11 @@ import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 import javax.inject.Inject
 
-class AuthRouterImp @Inject constructor(private val router: Router,private val basePreferencesAdapter: BasePreferencesAdapter,
-                                        private val apiProvider: ApiProvider,private val base64Converter: Base64Converter,private val coroutineContextHolder: CoroutineContextHolder) : AuthRouter {
+class AuthRouterImp @Inject constructor(private val router: Router, basePreferencesAdapter: BasePreferencesAdapter,
+                                        apiProvider: ApiProvider, base64Converter: Base64Converter,
+                                        coroutineContextHolder: CoroutineContextHolder) : AuthRouter {
 
     init {
-        IssueListDiProvider.init(this,apiProvider,basePreferencesAdapter,coroutineContextHolder)
         AuthDiProvider.init(this,apiProvider,basePreferencesAdapter,coroutineContextHolder,base64Converter)
     }
 

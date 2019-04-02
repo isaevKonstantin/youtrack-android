@@ -3,17 +3,20 @@ package com.konstantinisaev.youtrack.issuelist.di
 import androidx.lifecycle.ViewModel
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
+import com.konstantinisaev.youtrack.issuelist.IssueListContainerFragment
 import com.konstantinisaev.youtrack.issuelist.NavigationMenuFragment
 import com.konstantinisaev.youtrack.issuelist.ProfileViewModel
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.di.BaseModelsModule
-import com.konstantinisaev.youtrack.ui.base.utils.AuthRouter
+import com.konstantinisaev.youtrack.ui.base.utils.MainRouter
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelKey
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Component
 import dagger.Module
 import dagger.multibindings.IntoMap
+import ru.terrakok.cicerone.Cicerone
+import ru.terrakok.cicerone.Router
 import javax.inject.Singleton
 
 
@@ -23,13 +26,15 @@ internal interface IssueListComponent{
 
     fun injectFragment(navigationMenuFragment: NavigationMenuFragment)
 
+    fun injectFragment(issueListFragment: IssueListContainerFragment)
+
     @Component.Builder
     interface Builder {
 
         fun build(): IssueListComponent
 
         @BindsInstance
-        fun authRouter(authRouter: AuthRouter): Builder
+        fun mainRouter(mainRouter: MainRouter): Builder
 
         @BindsInstance
         fun apiProvider(apiProvider: ApiProvider) : Builder
@@ -39,6 +44,9 @@ internal interface IssueListComponent{
 
         @BindsInstance
         fun coroutineContextHolder(coroutineContextHolder: CoroutineContextHolder) : Builder
+
+        @BindsInstance
+        fun cicerone(cicerone: Cicerone<Router>) : Builder
     }
 
 }
@@ -60,6 +68,10 @@ class IssueListDiProvider private constructor(){
         component.injectFragment(navigationMenuFragment)
     }
 
+    fun injectFragment(issueListFragment: IssueListContainerFragment){
+        component.injectFragment(issueListFragment)
+    }
+
     companion object {
 
         private lateinit var component: IssueListComponent
@@ -68,9 +80,9 @@ class IssueListDiProvider private constructor(){
             IssueListDiProvider()
         }
 
-        fun init(authRouter: AuthRouter,apiProvider: ApiProvider,basePreferencesAdapter: BasePreferencesAdapter,coroutineContextHolder: CoroutineContextHolder){
+        fun init(mainRouter: MainRouter,apiProvider: ApiProvider,basePreferencesAdapter: BasePreferencesAdapter,coroutineContextHolder: CoroutineContextHolder,cicerone: Cicerone<Router>){
             if(!this::component.isInitialized){
-                component = DaggerIssueListComponent.builder().authRouter(authRouter).apiProvider(apiProvider).preferenceAdapter(basePreferencesAdapter).coroutineContextHolder(coroutineContextHolder).build()
+                component = DaggerIssueListComponent.builder().mainRouter(mainRouter).apiProvider(apiProvider).preferenceAdapter(basePreferencesAdapter).cicerone(cicerone).coroutineContextHolder(coroutineContextHolder).build()
             }
         }
 

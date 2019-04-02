@@ -10,3 +10,14 @@ interface AuthRouter {
 
     fun showMain()
 }
+
+interface MainRouter {
+
+    fun showIssueList()
+
+    fun showAgileBoards()
+
+    fun showSettings()
+
+    fun showAbout()
+}

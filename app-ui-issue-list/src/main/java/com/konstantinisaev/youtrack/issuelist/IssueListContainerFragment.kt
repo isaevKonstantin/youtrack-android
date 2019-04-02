@@ -4,8 +4,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.Fragment
+import com.konstantinisaev.youtrack.issuelist.di.IssueListDiProvider
 import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
+import com.konstantinisaev.youtrack.ui.base.utils.MainRouter
 import kotlinx.android.synthetic.main.fragment_issue_list_container.*
+import ru.terrakok.cicerone.Cicerone
+import ru.terrakok.cicerone.Router
+import ru.terrakok.cicerone.android.support.SupportAppNavigator
+import javax.inject.Inject
 
 class IssueListContainerFragment : BaseFragment() {
 
@@ -13,8 +19,14 @@ class IssueListContainerFragment : BaseFragment() {
 
     private var mToggle: ActionBarDrawerToggle? = null
 
+    @Inject
+    lateinit var mainRouter: MainRouter
+    @Inject
+    lateinit var cicerone: Cicerone<Router>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        IssueListDiProvider.getInstance().injectFragment(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -22,6 +34,9 @@ class IssueListContainerFragment : BaseFragment() {
 
         setToolbarWithBackNavigation(toolbar,getString(R.string.nav_rv_issues))
         initDrawer()
+        cicerone.navigatorHolder.setNavigator(SupportAppNavigator(activity,childFragmentManager,R.id.flContainer))
+
+        savedInstanceState ?: mainRouter.showIssueList()
     }
 
     private fun initDrawer() {
@@ -49,6 +64,7 @@ class IssueListContainerFragment : BaseFragment() {
         layDrawer.addDrawerListener(mToggle!!)
         layDrawer.addDrawerListener(toggle)
         mToggle!!.syncState()
+
     }
 
     private fun updateToolbar(fragment: Fragment?){
