@@ -20,7 +20,7 @@ class ApiProviderTest {
     fun `should return not empty profile`() {
         runBlocking {
             apiProvider.enableUserCredentialsInHeader(authTokenDTO.accessToken, authTokenDTO.tokenType)
-            val resp = apiProvider.getProfile("${testUrl}${ApiEndpoints.YOUTRACK.url}/").await()
+            val resp = apiProvider.getProfile("$testUrl${ApiEndpoints.YOUTRACK.url}/").await()
             assertThat(resp.email).isNotEmpty()
         }
     }
@@ -29,7 +29,16 @@ class ApiProviderTest {
     fun `should return not empty project list`() {
         runBlocking {
             apiProvider.enableUserCredentialsInHeader(authTokenDTO.accessToken, authTokenDTO.tokenType)
-            val resp = apiProvider.getProjects("${testUrl}${ApiEndpoints.YOUTRACK.url}/").await()
+            val resp = apiProvider.getProjects("$testUrl${ApiEndpoints.YOUTRACK.url}/").await()
+            assertThat(resp).isNotEmpty
+        }
+    }
+
+    @Test
+    fun `should return not empty issue list`() {
+        runBlocking {
+            apiProvider.enableUserCredentialsInHeader(authTokenDTO.accessToken, authTokenDTO.tokenType)
+            val resp = apiProvider.getAllIssues("$testUrl${ApiEndpoints.YOUTRACK.url}/").await()
             assertThat(resp).isNotEmpty
         }
     }

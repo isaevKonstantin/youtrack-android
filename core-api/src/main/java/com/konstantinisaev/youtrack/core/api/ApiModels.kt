@@ -1,5 +1,6 @@
 package com.konstantinisaev.youtrack.core.api
 
+import com.google.gson.JsonElement
 import com.google.gson.annotations.SerializedName
 
 data class ServerVersionDTO @JvmOverloads constructor(var id: Int = 0, var name: String? = null, var version: String? = null, var build: Int = 0)
@@ -22,24 +23,24 @@ data class CurrentUserDTO(val id: String?, val fullName: String?, val login: Str
 
 data class ProjectDTO(val id: String?, val name: String?, val shortName: String?,val type: String?,val archived: Boolean)
 
-//data class IssueDTO(val id: String?, val idReadable: String?, val summary: String?, val resolved: String?, val created: String?, val updated: String?, val description: String?,
-//                    val fields: List<FieldContainerDTO>?, val reporter: UserDTO?, val votes: Int?, val watchers: WatcherDTO?, val comments: List<CommentDTO>?, val project: ProjectDTO)
-//
-//data class FieldContainerDTO(val projectCustomField: ProjectCustomFieldDto? = null, val value: JsonElement? = null)
-//
-//data class ProjectCustomFieldDto(val field: CustomFieldDTO? = null, val bundle: BundleDTO? = null, val emptyFieldText: String? = null, val canBeEmpty: Boolean = false,
-//                                 @SerializedName("\$type")val type: String? = null,val id: String? = null)
-//
-//data class CustomFieldDTO(val name: String?, val id: String?)
-//
-//data class BundleDTO(val id: String?)
-//
-//data class UserDTO(val id: String?,val ringId: String?,val login: String?,val name: String?,val avatarUrl: String?,val fullName: String?)
-//
-//data class WatcherDTO(val id: String?,val hasStar: Boolean)
-//
-//data class CommentDTO(val id: String?)
-//
+data class IssueDTO(val id: String?, val idReadable: String?, val summary: String?, val resolved: String?, val created: String?, val updated: String?, val description: String?,
+                    val fields: List<FieldContainerDTO>?, val reporter: UserDTO?, val votes: Int?, val watchers: WatcherDTO?, val comments: List<CommentDTO>?, val project: ProjectDTO)
+
+data class FieldContainerDTO(val projectCustomField: ProjectCustomFieldDto? = null, val value: JsonElement? = null)
+
+data class ProjectCustomFieldDto(val field: CustomFieldDTO? = null, val bundle: BundleDTO? = null, val emptyFieldText: String? = null, val canBeEmpty: Boolean = false,
+                                 @SerializedName("\$type")val type: String? = null,val id: String? = null)
+
+data class CustomFieldDTO(val name: String?, val id: String?)
+
+data class BundleDTO(val id: String?)
+
+data class UserDTO(val id: String?,val ringId: String?,val login: String?,val name: String?,val avatarUrl: String?,val fullName: String?)
+
+data class WatcherDTO(val id: String?,val hasStar: Boolean)
+
+data class CommentDTO(val id: String?)
+
 //data class CreateIssueDTO(val project: IssueProjectDTO,val summary: String)
 //
 //data class IssueProjectDTO(val id: String)

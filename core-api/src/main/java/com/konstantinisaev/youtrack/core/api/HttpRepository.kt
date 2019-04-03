@@ -28,10 +28,10 @@ interface HttpRepository {
 
     @GET("")
     fun getProjects(@Url url: String,@Query("fields") fields: String? = Fields.PROJECT) : Deferred<List<ProjectDTO>>
-//
-//    @GET("")
-//    fun getAllIssues(@Url url: String, @Query("query") query: String? = null,@Query("\$top") top: Int = DEFAULT_ISSUE_LIST_SIZE,@Query("\$skip") skip: Int = 0, @Query("fields") fields: String? = Fields.ISSUE_LIST) : Deferred<Response<List<IssueDTO>>>
-//
+
+    @GET("")
+    fun getAllIssues(@Url url: String, @Query("query") query: String? = null,@Query("\$top") top: Int = DEFAULT_ISSUE_LIST_SIZE,@Query("\$skip") skip: Int = 0, @Query("fields") fields: String? = Fields.ISSUE_LIST) : Deferred<List<IssueDTO>>
+
 //    @GET("")
 //    fun getIssuesFilterSuggestions(@Url url: String, @Query("query") filter: String? = null, @Query("caret") caret: Int? = null,
 //                                   @Query("optionsLimit") optionsLimit: Int? = DEFAULT_ISSUE_LIST_SIZE) : Deferred<Response<RespIssueFilterIntellisense>>
@@ -59,9 +59,9 @@ interface HttpRepository {
 }
 
 private object Fields{
-//
-//    const val ISSUE_LIST = "comments,watchers(hasStar,id),reporter(id,login,name,avatarUrl),id,idReadable,summary,resolved,created,updated,description,type,fields(projectCustomField(field(name,value)),value(name,minutes,presentation,id,color(background,foreground)))"
-//
+
+    const val ISSUE_LIST = "comments,watchers(hasStar,id),reporter(id,login,name,avatarUrl),id,idReadable,summary,resolved,created,updated,description,type,fields(projectCustomField(field(name,value)),value(name,minutes,presentation,id,color(background,foreground)))"
+
     const val PROJECT = "\$id,type,name,shortName,id"
 //
 //    const val CUSTOM_FIELDS = "type,name,id"

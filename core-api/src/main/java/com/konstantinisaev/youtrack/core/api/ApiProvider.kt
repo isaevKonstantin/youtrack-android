@@ -11,6 +11,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
+internal val DEFAULT_ISSUE_LIST_SIZE = 20
 
 class ApiProvider {
 
@@ -76,7 +77,7 @@ class ApiProvider {
 
     fun getProjects(baseUrl: String) = httpRepository.getProjects("$baseUrl${ApiEndpoints.GET_PROJECTS.url}")
 
-//    fun getAllIssues(baseUrl: String, query: String? = null, top: Int = DEFAULT_ISSUE_LIST_SIZE, skip: Int = 0) = httpRepository.getAllIssues("$baseUrl${ApiEndpoints.GET_ALL_ISSUES.url}",query = query,top =  top,skip = skip)
+    fun getAllIssues(baseUrl: String, query: String? = null, top: Int = DEFAULT_ISSUE_LIST_SIZE, skip: Int = 0) = httpRepository.getAllIssues("$baseUrl${ApiEndpoints.GET_ALL_ISSUES.url}",query = query,top =  top,skip = skip)
 //
 //    fun getIssuesFilterIntellisense(baseUrl: String, query: String? = null, caret: Int? = null, optionsLimit: Int = DEFAULT_ISSUE_LIST_SIZE) =
 //        httpRepository.getIssuesFilterSuggestions("$baseUrl${ApiEndpoints.GET_ISSUE_FILTER_INTELLISENCE.url}",query,caret,optionsLimit)
