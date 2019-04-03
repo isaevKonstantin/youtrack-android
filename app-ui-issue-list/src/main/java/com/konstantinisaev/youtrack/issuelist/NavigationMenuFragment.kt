@@ -8,11 +8,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.konstantinisaev.youtrack.core.api.CurrentUserDTO
 import com.konstantinisaev.youtrack.core.rv.*
 import com.konstantinisaev.youtrack.issuelist.di.IssueListDiProvider
+import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
 import com.konstantinisaev.youtrack.ui.base.utils.DeviceUtils
 import com.konstantinisaev.youtrack.ui.base.utils.MainRouter
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import kotlinx.android.synthetic.main.fragment_navigation.*
+import ru.terrakok.cicerone.Cicerone
+import ru.terrakok.cicerone.Router
+import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import javax.inject.Inject
 
 @Suppress("UNCHECKED_CAST")
@@ -24,6 +28,10 @@ class NavigationMenuFragment : BaseFragment() {
     private lateinit var profileViewModel: ProfileViewModel
     @Inject
     lateinit var mainRouter: MainRouter
+    @Inject
+    lateinit var cicerone: Cicerone<Router>
+    @Inject
+    lateinit var basePreferencesAdapter: BasePreferencesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +76,11 @@ class NavigationMenuFragment : BaseFragment() {
             getString(R.string.nav_rv_settings) -> mainRouter.showSettings()
             getString(R.string.nav_rv_about) -> mainRouter.showAbout()
             getString(R.string.nav_rv_logout) -> {
+                val fragmentManager = activity?.supportFragmentManager ?: return
+                cicerone.navigatorHolder.setNavigator(SupportAppNavigator(activity,fragmentManager,R.id.flContainer))
+                basePreferencesAdapter.setAuthToken(null)
+                basePreferencesAdapter.setServerConfig(null)
+                mainRouter.showServerUrl()
             }
             else -> throw IllegalArgumentException("Wrong text in nav rv item: $text")
         }

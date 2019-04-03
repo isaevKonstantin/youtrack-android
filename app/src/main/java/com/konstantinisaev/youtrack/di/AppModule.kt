@@ -25,12 +25,8 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideRouter(cicerone: Cicerone<Router>) : Router = cicerone.router
-
-    @Singleton
-    @Provides
-    fun provideAuthRouter(router: Router, base64Converter: Base64Converter, basePreferencesAdapter: BasePreferencesAdapter, apiProvider: ApiProvider, coroutineContextHolder: CoroutineContextHolder) : AuthRouter =
-        AuthRouterImp(router,basePreferencesAdapter,apiProvider,base64Converter,coroutineContextHolder)
+    fun provideAuthRouter(cicerone: Cicerone<Router>, base64Converter: Base64Converter, basePreferencesAdapter: BasePreferencesAdapter, apiProvider: ApiProvider, coroutineContextHolder: CoroutineContextHolder) : AuthRouter =
+        AuthRouterImp(cicerone,basePreferencesAdapter,apiProvider,base64Converter,coroutineContextHolder)
 
     @Singleton
     @Provides

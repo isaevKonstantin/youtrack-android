@@ -8,6 +8,7 @@ import com.konstantinisaev.youtrack.issuelist.AgileBoardsFragment
 import com.konstantinisaev.youtrack.issuelist.IssueListFragment
 import com.konstantinisaev.youtrack.issuelist.SettingsFragment
 import com.konstantinisaev.youtrack.issuelist.di.IssueListDiProvider
+import com.konstantinisaev.youtrack.ui.auth.CheckUrlFragment
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.utils.MainRouter
 import ru.terrakok.cicerone.Cicerone
@@ -18,6 +19,13 @@ import javax.inject.Inject
 class MainRouterImp @Inject constructor(private val cicerone: Cicerone<Router>, basePreferencesAdapter: BasePreferencesAdapter,
                                         apiProvider: ApiProvider,
                                         coroutineContextHolder: CoroutineContextHolder) : MainRouter{
+    override fun showServerUrl() {
+        cicerone.router.newRootScreen(object : SupportAppScreen(){
+            override fun getFragment(): Fragment {
+                return CheckUrlFragment()
+            }
+        })
+    }
 
     init {
         IssueListDiProvider.init(this,apiProvider,basePreferencesAdapter,coroutineContextHolder,cicerone)

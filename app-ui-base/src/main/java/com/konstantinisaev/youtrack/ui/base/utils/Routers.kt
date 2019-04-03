@@ -20,4 +20,6 @@ interface MainRouter {
     fun showSettings()
 
     fun showAbout()
+
+    fun showServerUrl()
 }
