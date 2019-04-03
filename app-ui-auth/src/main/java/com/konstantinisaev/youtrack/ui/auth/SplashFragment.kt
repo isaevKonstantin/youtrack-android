@@ -46,13 +46,28 @@ class SplashFragment : BaseFragment() {
             override fun onFinish() {
                 pbSplash.progress = pbSplash.max
                 when(viewModel.lastViewState){
-                    is ViewState.Empty, is ViewState.Error -> authRouter.showServerUrl()
                     is ViewState.Success<*> -> authRouter.showMain()
+                    else -> authRouter.showServerUrl()
 
                 }
             }
 
         }.start()
+        registerHandler(ViewState.Error::class.java,viewModel){
+            pbSplash.progress = pbSplash.max
+            countDownTimer?.cancel()
+            authRouter.showServerUrl()
+        }
+        registerHandler(ViewState.Empty::class.java,viewModel){
+            pbSplash.progress = pbSplash.max
+            countDownTimer?.cancel()
+            authRouter.showServerUrl()
+        }
+        registerHandler(ViewState.Success::class.java,viewModel){
+            pbSplash.progress = pbSplash.max
+            countDownTimer?.cancel()
+            authRouter.showMain()
+        }
         viewModel.doAsyncRequest()
 
     }
