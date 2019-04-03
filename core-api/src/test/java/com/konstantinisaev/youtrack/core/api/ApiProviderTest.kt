@@ -43,6 +43,15 @@ class ApiProviderTest {
         }
     }
 
+    @Test
+    fun `should return not empty issue count`() {
+        runBlocking {
+            apiProvider.enableUserCredentialsInHeader(authTokenDTO.accessToken, authTokenDTO.tokenType)
+            val resp = apiProvider.getAllIssuesCount("$testUrl${ApiEndpoints.YOUTRACK.url}/").await()
+            assertThat(resp).isNotNull
+        }
+    }
+
     companion object {
 
         private val apiProvider = ApiProvider()

@@ -41,6 +41,8 @@ data class WatcherDTO(val id: String?,val hasStar: Boolean)
 
 data class CommentDTO(val id: String?)
 
+data class IssueCountDTO(val value: Int)
+
 //data class CreateIssueDTO(val project: IssueProjectDTO,val summary: String)
 //
 //data class IssueProjectDTO(val id: String)
@@ -64,7 +66,6 @@ data class CommentDTO(val id: String?)
 //data class FilterCompletion(val start: Int,val end: String)
 //
 //data class FilterMatch(val start: Int,val end: String)
-//
-//data class RespIssueCountDTO(val value: Int)
-//
+
+
 //data class SuggestItems(val items: List<FilterSuggest>)

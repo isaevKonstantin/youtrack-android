@@ -81,9 +81,9 @@ class ApiProvider {
 //
 //    fun getIssuesFilterIntellisense(baseUrl: String, query: String? = null, caret: Int? = null, optionsLimit: Int = DEFAULT_ISSUE_LIST_SIZE) =
 //        httpRepository.getIssuesFilterSuggestions("$baseUrl${ApiEndpoints.GET_ISSUE_FILTER_INTELLISENCE.url}",query,caret,optionsLimit)
-//
-//    fun getAllIssuesCount(baseUrl: String, filter: String? = null) = httpRepository.getAllIssuesCount("$baseUrl${ApiEndpoints.GET_ALL_ISSUES_COUNT.url}",filter)
-//
+
+    fun getAllIssuesCount(baseUrl: String, filter: String? = null) = httpRepository.getAllIssuesCount("$baseUrl${ApiEndpoints.GET_ALL_ISSUES_COUNT.url}",filter)
+
 //    fun createIssue(baseUrl: String, createIssueDTO: CreateIssueDTO) = httpRepository.createIssue("$baseUrl${ApiEndpoints.GET_ALL_ISSUES.url}",createIssueDTO)
 //
 //    fun getCustomFieldSettings(baseUrl: String,parentType: String,parentId: String) = httpRepository.getCustomFieldBundle("$baseUrl${String.format(ApiEndpoints.GET_CUSTOM_FIELD_SETTING.url,parentType,parentId)}")

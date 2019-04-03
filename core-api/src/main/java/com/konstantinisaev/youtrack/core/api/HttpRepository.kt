@@ -36,9 +36,9 @@ interface HttpRepository {
 //    fun getIssuesFilterSuggestions(@Url url: String, @Query("query") filter: String? = null, @Query("caret") caret: Int? = null,
 //                                   @Query("optionsLimit") optionsLimit: Int? = DEFAULT_ISSUE_LIST_SIZE) : Deferred<Response<RespIssueFilterIntellisense>>
 //
-//    @GET("")
-//    fun getAllIssuesCount(@Url url: String, @Query("filter") filter: String? = null) : Deferred<Response<RespIssueCountDTO>>
-//
+    @GET("")
+    fun getAllIssuesCount(@Url url: String, @Query("filter") filter: String? = null) : Deferred<IssueCountDTO>
+
 //    @POST("")
 //    fun createIssue(@Url url: String,@Body createIssueDTO: CreateIssueDTO, @Query("fields") fields: String? = Fields.ISSUE_LIST) : Deferred<Response<IssueDTO>>
 //
