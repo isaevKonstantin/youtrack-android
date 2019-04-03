@@ -17,6 +17,9 @@ class Base64ConverterImp : Base64Converter{
 object InitialsConvertor {
 
     fun convertToInitials(title: String): String {
+        if(title.isEmpty()){
+            return ""
+        }
         val newTitle = title.trim { it <= ' ' }
         var lastPos: Int
         if (newTitle.contains(" ")) {

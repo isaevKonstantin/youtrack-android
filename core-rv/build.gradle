@@ -10,4 +10,5 @@ dependencies {
     implementation constraintLayout
     implementation picasso
     implementation picassoTransformation
+    implementation material
 }

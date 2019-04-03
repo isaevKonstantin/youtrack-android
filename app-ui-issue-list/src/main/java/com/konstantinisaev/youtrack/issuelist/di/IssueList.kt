@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
 import com.konstantinisaev.youtrack.issuelist.IssueListContainerFragment
+import com.konstantinisaev.youtrack.issuelist.IssueListFragment
 import com.konstantinisaev.youtrack.issuelist.NavigationMenuFragment
-import com.konstantinisaev.youtrack.issuelist.ProfileViewModel
+import com.konstantinisaev.youtrack.issuelist.viewmodels.IssueListViewModel
+import com.konstantinisaev.youtrack.issuelist.viewmodels.ProfileViewModel
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.di.BaseModelsModule
 import com.konstantinisaev.youtrack.ui.base.utils.MainRouter
@@ -27,6 +29,8 @@ internal interface IssueListComponent{
     fun injectFragment(navigationMenuFragment: NavigationMenuFragment)
 
     fun injectFragment(issueListFragment: IssueListContainerFragment)
+
+    fun injectFragment(issueListFragment: IssueListFragment)
 
     @Component.Builder
     interface Builder {
@@ -58,7 +62,12 @@ abstract class IssueListModelsModule {
     @Binds
     @IntoMap
     @ViewModelKey(ProfileViewModel::class)
-    internal abstract fun bindServerUrlViewModel(profileViewModel: ProfileViewModel): ViewModel
+    internal abstract fun bindProfileViewModel(profileViewModel: ProfileViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(IssueListViewModel::class)
+    internal abstract fun bindIssueListViewModel(issueListViewModel: IssueListViewModel): ViewModel
 
 }
 
@@ -69,6 +78,10 @@ class IssueListDiProvider private constructor(){
     }
 
     fun injectFragment(issueListFragment: IssueListContainerFragment){
+        component.injectFragment(issueListFragment)
+    }
+
+    fun injectFragment(issueListFragment: IssueListFragment){
         component.injectFragment(issueListFragment)
     }
 

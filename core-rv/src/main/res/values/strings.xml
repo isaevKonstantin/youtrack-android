@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">core_rv</string>
+
+    <string name="issues_list_fragm_owners_formatted">%s by %s</string>
+    <string name="filter_suggestion_empty">Empty</string>
+
 </resources>

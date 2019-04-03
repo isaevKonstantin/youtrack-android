@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	style="@style/YouTrackMainTheme.Card"
+	xmlns:tools="http://schemas.android.com/tools"
+	tools:layout_marginStart="16dp"
+	tools:layout_marginEnd="16dp"
+	tools:layout_marginTop="7dp">
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingTop="10dp"
+		android:paddingBottom="10dp"
+		android:paddingStart="10dp"
+		android:paddingEnd="10dp"
+		>
+
+		<ImageView
+			android:id="@+id/imgIssueFavorites"
+			android:layout_width="20dp"
+			android:layout_height="20dp"
+			app:layout_constraintLeft_toLeftOf="parent"
+			app:layout_constraintTop_toTopOf="@id/tvIssueNumber"
+			app:layout_constraintRight_toLeftOf="@id/tvIssueNumber"
+			android:contentDescription="@null"
+			/>
+
+		<TextView
+			android:id="@+id/tvIssueNumber"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintLeft_toRightOf="@id/imgIssueFavorites"
+			app:layout_constraintRight_toLeftOf="@id/tvIssueTitle"
+			app:layout_constraintTop_toTopOf="parent"
+			android:layout_marginLeft="5dp"
+			android:layout_marginRight="5dp"
+			android:textAppearance="@style/YouTrackMainTheme.TextViewMediumTitlePrimaryColorMedium"
+			tools:text = "YA-1"/>
+
+		<TextView
+			android:id="@+id/tvIssueTitle"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			tools:text = "Test Issue name"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintLeft_toRightOf="@id/tvIssueNumber"
+			app:layout_constraintRight_toRightOf="parent"
+			android:layout_marginStart="5dp"
+			android:textAppearance="@style/YouTrackMainTheme.TextViewSmallTitlePrimaryColorRegular"
+			/>
+
+		<TextView
+			android:id="@+id/tvIssueOwners"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			tools:text = "John Dou by John Dou"
+			app:layout_constraintRight_toRightOf="parent"
+			app:layout_constraintLeft_toLeftOf="@id/tvIssueNumber"
+			app:layout_constraintTop_toBottomOf="@id/tvIssueTitle"
+			android:paddingTop="5dp"
+			android:paddingBottom="5dp"
+			android:textAppearance="@style/YouTrackMainTheme.TextViewMediumTextPrimaryColor"
+			/>
+
+		<TextView
+			android:id="@+id/tvIssuePriority"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			tools:text = "Major"
+			app:layout_constraintRight_toRightOf="parent"
+			app:layout_constraintLeft_toLeftOf="@id/tvIssueNumber"
+			app:layout_constraintRight_toLeftOf="@id/tvIssueType"
+			app:layout_constraintTop_toBottomOf="@id/tvIssueOwners"
+			android:padding="5dp"
+			android:background="@drawable/drw_issue_priority"
+			android:textAppearance="@style/YouTrackMainTheme.TextViewMediumTextPrimaryColor"
+			/>
+
+		<TextView
+			android:id="@+id/tvIssueType"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			tools:text = "Feature"
+			app:layout_constraintTop_toBottomOf="@id/tvIssueOwners"
+			app:layout_constraintLeft_toRightOf="@id/tvIssuePriority"
+			android:padding="5dp"
+			android:background="@drawable/drw_issue_priority"
+			android:layout_marginStart="5dp"
+			android:textAppearance="@style/YouTrackMainTheme.TextViewMediumTextPrimaryColor"
+			/>
+
+		<TextView
+			android:id="@+id/tvIssueState"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			tools:text = "Done"
+			app:layout_constraintTop_toBottomOf="@id/tvIssueOwners"
+			app:layout_constraintLeft_toRightOf="@id/tvIssueType"
+			android:background="@drawable/drw_issue_priority"
+			android:padding="5dp"
+			android:layout_marginStart="5dp"
+			android:textAppearance="@style/YouTrackMainTheme.TextViewMediumTextPrimaryColor"
+			/>
+
+		<TextView
+			android:id="@+id/tvIssueTime"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintTop_toBottomOf="@id/tvIssuePriority"
+			app:layout_constraintRight_toRightOf="parent"
+			android:textAppearance="@style/YouTrackMainTheme.TextViewMediumTextSecondaryColor"
+			tools:text = "18:20"/>
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

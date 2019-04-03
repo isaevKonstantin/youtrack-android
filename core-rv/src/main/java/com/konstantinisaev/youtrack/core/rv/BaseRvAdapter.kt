@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class BaseRvAdapter(private var clickListener: BaseRvClickListener? = null) : RecyclerView.Adapter<BaseRvViewHolder<BaseRvItem>>() {
@@ -82,14 +83,14 @@ private fun createViewHolder(type: Int, view: View) : BaseRvViewHolder<BaseRvIte
     val holder = when(type){
         R.layout.vh_nav_profile -> NavProfileViewHolder(view)
         R.layout.vh_nav_text_item -> NavTextViewHolder(view)
-//        R.layout.vh_issue_single -> IssueMainViewHolder(view)
-//        R.layout.vh_text_header -> TextHeaderViewHolder(view)
-//        R.layout.vh_issue_compact -> IssueCompactViewHolder(view)
-//        R.layout.vh_issue_detailed -> IssueDetailedViewHolder(view)
-//        R.layout.vh_issue_filter_suggestion -> IssueFilterMainSuggestionViewHolder(view)
-//        R.layout.vh_issue_filter_suggestion_child -> IssueFilterChildSuggestionViewHolder(view)
-//        R.layout.vh_issue_filter_suggestion_empty -> EmptyViewHolder(view)
-//        R.layout.vh_suggestion_full_search -> IssueSuggestionFullSearchViewHolder(view)
+        R.layout.vh_issue_single -> IssueMainViewHolder(view)
+        R.layout.vh_text_header -> TextHeaderViewHolder(view)
+        R.layout.vh_issue_compact -> IssueCompactViewHolder(view)
+        R.layout.vh_issue_detailed -> IssueDetailedViewHolder(view)
+        R.layout.vh_issue_filter_suggestion -> IssueFilterMainSuggestionViewHolder(view)
+        R.layout.vh_issue_filter_suggestion_child -> IssueFilterChildSuggestionViewHolder(view)
+        R.layout.vh_issue_filter_suggestion_empty -> EmptyViewHolder(view)
+        R.layout.vh_suggestion_full_search -> IssueSuggestionFullSearchViewHolder(view)
 //        R.layout.vh_select_list -> SelectListViewHolder(view)
 //        R.layout.vh_select_user -> SelectUserViewHolder(view)
         else -> throw IllegalArgumentException("Wrong type of view holder!")
@@ -122,8 +123,8 @@ abstract class BaseRvViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(ite
 
 }
 
-class MarginItemDecoration(private val topMargin: Int = 0, private val bottomMargin: Int = 0,
-                           private val leftMargin: Int = 0, private val rightMargin: Int = 0
+open class MarginItemDecoration(private val topMargin: Int = 0, private val bottomMargin: Int = 0,
+                                private val leftMargin: Int = 0, private val rightMargin: Int = 0
 ) : RecyclerView.ItemDecoration(){
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
@@ -136,6 +137,19 @@ class MarginItemDecoration(private val topMargin: Int = 0, private val bottomMar
     }
 }
 
+class IssueItemDecoration(private val topMargin: Int = 0, private val bottomMargin: Int = 0,
+                          private val leftMargin: Int = 0, private val rightMargin: Int = 0
+) :  RecyclerView.ItemDecoration() {
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+        super.getItemOffsets(outRect, view, parent, state)
+        when{
+            view.id == R.id.tvTextHeader && parent.getChildAdapterPosition(view) == 0-> outRect.set(leftMargin, (topMargin * 2.5).toInt(), rightMargin, bottomMargin / 2)
+            view.id == R.id.tvTextHeader -> outRect.set(leftMargin, topMargin * 2, rightMargin, bottomMargin / 2)
+            else -> outRect.set(leftMargin, topMargin, rightMargin, bottomMargin)
+        }
+    }
+}
+
 
 @Suppress("UNUSED_PARAMETER")
 class RvTypeFactory{
@@ -143,26 +157,47 @@ class RvTypeFactory{
     fun type(rvItem: NavProfileRvItem) = R.layout.vh_nav_profile
 
     fun type(rvItem: NavTextRvItem) = R.layout.vh_nav_text_item
-//
-//    fun type(rvItem: IssueRvItem) = R.layout.vh_issue_single
-//
-//    fun type(rvItem: TextRvItem) = R.layout.vh_text_header
-//
-//    fun type(rvItem: IssueCompactRvItem) = R.layout.vh_issue_compact
-//
-//    fun type(rvItem: IssueDetailedRvItem) = R.layout.vh_issue_detailed
-//
-//    fun type(rvItem: IssueFilterSuggestionRvItem) = R.layout.vh_issue_filter_suggestion
-//
-//    fun type(rvItem: IssueFilterSuggestionChildRvItem) = R.layout.vh_issue_filter_suggestion_child
-//
-//    fun type(rvItem: IssueFilterSuggestionEmpty) = R.layout.vh_issue_filter_suggestion_empty
-//
-//    fun type(rvItem: IssueFullSearchSuggestionRvItem) = R.layout.vh_suggestion_full_search
+
+    fun type(rvItem: IssueRvItem) = R.layout.vh_issue_single
+
+    fun type(rvItem: TextRvItem) = R.layout.vh_text_header
+
+    fun type(rvItem: IssueCompactRvItem) = R.layout.vh_issue_compact
+
+    fun type(rvItem: IssueDetailedRvItem) = R.layout.vh_issue_detailed
+
+    fun type(rvItem: IssueFilterSuggestionRvItem) = R.layout.vh_issue_filter_suggestion
+
+    fun type(rvItem: IssueFilterSuggestionChildRvItem) = R.layout.vh_issue_filter_suggestion_child
+
+    fun type(rvItem: IssueFilterSuggestionEmpty) = R.layout.vh_issue_filter_suggestion_empty
+
+    fun type(rvItem: IssueFullSearchSuggestionRvItem) = R.layout.vh_suggestion_full_search
 //
 //    fun type(rvItem: BaseSelectRvItem) = R.layout.vh_select_list
 //
 //    fun type(rvItem: SelectUserRvItem) = R.layout.vh_select_user
 
 }
+
+open class EndlessScrollListener(private val block: () -> Unit) : RecyclerView.OnScrollListener() {
+
+    var loading = false
+    var endOfList = false
+
+    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        super.onScrolled(recyclerView, dx, dy)
+        val visibleItemCount = recyclerView.childCount
+        val totalItemCount = recyclerView.layoutManager?.itemCount ?: 0
+        val firstVisibleItem = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+        val loadMore = firstVisibleItem + visibleItemCount == totalItemCount
+        if (loadMore && !loading && !endOfList) {
+            loading = true
+            block()
+        }
+    }
+
+}
+
+
 

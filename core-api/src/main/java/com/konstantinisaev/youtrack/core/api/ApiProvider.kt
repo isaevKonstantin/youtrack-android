@@ -11,7 +11,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-internal val DEFAULT_ISSUE_LIST_SIZE = 20
+const val DEFAULT_ISSUE_LIST_SIZE = 20
 
 class ApiProvider {
 

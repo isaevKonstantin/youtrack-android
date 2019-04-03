@@ -4,9 +4,12 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
 import com.konstantinisaev.youtrack.core.api.CurrentUserDTO
+import com.konstantinisaev.youtrack.issuelist.viewmodels.ProfileViewModel
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.viewmodels.BaseViewModel
+import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import kotlinx.coroutines.*
+import org.assertj.core.api.Assertions
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -18,7 +21,7 @@ import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
-@RunWith(MockitoJUnitRunner::class)
+@RunWith(MockitoJUnitRunner.Silent::class)
 @Suppress("DeferredResultUnused")
 class ProfileViewModelTest {
 
@@ -32,15 +35,13 @@ class ProfileViewModelTest {
     @Mock
     private lateinit var basePreferencesAdapter: BasePreferencesAdapter
 
-    @ExperimentalCoroutinesApi
-    val testCoroutineContextHolder = object : CoroutineContextHolder() {
-        override fun io(): CoroutineDispatcher = Dispatchers.Unconfined
-        override fun main(): CoroutineDispatcher = Dispatchers.Unconfined
-    }
-
     @Before
     fun setUp() {
-        profileViewModel = ProfileViewModel(apiProvider,basePreferencesAdapter, testCoroutineContextHolder)
+        profileViewModel = ProfileViewModel(
+            apiProvider,
+            basePreferencesAdapter,
+            testCoroutineContextHolder
+        )
     }
 
     @Test
@@ -48,6 +49,7 @@ class ProfileViewModelTest {
         Mockito.`when`(basePreferencesAdapter.getUrl()).thenReturn("")
         Mockito.`when`(apiProvider.getProfile(ArgumentMatchers.anyString())).thenThrow(RuntimeException("test"))
         profileViewModel.doAsyncRequest()
+        Assertions.assertThat(profileViewModel.lastViewState).isExactlyInstanceOf(ViewState.Error::class.java)
     }
 
     @Test
@@ -55,5 +57,12 @@ class ProfileViewModelTest {
         Mockito.`when`(basePreferencesAdapter.getUrl()).thenReturn("")
         Mockito.`when`(apiProvider.getProfile(ArgumentMatchers.anyString())).thenReturn(GlobalScope.async {  CurrentUserDTO("","","","",false,false,"","") })
         profileViewModel.doAsyncRequest()
+        Assertions.assertThat(profileViewModel.lastViewState).isExactlyInstanceOf(ViewState.Success::class.java)
     }
+}
+
+@ExperimentalCoroutinesApi
+val testCoroutineContextHolder = object : CoroutineContextHolder() {
+    override fun io(): CoroutineDispatcher = Dispatchers.Unconfined
+    override fun main(): CoroutineDispatcher = Dispatchers.Unconfined
 }

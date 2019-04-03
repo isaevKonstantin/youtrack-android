@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.konstantinisaev.youtrack.core.api.CurrentUserDTO
 import com.konstantinisaev.youtrack.core.rv.*
 import com.konstantinisaev.youtrack.issuelist.di.IssueListDiProvider
+import com.konstantinisaev.youtrack.issuelist.viewmodels.ProfileViewModel
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
 import com.konstantinisaev.youtrack.ui.base.utils.DeviceUtils

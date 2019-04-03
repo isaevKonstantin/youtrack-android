@@ -1,4 +1,4 @@
-package com.konstantinisaev.youtrack.issuelist
+package com.konstantinisaev.youtrack.issuelist.viewmodels
 
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
