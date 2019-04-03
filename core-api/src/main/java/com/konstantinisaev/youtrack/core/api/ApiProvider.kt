@@ -74,8 +74,8 @@ class ApiProvider {
 
     fun getProfile(baseUrl: String) = httpRepository.getCurrentUser("$baseUrl${ApiEndpoints.GET_CURRENT_USER.url}")
 
-//    fun getProjects(baseUrl: String) = httpRepository.getProjects("$baseUrl${ApiEndpoints.GET_PROJECTS.url}")
-//
+    fun getProjects(baseUrl: String) = httpRepository.getProjects("$baseUrl${ApiEndpoints.GET_PROJECTS.url}")
+
 //    fun getAllIssues(baseUrl: String, query: String? = null, top: Int = DEFAULT_ISSUE_LIST_SIZE, skip: Int = 0) = httpRepository.getAllIssues("$baseUrl${ApiEndpoints.GET_ALL_ISSUES.url}",query = query,top =  top,skip = skip)
 //
 //    fun getIssuesFilterIntellisense(baseUrl: String, query: String? = null, caret: Int? = null, optionsLimit: Int = DEFAULT_ISSUE_LIST_SIZE) =

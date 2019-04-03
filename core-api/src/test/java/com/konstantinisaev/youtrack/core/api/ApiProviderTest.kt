@@ -25,6 +25,15 @@ class ApiProviderTest {
         }
     }
 
+    @Test
+    fun `should return not empty project list`() {
+        runBlocking {
+            apiProvider.enableUserCredentialsInHeader(authTokenDTO.accessToken, authTokenDTO.tokenType)
+            val resp = apiProvider.getProjects("${testUrl}${ApiEndpoints.YOUTRACK.url}/").await()
+            assertThat(resp).isNotEmpty
+        }
+    }
+
     companion object {
 
         private val apiProvider = ApiProvider()
