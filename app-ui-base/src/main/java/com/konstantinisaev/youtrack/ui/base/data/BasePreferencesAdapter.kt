@@ -10,6 +10,7 @@ private const val COMMON_PREFERENCE_NAME = "base_preferences"
 private const val SERVER_URL = "base_server_url"
 private const val SERVER_CONFIG = "base_server_config"
 private const val TOKEN = "token"
+private const val ISSUE_LIST_TYPE = "issue_list_type"
 
 class BasePreferencesAdapter private constructor() {
 
@@ -66,5 +67,11 @@ class BasePreferencesAdapter private constructor() {
         }
         val tokenStr = gson.toJson(authToken)
         sharedPreferences.edit().putString(TOKEN,tokenStr).apply()
+    }
+
+    fun getIssueListType() = sharedPreferences.getInt(ISSUE_LIST_TYPE,0)
+
+    fun setIssueListType(type: Int){
+        sharedPreferences.edit().putInt(ISSUE_LIST_TYPE,type).apply()
     }
 }

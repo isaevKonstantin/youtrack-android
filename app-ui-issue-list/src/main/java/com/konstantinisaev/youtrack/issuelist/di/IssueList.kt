@@ -6,6 +6,7 @@ import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
 import com.konstantinisaev.youtrack.issuelist.IssueListContainerFragment
 import com.konstantinisaev.youtrack.issuelist.IssueListFragment
 import com.konstantinisaev.youtrack.issuelist.NavigationMenuFragment
+import com.konstantinisaev.youtrack.issuelist.viewmodels.IssueFilterViewModel
 import com.konstantinisaev.youtrack.issuelist.viewmodels.IssueListViewModel
 import com.konstantinisaev.youtrack.issuelist.viewmodels.ProfileViewModel
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
@@ -68,6 +69,11 @@ abstract class IssueListModelsModule {
     @IntoMap
     @ViewModelKey(IssueListViewModel::class)
     internal abstract fun bindIssueListViewModel(issueListViewModel: IssueListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(IssueFilterViewModel::class)
+    internal abstract fun bindIssueFilterViewModel(issueFilterViewModel: IssueFilterViewModel): ViewModel
 
 }
 

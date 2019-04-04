@@ -2,13 +2,16 @@ package com.konstantinisaev.youtrack.issuelist
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.konstantinisaev.youtrack.core.api.DEFAULT_ISSUE_LIST_SIZE
 import com.konstantinisaev.youtrack.core.rv.*
 import com.konstantinisaev.youtrack.issuelist.di.IssueListDiProvider
+import com.konstantinisaev.youtrack.issuelist.viewmodels.IssueFilterViewModel
 import com.konstantinisaev.youtrack.issuelist.viewmodels.IssueListParam
+import com.konstantinisaev.youtrack.issuelist.viewmodels.IssueListType
 import com.konstantinisaev.youtrack.issuelist.viewmodels.IssueListViewModel
 import com.konstantinisaev.youtrack.ui.base.models.Issue
 import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
@@ -19,13 +22,16 @@ import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import kotlinx.android.synthetic.main.fragment_issue_list.*
 import java.util.*
 
+@Suppress("UNCHECKED_CAST")
 class IssueListFragment : BaseFragment() {
 
     override val layoutId = R.layout.fragment_issue_list
 
     private lateinit var issueListRvAdapter: BaseRvAdapter
     lateinit var issueListViewModel: IssueListViewModel
+    lateinit var issueFilterViewModel: IssueFilterViewModel
 
+    private val issues = mutableListOf<Issue>()
     private var filterReq = ""
     private var sortReq = ""
     private val endlessScrollListener = object : EndlessScrollListener({
@@ -47,6 +53,7 @@ class IssueListFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         IssueListDiProvider.getInstance().injectFragment(this)
         issueListViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueListViewModel::class.java]
+        issueFilterViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueFilterViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -68,8 +75,20 @@ class IssueListFragment : BaseFragment() {
             if(issues.size < DEFAULT_ISSUE_LIST_SIZE){
                 endlessScrollListener.endOfList = true
             }
+            this.issues.addAll(issues)
             updateAdapter(issues)
         }
+        imgIssueListSwitcher.setOnClickListener {
+            issueFilterViewModel.doAsyncRequest()
+        }
+
+        registerHandler(ViewState.Success::class.java,issueFilterViewModel){
+            updateListType(it.data as IssueListType)
+            issueListRvAdapter.clear()
+            updateAdapter(issues)
+        }
+
+        issueFilterViewModel.doAsyncRequest()
         savedInstanceState?: requestIssueList()
     }
 
@@ -93,7 +112,7 @@ class IssueListFragment : BaseFragment() {
         val formattedReq = buildReq()
 //        issueListViewModel.getAllIssuesCount(filter = formattedReq)
         issueListViewModel.doAsyncRequest(IssueListParam(filter = formattedReq))
-//        issues.clear()
+        issues.clear()
         issueListRvAdapter.clear()
         pbIssueList.visibility = View.VISIBLE
     }
@@ -137,21 +156,79 @@ class IssueListFragment : BaseFragment() {
 
 
     private fun mapIssueRvItems(tmpList: List<Issue>) : List<BaseRvItem> {
-        return tmpList.map {
-            IssueRvItem(
-                issueCommonRvData = IssueCommonRvData(
-                    it.idReadable,
-                    it.summary,
-                    it.priority.value.name,
-                    it.mappedUpdatedDate?.toHourAndMinutesString().orEmpty(),
-                    it.watchers.hasStar,
-                    it.priority.value.fieldColor,
-                    it.isDone()
-                )
-            )
+        return when(issueFilterViewModel.issueListType){
+            IssueListType.COMPACT_VIEW ->
+                tmpList.map {
+                    IssueCompactRvItem(
+                        issueCommonRvData = IssueCommonRvData(
+                            it.idReadable,
+                            it.summary,
+                            it.priority.value.name,
+                            it.mappedUpdatedDate?.toHourAndMinutesString().orEmpty(),
+                            it.watchers.hasStar,
+                            it.priority.value.fieldColor,
+                            it.isDone()),
+                        issueStateRvData = IssueStateRvData(
+                            it.type.value.name,
+                            it.state.value.name,
+                            it.assignee.value.name,
+                            it.reporter.name,
+                            it.type.value.fieldColor,
+                            it.state.value.fieldColor))
+                }
+            IssueListType.SINGLE_VIEW ->
+                tmpList.map {
+                    IssueRvItem(
+                        issueCommonRvData = IssueCommonRvData(
+                            it.idReadable,
+                            it.summary,
+                            it.priority.value.name,
+                            it.mappedUpdatedDate?.toHourAndMinutesString().orEmpty(),
+                            it.watchers.hasStar,
+                            it.priority.value.fieldColor,
+                            it.isDone()))
+                }
+            IssueListType.DETAILED_VIEW ->
+                tmpList.map {
+                    IssueDetailedRvItem(
+                        issueCommonRvData = IssueCommonRvData(it.idReadable,it.summary,
+                            it.priority.value.name,
+                            it.mappedUpdatedDate?.toHourAndMinutesString().orEmpty(),
+                            it.watchers.hasStar,
+                            it.priority.value.fieldColor,
+                            it.isDone()),
+                        issueStateRvData = IssueStateRvData(it.type.value.name,
+                            it.state.value.name,
+                            it.assignee.value.name,
+                            it.reporter.name,
+                            it.type.value.fieldColor,
+                            it.state.value.fieldColor),
+                        issueDetailsRvData = IssueDetailsRvData(it.comments.size.toString(),
+                            it.spentTime.value.presentation,
+                            it.description,
+                            it.spentTime.value.minutes,
+                            it.estimation.value.minutes)
+                    )
+                }
+            else -> emptyList()
         }
+
     }
 
+    private fun updateListType(currentListType: IssueListType){
+        val drwId = when(currentListType){
+            IssueListType.SINGLE_VIEW -> {
+                R.drawable.drw_single_view_filter
+            }
+            IssueListType.COMPACT_VIEW -> {
+                R.drawable.drw_compact_view_filter
+            }
+            else -> {
+                R.drawable.drw_detailed_view_filter
+            }
+        }
+        imgIssueListSwitcher.setImageDrawable(ContextCompat.getDrawable(checkNotNull(context), drwId))
+    }
 
     private fun initRv() {
         issueListRvAdapter = BaseRvAdapter(object : BaseRvClickListener {
