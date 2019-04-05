@@ -7,12 +7,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.konstantinisaev.youtrack.core.api.DEFAULT_ISSUE_LIST_SIZE
+import com.konstantinisaev.youtrack.core.api.IssueCountDTO
 import com.konstantinisaev.youtrack.core.rv.*
 import com.konstantinisaev.youtrack.issuelist.di.IssueListDiProvider
-import com.konstantinisaev.youtrack.issuelist.viewmodels.IssueFilterViewModel
-import com.konstantinisaev.youtrack.issuelist.viewmodels.IssueListParam
-import com.konstantinisaev.youtrack.issuelist.viewmodels.IssueListType
-import com.konstantinisaev.youtrack.issuelist.viewmodels.IssueListViewModel
+import com.konstantinisaev.youtrack.issuelist.viewmodels.*
 import com.konstantinisaev.youtrack.ui.base.models.Issue
 import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
 import com.konstantinisaev.youtrack.ui.base.utils.DeviceUtils
@@ -22,14 +20,15 @@ import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import kotlinx.android.synthetic.main.fragment_issue_list.*
 import java.util.*
 
-@Suppress("UNCHECKED_CAST")
+@Suppress("UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
 class IssueListFragment : BaseFragment() {
 
     override val layoutId = R.layout.fragment_issue_list
 
     private lateinit var issueListRvAdapter: BaseRvAdapter
     lateinit var issueListViewModel: IssueListViewModel
-    lateinit var issueFilterViewModel: IssueFilterViewModel
+    lateinit var issueListTypeViewModel: IssueListTypeViewModel
+    lateinit var issueCountViewModel: IssueCountViewModel
 
     private val issues = mutableListOf<Issue>()
     private var filterReq = ""
@@ -53,7 +52,8 @@ class IssueListFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         IssueListDiProvider.getInstance().injectFragment(this)
         issueListViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueListViewModel::class.java]
-        issueFilterViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueFilterViewModel::class.java]
+        issueListTypeViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueListTypeViewModel::class.java]
+        issueCountViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueCountViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -79,16 +79,25 @@ class IssueListFragment : BaseFragment() {
             updateAdapter(issues)
         }
         imgIssueListSwitcher.setOnClickListener {
-            issueFilterViewModel.doAsyncRequest()
+            issueListTypeViewModel.doAsyncRequest()
         }
 
-        registerHandler(ViewState.Success::class.java,issueFilterViewModel){
+        registerHandler(ViewState.Success::class.java,issueListTypeViewModel){
             updateListType(it.data as IssueListType)
             issueListRvAdapter.clear()
             updateAdapter(issues)
         }
 
-        issueFilterViewModel.doAsyncRequest()
+        registerHandler(ViewState.Error::class.java,issueCountViewModel){
+            tvFilterCountBody.visibility = View.INVISIBLE
+        }
+        registerHandler(ViewState.Success::class.java,issueCountViewModel){
+            val value = (it.data as IssueCountDTO).value
+            tvFilterCountBody.text = getString(R.string.issues_list_count_format,value.toString())
+            tvFilterCountBody.visibility = View.VISIBLE
+        }
+
+        issueListTypeViewModel.doAsyncRequest()
         savedInstanceState?: requestIssueList()
     }
 
@@ -110,7 +119,7 @@ class IssueListFragment : BaseFragment() {
 
     private fun requestIssueList(){
         val formattedReq = buildReq()
-//        issueListViewModel.getAllIssuesCount(filter = formattedReq)
+        issueCountViewModel.doAsyncRequest(formattedReq)
         issueListViewModel.doAsyncRequest(IssueListParam(filter = formattedReq))
         issues.clear()
         issueListRvAdapter.clear()
@@ -156,7 +165,7 @@ class IssueListFragment : BaseFragment() {
 
 
     private fun mapIssueRvItems(tmpList: List<Issue>) : List<BaseRvItem> {
-        return when(issueFilterViewModel.issueListType){
+        return when(issueListTypeViewModel.issueListType){
             IssueListType.COMPACT_VIEW ->
                 tmpList.map {
                     IssueCompactRvItem(

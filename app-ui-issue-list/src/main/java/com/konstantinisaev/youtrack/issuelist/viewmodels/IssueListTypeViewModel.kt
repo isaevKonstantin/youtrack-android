@@ -7,8 +7,8 @@ import com.konstantinisaev.youtrack.ui.base.viewmodels.BaseViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import javax.inject.Inject
 
-class IssueFilterViewModel @Inject constructor(private val basePreferencesAdapter: BasePreferencesAdapter,
-                                               coroutineHolder: CoroutineContextHolder
+class IssueListTypeViewModel @Inject constructor(private val basePreferencesAdapter: BasePreferencesAdapter,
+                                                 coroutineHolder: CoroutineContextHolder
 ) : BaseViewModel<String>(coroutineHolder){
 
     var issueListType: IssueListType? = null
