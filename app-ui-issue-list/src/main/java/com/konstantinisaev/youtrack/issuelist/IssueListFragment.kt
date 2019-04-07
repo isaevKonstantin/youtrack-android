@@ -67,13 +67,19 @@ class IssueListFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initRv()
+        initFilter()
+
         fabAddIssue.setOnClickListener {
         }
-        val openFilterClickListener = View.OnClickListener {
-            issueListRouter.showFilter()
+        imgIssueListSwitcher.setOnClickListener {
+            issueListTypeViewModel.doAsyncRequest()
         }
-        tvFilterSortHeader.setOnClickListener(openFilterClickListener)
-        tvFilterSortBody.setOnClickListener(openFilterClickListener)
+
+        registerHandler(ViewState.Success::class.java,issueListTypeViewModel){
+            updateListType(it.data as IssueListType)
+            issueListRvAdapter.clear()
+            updateAdapter(issues)
+        }
 
         registerHandler(ViewState.Error::class.java,issueListViewModel){
             pbIssueList.visibility = View.GONE
@@ -89,10 +95,6 @@ class IssueListFragment : BaseFragment() {
             this.issues.addAll(issues)
             updateAdapter(issues)
         }
-        imgIssueListSwitcher.setOnClickListener {
-            issueListTypeViewModel.doAsyncRequest()
-        }
-
 
         registerHandler(ViewState.Error::class.java,issueCountViewModel){
             tvFilterCountBody.visibility = View.INVISIBLE
@@ -101,12 +103,6 @@ class IssueListFragment : BaseFragment() {
             val value = (it.data as IssueCountDTO).value
             tvFilterCountBody.text = getString(R.string.issues_list_count_format,value.toString())
             tvFilterCountBody.visibility = View.VISIBLE
-        }
-
-        registerHandler(ViewState.Success::class.java,issueListTypeViewModel){
-            updateListType(it.data as IssueListType)
-            issueListRvAdapter.clear()
-            updateAdapter(issues)
         }
 
         registerHandler(ViewState.Success::class.java,issueFilterViewModel){
@@ -264,4 +260,22 @@ class IssueListFragment : BaseFragment() {
         rvIssues.adapter = issueListRvAdapter
         rvIssues.addOnScrollListener(endlessScrollListener)
     }
+
+    private fun initFilter() {
+        val openFilterClickListener = View.OnClickListener {
+            issueListRouter.showFilter()
+        }
+        val openSortClickListener = View.OnClickListener {
+            issueListRouter.showSort()
+        }
+        tvFilterCountHeader.setOnClickListener(openFilterClickListener)
+        tvFilterCountBody.setOnClickListener(openFilterClickListener)
+        imgFilterCount.setOnClickListener(openFilterClickListener)
+
+        tvFilterSortBody.setOnClickListener(openSortClickListener)
+        tvFilterSortHeader.setOnClickListener(openSortClickListener)
+        imgFilterSort.setOnClickListener(openSortClickListener)
+
+    }
+
 }

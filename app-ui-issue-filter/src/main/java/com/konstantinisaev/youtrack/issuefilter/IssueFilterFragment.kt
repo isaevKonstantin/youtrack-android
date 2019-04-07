@@ -1,4 +1,4 @@
-package com.konstantinisaev.youtrack.issuelist
+package com.konstantinisaev.youtrack.issuefilter
 
 import android.os.Bundle
 import android.view.View

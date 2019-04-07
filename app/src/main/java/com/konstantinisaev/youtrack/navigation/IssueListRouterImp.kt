@@ -1,7 +1,7 @@
 package com.konstantinisaev.youtrack.navigation
 
 import androidx.fragment.app.Fragment
-import com.konstantinisaev.youtrack.issuelist.IssueFilterFragment
+import com.konstantinisaev.youtrack.issuefilter.IssueFilterFragment
 import com.konstantinisaev.youtrack.ui.base.utils.IssueListRouter
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.Navigator
@@ -25,7 +25,7 @@ class IssueListRouterImp @Inject constructor(private val cicerone: Cicerone<Rout
     }
 
     override fun showSort() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
 }
