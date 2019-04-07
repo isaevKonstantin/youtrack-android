@@ -7,11 +7,11 @@ import com.konstantinisaev.youtrack.issuelist.IssueListContainerFragment
 import com.konstantinisaev.youtrack.ui.auth.AuthFragment
 import com.konstantinisaev.youtrack.ui.auth.CheckUrlFragment
 import com.konstantinisaev.youtrack.ui.auth.SplashFragment
-import com.konstantinisaev.youtrack.ui.auth.di.AuthDiProvider
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.utils.AuthRouter
 import com.konstantinisaev.youtrack.ui.base.utils.Base64Converter
 import ru.terrakok.cicerone.Cicerone
+import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 import javax.inject.Inject
@@ -20,8 +20,8 @@ class AuthRouterImp @Inject constructor(private val cicerone: Cicerone<Router>, 
                                         apiProvider: ApiProvider, base64Converter: Base64Converter,
                                         coroutineContextHolder: CoroutineContextHolder) : AuthRouter {
 
-    init {
-        AuthDiProvider.init(this,apiProvider,basePreferencesAdapter,coroutineContextHolder,base64Converter)
+    override fun setNavigator(navigator: Navigator) {
+        cicerone.navigatorHolder.setNavigator(navigator)
     }
 
     override fun showServerUrl() {

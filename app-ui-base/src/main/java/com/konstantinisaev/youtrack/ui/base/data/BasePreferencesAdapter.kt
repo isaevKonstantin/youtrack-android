@@ -11,6 +11,8 @@ private const val SERVER_URL = "base_server_url"
 private const val SERVER_CONFIG = "base_server_config"
 private const val TOKEN = "token"
 private const val ISSUE_LIST_TYPE = "issue_list_type"
+private const val SAVED_QUERY = "saved_query"
+private const val SORT_QUERY = "sort_query"
 
 class BasePreferencesAdapter private constructor() {
 
@@ -73,5 +75,17 @@ class BasePreferencesAdapter private constructor() {
 
     fun setIssueListType(type: Int){
         sharedPreferences.edit().putInt(ISSUE_LIST_TYPE,type).apply()
+    }
+
+    fun getSavedQuery() = sharedPreferences.getString(SAVED_QUERY,"").orEmpty()
+
+    fun setSavedQuery(query: String){
+        sharedPreferences.edit().putString(SAVED_QUERY,query).apply()
+    }
+
+    fun getSortQuery() = sharedPreferences.getString(SORT_QUERY,"").orEmpty()
+
+    fun setSortQuery(query: String){
+        sharedPreferences.edit().putString(SORT_QUERY,query).apply()
     }
 }

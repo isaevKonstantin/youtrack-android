@@ -14,11 +14,13 @@ import com.konstantinisaev.youtrack.issuelist.viewmodels.*
 import com.konstantinisaev.youtrack.ui.base.models.Issue
 import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
 import com.konstantinisaev.youtrack.ui.base.utils.DeviceUtils
+import com.konstantinisaev.youtrack.ui.base.utils.IssueListRouter
 import com.konstantinisaev.youtrack.ui.base.utils.toFormattedString
 import com.konstantinisaev.youtrack.ui.base.utils.toHourAndMinutesString
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import kotlinx.android.synthetic.main.fragment_issue_list.*
 import java.util.*
+import javax.inject.Inject
 
 @Suppress("UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
 class IssueListFragment : BaseFragment() {
@@ -29,6 +31,10 @@ class IssueListFragment : BaseFragment() {
     lateinit var issueListViewModel: IssueListViewModel
     lateinit var issueListTypeViewModel: IssueListTypeViewModel
     lateinit var issueCountViewModel: IssueCountViewModel
+    lateinit var issueFilterViewModel: IssueFilterViewModel
+
+    @Inject
+    lateinit var issueListRouter: IssueListRouter
 
     private val issues = mutableListOf<Issue>()
     private var filterReq = ""
@@ -54,15 +60,20 @@ class IssueListFragment : BaseFragment() {
         issueListViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueListViewModel::class.java]
         issueListTypeViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueListTypeViewModel::class.java]
         issueCountViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueCountViewModel::class.java]
+        issueFilterViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueFilterViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initRv()
-        initFilter(view)
         fabAddIssue.setOnClickListener {
         }
+        val openFilterClickListener = View.OnClickListener {
+            issueListRouter.showFilter()
+        }
+        tvFilterSortHeader.setOnClickListener(openFilterClickListener)
+        tvFilterSortBody.setOnClickListener(openFilterClickListener)
 
         registerHandler(ViewState.Error::class.java,issueListViewModel){
             pbIssueList.visibility = View.GONE
@@ -82,11 +93,6 @@ class IssueListFragment : BaseFragment() {
             issueListTypeViewModel.doAsyncRequest()
         }
 
-        registerHandler(ViewState.Success::class.java,issueListTypeViewModel){
-            updateListType(it.data as IssueListType)
-            issueListRvAdapter.clear()
-            updateAdapter(issues)
-        }
 
         registerHandler(ViewState.Error::class.java,issueCountViewModel){
             tvFilterCountBody.visibility = View.INVISIBLE
@@ -97,24 +103,30 @@ class IssueListFragment : BaseFragment() {
             tvFilterCountBody.visibility = View.VISIBLE
         }
 
+        registerHandler(ViewState.Success::class.java,issueListTypeViewModel){
+            updateListType(it.data as IssueListType)
+            issueListRvAdapter.clear()
+            updateAdapter(issues)
+        }
+
+        registerHandler(ViewState.Success::class.java,issueFilterViewModel){
+            val result = it.data as IssueFilterViewModel.IssueFilterResultDTO
+            filterReq = result.filterReq
+            sortReq = result.sortReq
+            if(sortReq.isNotEmpty()){
+                tvFilterSortBody.text = sortReq
+                tvFilterSortBody.visibility = View.VISIBLE
+            }else{
+                tvFilterSortBody.text = ""
+                tvFilterSortBody.visibility = View.GONE
+            }
+            filterReq.trim()
+            sortReq.trim()
+        }
+
         issueListTypeViewModel.doAsyncRequest()
+        issueFilterViewModel.doAsyncRequest()
         savedInstanceState?: requestIssueList()
-    }
-
-    private fun initFilter(view: View) {
-//        issueFilterViewController = IssueFilterViewController(view, PreferenceHelper.getInstance(context!!).getIssueListType(), this)
-//        filterReq = preferenceHelper.getSavedQuery()
-//        sortReq = preferenceHelper.getSortQuery()
-//        if(sortReq.isNotEmpty()){
-//            tvFilterSortBody.text = sortReq
-//            tvFilterSortBody.visibility = View.VISIBLE
-//        }else{
-//            tvFilterSortBody.text = ""
-//            tvFilterSortBody.visibility = View.GONE
-//        }
-//        filterReq.trim()
-//        sortReq.trim()
-
     }
 
     private fun requestIssueList(){

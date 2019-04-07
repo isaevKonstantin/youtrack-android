@@ -7,10 +7,9 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.konstantinisaev.youtrack.issuelist.di.IssueListDiProvider
 import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
+import com.konstantinisaev.youtrack.ui.base.utils.IssueListRouter
 import com.konstantinisaev.youtrack.ui.base.utils.MainRouter
 import kotlinx.android.synthetic.main.fragment_issue_list_container.*
-import ru.terrakok.cicerone.Cicerone
-import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import javax.inject.Inject
 
@@ -18,12 +17,13 @@ class IssueListContainerFragment : BaseFragment() {
 
     override val layoutId = R.layout.fragment_issue_list_container
 
-    private var mToggle: ActionBarDrawerToggle? = null
+    private var leftToggle: ActionBarDrawerToggle? = null
 
     @Inject
     lateinit var mainRouter: MainRouter
+
     @Inject
-    lateinit var cicerone: Cicerone<Router>
+    lateinit var issueListRouter: IssueListRouter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,18 +35,21 @@ class IssueListContainerFragment : BaseFragment() {
 
         setToolbarWithBackNavigation(toolbar,getString(R.string.nav_rv_issues))
         initDrawer()
-        cicerone.navigatorHolder.setNavigator(SupportAppNavigator(activity,childFragmentManager,R.id.flContainer))
+        mainRouter.setNavigator(SupportAppNavigator(activity,childFragmentManager,R.id.flContainer))
+        issueListRouter.setNavigator(SupportAppNavigator(activity,childFragmentManager,R.id.flFilter))
         childFragmentManager.addOnBackStackChangedListener {
             if(layDrawer.isDrawerOpen(GravityCompat.START)){
                 layDrawer.closeDrawer(GravityCompat.START)
+                updateToolbar(childFragmentManager.findFragmentById(R.id.flContainer))
+            }else if(!layDrawer.isDrawerOpen(GravityCompat.END) && childFragmentManager.findFragmentById(R.id.flFilter) != null){
+                layDrawer.openDrawer(GravityCompat.END)
             }
-            updateToolbar(childFragmentManager.findFragmentById(R.id.flContainer))
         }
         savedInstanceState ?: mainRouter.showIssueList()
     }
 
     private fun initDrawer() {
-        mToggle = object : ActionBarDrawerToggle(
+        leftToggle = object : ActionBarDrawerToggle(
             activity, layDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             override fun onDrawerOpened(drawerView: View) {
                 super.onDrawerOpened(nvMain)
@@ -56,7 +59,7 @@ class IssueListContainerFragment : BaseFragment() {
                 super.onDrawerClosed(nvMain)
             }
         }
-        val toggle = object : ActionBarDrawerToggle(
+        val rightToggle = object : ActionBarDrawerToggle(
             activity, layDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             override fun onDrawerOpened(drawerView: View) {
                 super.onDrawerOpened(flFilter)
@@ -66,10 +69,10 @@ class IssueListContainerFragment : BaseFragment() {
                 super.onDrawerClosed(flFilter)
             }
         }
-        mToggle!!.isDrawerIndicatorEnabled = true
-        layDrawer.addDrawerListener(mToggle!!)
-        layDrawer.addDrawerListener(toggle)
-        mToggle!!.syncState()
+        leftToggle!!.isDrawerIndicatorEnabled = true
+        layDrawer.addDrawerListener(leftToggle!!)
+        layDrawer.addDrawerListener(rightToggle)
+        leftToggle!!.syncState()
 
     }
 

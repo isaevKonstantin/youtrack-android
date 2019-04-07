@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:background="@android:color/white"
+	android:minWidth="280dp"
+	tools:context=".IssueFilterFragment">
+
+	<View
+		android:id="@+id/vFilterSplash"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintRight_toRightOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintBottom_toBottomOf="parent"
+		android:visibility="gone"
+		tools:visibility="visible"
+		android:background="@color/divider"
+		/>
+
+	<ProgressBar
+		android:id="@+id/pbFilterIssue"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:visibility="gone"
+		android:indeterminate="true"
+		tools:visibility="visible"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintRight_toRightOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintBottom_toBottomOf="parent"
+		/>
+
+
+	<com.google.android.material.appbar.AppBarLayout
+		android:id="@+id/layAppBar"
+		android:layout_width="0dp"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintRight_toRightOf="parent"
+		android:layout_height="?actionBarSize"
+		app:layout_constraintTop_toTopOf="parent"
+		>
+		<androidx.appcompat.widget.Toolbar
+			android:id="@+id/tlbFilter"
+			android:layout_width="match_parent"
+			android:layout_height="?actionBarSize"
+			app:theme = "@style/YouTrackMainTheme.Toolbar"
+			app:subtitleTextAppearance="@style/ToolbarFilterSubTitleAppearance"
+			/>
+	</com.google.android.material.appbar.AppBarLayout>
+
+	<androidx.recyclerview.widget.RecyclerView
+		android:id="@+id/rvIssueFilter"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		app:layout_constraintTop_toBottomOf="@id/layAppBar"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintRight_toRightOf="parent"
+		app:layout_constraintBottom_toTopOf="@id/vBottomDivider"
+		/>
+
+	<View
+		android:id="@+id/vBottomDivider"
+		android:layout_width="0dp"
+		android:layout_height="1dp"
+		android:background="@color/divider"
+		app:layout_constraintBottom_toTopOf="@id/tvResetFilterView"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintRight_toRightOf="parent"
+		/>
+
+	<TextView
+		android:id="@+id/tvResetFilterView"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/base_reset"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintRight_toLeftOf="@id/tvSubmitFilter"
+		android:paddingStart="16dp"
+		android:paddingEnd="16dp"
+		android:paddingBottom="10dp"
+		android:paddingTop="10dp"
+		style="@style/YouTrackMainTheme.TextViewMediumTextPrimaryColor"
+		android:textAllCaps="true"
+		/>
+
+	<TextView
+		android:id="@+id/tvSubmitFilter"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/base_submit"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintRight_toRightOf="parent"
+		app:layout_constraintLeft_toRightOf="@id/tvResetFilterView"
+		android:paddingStart="16dp"
+		android:paddingEnd="16dp"
+		android:paddingBottom="10dp"
+		android:paddingTop="10dp"
+		android:textColor="@color/primary"
+		style="@style/YouTrackMainTheme.TextViewMediumTextPrimaryColor"
+		android:textAllCaps="true"
+		/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

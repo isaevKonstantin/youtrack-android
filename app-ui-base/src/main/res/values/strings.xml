@@ -1,6 +1,10 @@
 <resources>
 
+    <string name="base_submit">Submit</string>
+    <string name="base_confirm">Confirm</string>
     <string name="base_send">Send</string>
+    <string name="base_reset">Reset</string>
+
     <string name="auth_check_url_invalid_error">Invalid url</string>
 
     <string name="http_error_unauthorized">Unauthorized error</string>

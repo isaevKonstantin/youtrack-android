@@ -1,6 +1,13 @@
 package com.konstantinisaev.youtrack.ui.base.utils
 
-interface AuthRouter {
+import ru.terrakok.cicerone.Navigator
+
+interface BaseRouter {
+
+    fun setNavigator(navigator: Navigator)
+}
+
+interface AuthRouter : BaseRouter{
 
     fun showSplash()
 
@@ -11,7 +18,7 @@ interface AuthRouter {
     fun showMain()
 }
 
-interface MainRouter {
+interface MainRouter : BaseRouter{
 
     fun showIssueList()
 
@@ -22,4 +29,12 @@ interface MainRouter {
     fun showAbout()
 
     fun showServerUrl()
+
+}
+
+interface IssueListRouter : BaseRouter{
+
+    fun showFilter()
+
+    fun showSort()
 }
