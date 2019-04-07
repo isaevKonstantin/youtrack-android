@@ -29,6 +29,7 @@ class NavigationMenuFragment : BaseFragment() {
     lateinit var mainRouter: MainRouter
     @Inject
     lateinit var basePreferencesAdapter: BasePreferencesAdapter
+    private var lastNavClickedStr = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +43,15 @@ class NavigationMenuFragment : BaseFragment() {
         navRvAdapter = BaseRvAdapter(object : BaseRvClickListener {
             override fun onItemClickListener(rvItem: BaseRvItem) {
                 val textRvItem = rvItem as NavTextRvItem
-                onChangeNavigationFragment(textRvItem.text)
+                if(lastNavClickedStr != textRvItem.text){
+                    onChangeNavigationFragment(textRvItem.text)
+                    lastNavClickedStr = textRvItem.text
+                }else{
+                    val fragment = activity?.supportFragmentManager?.findFragmentById(R.id.flContainer)
+                    if(fragment is IssueListContainerFragment){
+                        fragment.closeLeftDrawer()
+                    }
+                }
             }
         })
         rvNavigation.addItemDecoration(MarginItemDecoration(

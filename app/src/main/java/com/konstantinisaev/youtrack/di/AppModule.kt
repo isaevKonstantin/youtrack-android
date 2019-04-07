@@ -22,18 +22,18 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideAuthRouter(cicerone: Cicerone<Router>, base64Converter: Base64Converter, basePreferencesAdapter: BasePreferencesAdapter, apiProvider: ApiProvider, coroutineContextHolder: CoroutineContextHolder) : AuthRouter =
-        AuthRouterImp(cicerone,basePreferencesAdapter,apiProvider,base64Converter,coroutineContextHolder)
+    fun provideAuthRouter(cicerone: Cicerone<Router>) : AuthRouter =
+        AuthRouterImp(cicerone)
 
     @Singleton
     @Provides
-    fun provideMainRouter(cicerone: Cicerone<Router>, basePreferencesAdapter: BasePreferencesAdapter, apiProvider: ApiProvider, coroutineContextHolder: CoroutineContextHolder) : MainRouter =
-        MainRouterImp(cicerone,basePreferencesAdapter,apiProvider,coroutineContextHolder)
+    fun provideMainRouter(cicerone: Cicerone<Router>) : MainRouter =
+        MainRouterImp(cicerone)
 
     @Singleton
     @Provides
-    fun provideIssueListRouter(cicerone: Cicerone<Router>, basePreferencesAdapter: BasePreferencesAdapter, apiProvider: ApiProvider, coroutineContextHolder: CoroutineContextHolder) : IssueListRouter =
-        IssueListRouterImp(cicerone,basePreferencesAdapter,apiProvider,coroutineContextHolder)
+    fun provideIssueListRouter(cicerone: Cicerone<Router>) : IssueListRouter =
+        IssueListRouterImp(cicerone)
 
     @Singleton
     @Provides

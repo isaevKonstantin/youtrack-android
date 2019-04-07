@@ -1,14 +1,11 @@
 package com.konstantinisaev.youtrack.navigation
 
 import androidx.fragment.app.Fragment
-import com.konstantinisaev.youtrack.core.api.ApiProvider
-import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
 import com.konstantinisaev.youtrack.issuelist.AboutFragment
 import com.konstantinisaev.youtrack.issuelist.AgileBoardsFragment
 import com.konstantinisaev.youtrack.issuelist.IssueListFragment
 import com.konstantinisaev.youtrack.issuelist.SettingsFragment
 import com.konstantinisaev.youtrack.ui.auth.CheckUrlFragment
-import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.utils.MainRouter
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.Navigator
@@ -16,9 +13,7 @@ import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 import javax.inject.Inject
 
-class MainRouterImp @Inject constructor(private val cicerone: Cicerone<Router>, basePreferencesAdapter: BasePreferencesAdapter,
-                                        apiProvider: ApiProvider,
-                                        coroutineContextHolder: CoroutineContextHolder) : MainRouter{
+class MainRouterImp @Inject constructor(private val cicerone: Cicerone<Router>) : MainRouter {
 
     override fun setNavigator(navigator: Navigator) {
         cicerone.navigatorHolder.setNavigator(navigator)
@@ -30,9 +25,6 @@ class MainRouterImp @Inject constructor(private val cicerone: Cicerone<Router>, 
                 return CheckUrlFragment()
             }
         })
-    }
-
-    init {
     }
 
     override fun showIssueList() {

@@ -39,7 +39,7 @@ class IssueListContainerFragment : BaseFragment() {
         issueListRouter.setNavigator(SupportAppNavigator(activity,childFragmentManager,R.id.flFilter))
         childFragmentManager.addOnBackStackChangedListener {
             if(layDrawer.isDrawerOpen(GravityCompat.START)){
-                layDrawer.closeDrawer(GravityCompat.START)
+                closeLeftDrawer()
                 updateToolbar(childFragmentManager.findFragmentById(R.id.flContainer))
             }else if(!layDrawer.isDrawerOpen(GravityCompat.END) && childFragmentManager.findFragmentById(R.id.flFilter) != null){
                 layDrawer.openDrawer(GravityCompat.END)
@@ -93,6 +93,10 @@ class IssueListContainerFragment : BaseFragment() {
             is SettingsFragment -> toolbar.title = getString(R.string.nav_rv_settings)
             is AboutFragment -> toolbar.title = getString(R.string.nav_rv_about)
         }
+    }
+
+    fun closeLeftDrawer() {
+        layDrawer.closeDrawer(GravityCompat.START)
     }
 
 
