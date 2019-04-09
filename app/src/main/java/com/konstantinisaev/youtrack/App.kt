@@ -8,6 +8,7 @@ import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
 import com.konstantinisaev.youtrack.di.AppComponent
 import com.konstantinisaev.youtrack.di.AppModule
 import com.konstantinisaev.youtrack.di.DaggerAppComponent
+import com.konstantinisaev.youtrack.issuefilter.di.IssueFilterDiProvider
 import com.konstantinisaev.youtrack.issuelist.di.IssueListDiProvider
 import com.konstantinisaev.youtrack.ui.auth.di.AuthDiProvider
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
@@ -29,7 +30,7 @@ class App : MultiDexApplication() {
             appModule(AppModule()).build()
         val appMediator = ApplicationMediator()
         appComponent.injectApplicationMediator(appMediator)
-        appMediator.init()
+        appMediator.init(context)
         Settings.setDebugSettings(BuildConfig.DEBUG_SERVER_URL,BuildConfig.DEBUG_LOGIN,BuildConfig.DEBUG_PASSWORD)
     }
 }
@@ -51,9 +52,10 @@ class ApplicationMediator {
     @Inject
     lateinit var base64Converter: Base64Converter
 
-    fun init(){
-        IssueListDiProvider.init(mainRouter,issueListRouter,apiProvider,basePreferencesAdapter,coroutineContextHolder)
+    fun init(context: Context){
         AuthDiProvider.init(authRouter,apiProvider,basePreferencesAdapter,coroutineContextHolder,base64Converter)
+        IssueListDiProvider.init(mainRouter,issueListRouter,apiProvider,basePreferencesAdapter,coroutineContextHolder)
+        IssueFilterDiProvider.init(apiProvider,basePreferencesAdapter,coroutineContextHolder,context)
     }
 
 }

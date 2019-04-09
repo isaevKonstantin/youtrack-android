@@ -56,16 +56,13 @@ data class IssueCountDTO(val value: Int)
 //data class UpdateDraftDTO(private val id: String? = "", val value: Any)
 //
 //data class CreateIssueProjectDTO(private val name:String? = "Not selected",private val id: String?)
-//
-//data class RespIssueFilterIntellisense(val suggest: SuggestItems,val recent: List<FilterSuggest>,val highlight: List<FilterSuggest>)
-//
-//data class FilterSuggest(val styleClass: String?,@SerializedName("pre") val prefix: String?, @SerializedName("o") val option: String?,
-//                         @SerializedName("suf") val suffix: String?,@SerializedName("d") val description: String?,@SerializedName("hd") val htmlDescription: String?,
-//                         val caret: Int?, val completion: FilterCompletion, val match: FilterMatch)
-//
-//data class FilterCompletion(val start: Int,val end: String)
-//
-//data class FilterMatch(val start: Int,val end: String)
 
+data class FilterAutoCompleteDTO(@SerializedName("suggest") val suggestDTO: SuggestItemsDTO, val recent: List<FilterSuggestDTO>, val highlight: List<FilterSuggestDTO>)
 
-//data class SuggestItems(val items: List<FilterSuggest>)
+data class FilterSuggestDTO(val styleClass: String?, @SerializedName("pre") val prefix: String?, @SerializedName("o") val option: String?,
+                            @SerializedName("suf") val suffix: String?, @SerializedName("d") val description: String?, @SerializedName("hd") val htmlDescription: String?,
+                            val caret: Int?, val completion: FilterMatchDTO, val match: FilterMatchDTO)
+
+data class FilterMatchDTO(val start: Int, val end: String)
+
+data class SuggestItemsDTO(val items: List<FilterSuggestDTO>)

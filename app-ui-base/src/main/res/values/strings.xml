@@ -9,4 +9,9 @@
 
     <string name="http_error_unauthorized">Unauthorized error</string>
     <string name="error_runtime">Unexpected error</string>
+
+    <string name="issues_list_sort">Sort</string>
+    <string name="issues_list_filter">Filter</string>
+    <string name="issues_list_count_format">%s issues</string>
+
 </resources>

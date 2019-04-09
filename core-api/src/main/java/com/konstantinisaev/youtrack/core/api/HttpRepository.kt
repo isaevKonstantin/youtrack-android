@@ -6,6 +6,7 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 import retrofit2.http.Url
 
+@Suppress("DeferredIsResult")
 interface HttpRepository {
 
     @GET("")
@@ -32,10 +33,10 @@ interface HttpRepository {
     @GET("")
     fun getAllIssues(@Url url: String, @Query("query") query: String? = null,@Query("\$top") top: Int = DEFAULT_ISSUE_LIST_SIZE,@Query("\$skip") skip: Int = 0, @Query("fields") fields: String? = Fields.ISSUE_LIST) : Deferred<List<IssueDTO>>
 
-//    @GET("")
-//    fun getIssuesFilterSuggestions(@Url url: String, @Query("query") filter: String? = null, @Query("caret") caret: Int? = null,
-//                                   @Query("optionsLimit") optionsLimit: Int? = DEFAULT_ISSUE_LIST_SIZE) : Deferred<Response<RespIssueFilterIntellisense>>
-//
+    @GET("")
+    fun getIssuesFilterSuggestions(@Url url: String, @Query("query") filter: String? = null, @Query("caret") caret: Int? = null,
+                                   @Query("optionsLimit") optionsLimit: Int? = DEFAULT_ISSUE_LIST_SIZE) : Deferred<FilterAutoCompleteDTO>
+
     @GET("")
     fun getAllIssuesCount(@Url url: String, @Query("filter") filter: String? = null) : Deferred<IssueCountDTO>
 

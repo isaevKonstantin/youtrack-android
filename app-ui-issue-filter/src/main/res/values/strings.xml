@@ -1,3 +1,20 @@
 <resources>
-    <string name="app_name">app_ui_issue_filter</string>
+    <string name="filter_suggestion_empty">Empty</string>
+
+    <string-array name="issue_filter_arr">
+        <item>project</item>
+        <item>tag</item>
+        <item>created</item>
+        <item>updated</item>
+        <item>updater</item>
+        <item>resolved data</item>
+        <item>reporter</item>
+        <item>voter</item>
+        <item>assignee</item>
+        <item>priority</item>
+        <item>sprints</item>
+        <item>state</item>
+        <item>type</item>
+    </string-array>
+
 </resources>

@@ -80,8 +80,8 @@ abstract class IssueListModelsModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(IssueFilterViewModel::class)
-    internal abstract fun bindIssueFilterViewModel(issueFilterViewModel: IssueFilterViewModel): ViewModel
+    @ViewModelKey(IssueSavedFilterViewModel::class)
+    internal abstract fun bindIssueFilterViewModel(issueSavedFilterViewModel: IssueSavedFilterViewModel): ViewModel
 
 }
 

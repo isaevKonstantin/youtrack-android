@@ -6,8 +6,8 @@ import com.konstantinisaev.youtrack.ui.base.viewmodels.BaseViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import javax.inject.Inject
 
-class IssueFilterViewModel @Inject constructor(private val basePreferencesAdapter: BasePreferencesAdapter,
-                           coroutineHolder: CoroutineContextHolder
+class IssueSavedFilterViewModel @Inject constructor(private val basePreferencesAdapter: BasePreferencesAdapter,
+                                                    coroutineHolder: CoroutineContextHolder
 ) : BaseViewModel<String>(coroutineHolder) {
 
     override suspend fun execute(params: String?): ViewState {

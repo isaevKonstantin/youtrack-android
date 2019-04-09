@@ -9,3 +9,12 @@ fun Context.toast(@StringRes resId: Int, duration: Int = Toast.LENGTH_SHORT) =
 
 fun Context.toast(message: String, duration: Int = Toast.LENGTH_SHORT) =
     Toast.makeText(this, message, duration).also { it.show() }
+
+class Extra {
+
+    companion object {
+
+        const val ISSUE_COUNT = "issue_count"
+    }
+
+}

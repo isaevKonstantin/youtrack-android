@@ -4,6 +4,7 @@ package com.konstantinisaev.youtrack.ui.base.models
 
 import com.konstantinisaev.youtrack.core.api.CommentDTO
 import com.konstantinisaev.youtrack.core.api.FieldContainerDTO
+import com.konstantinisaev.youtrack.core.api.FilterMatchDTO
 import com.konstantinisaev.youtrack.core.api.ProjectCustomFieldDto
 import com.konstantinisaev.youtrack.ui.base.utils.DateUtils
 import com.konstantinisaev.youtrack.ui.base.utils.ObjectMapper
@@ -69,10 +70,10 @@ data class Issue(val id: String, val idReadable: String, val summary: String, va
 
 }
 
-//data class IssueFilterSuggest(val styleClass: String? = null, val prefix: String? = null, val option: String? = null,
-//                              val suffix: String? = null, val description: String? = null, val htmlDescription: String? = null,
-//                              val caret: Int? = null, val completion: FilterCompletion? = null, val match: FilterMatch? = null, val uuid:String = UUID.randomUUID().toString(),
-//                              val parentUuid: String = "", val checked: Boolean = false)
+data class IssueFilterSuggest(val styleClass: String? = null, val prefix: String? = null, val option: String? = null,
+							  val suffix: String? = null, val description: String? = null, val htmlDescription: String? = null,
+							  val caret: Int? = null, val completion: FilterMatchDTO? = null, val matchDTO: FilterMatchDTO? = null, val uuid:String = UUID.randomUUID().toString(),
+							  val parentUuid: String = "", val checked: Boolean = false)
 
 
 data class FieldContainer<T>(val projectCustomField: ProjectCustomFieldDto,val value: T){

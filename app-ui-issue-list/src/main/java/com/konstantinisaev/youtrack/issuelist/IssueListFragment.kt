@@ -31,7 +31,7 @@ class IssueListFragment : BaseFragment() {
     lateinit var issueListViewModel: IssueListViewModel
     lateinit var issueListTypeViewModel: IssueListTypeViewModel
     lateinit var issueCountViewModel: IssueCountViewModel
-    lateinit var issueFilterViewModel: IssueFilterViewModel
+    lateinit var issueSavedFilterViewModel: IssueSavedFilterViewModel
 
     @Inject
     lateinit var issueListRouter: IssueListRouter
@@ -60,7 +60,7 @@ class IssueListFragment : BaseFragment() {
         issueListViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueListViewModel::class.java]
         issueListTypeViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueListTypeViewModel::class.java]
         issueCountViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueCountViewModel::class.java]
-        issueFilterViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueFilterViewModel::class.java]
+        issueSavedFilterViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueSavedFilterViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -105,8 +105,8 @@ class IssueListFragment : BaseFragment() {
             tvFilterCountBody.visibility = View.VISIBLE
         }
 
-        registerHandler(ViewState.Success::class.java,issueFilterViewModel){
-            val result = it.data as IssueFilterViewModel.IssueFilterResultDTO
+        registerHandler(ViewState.Success::class.java,issueSavedFilterViewModel){
+            val result = it.data as IssueSavedFilterViewModel.IssueFilterResultDTO
             filterReq = result.filterReq
             sortReq = result.sortReq
             if(sortReq.isNotEmpty()){
@@ -121,7 +121,7 @@ class IssueListFragment : BaseFragment() {
         }
 
         issueListTypeViewModel.doAsyncRequest()
-        issueFilterViewModel.doAsyncRequest()
+        issueSavedFilterViewModel.doAsyncRequest()
         savedInstanceState?: requestIssueList()
     }
 

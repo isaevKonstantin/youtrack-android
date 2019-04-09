@@ -52,6 +52,15 @@ class ApiProviderTest {
         }
     }
 
+    @Test
+    fun `should return not empty filter auto complete list`() {
+        runBlocking {
+            apiProvider.enableUserCredentialsInHeader(authTokenDTO.accessToken, authTokenDTO.tokenType)
+            val resp = apiProvider.getIssuesFilterIntellisense("$testUrl${ApiEndpoints.YOUTRACK.url}/").await()
+            assertThat(resp).isNotNull
+        }
+    }
+
     companion object {
 
         private val apiProvider = ApiProvider()
