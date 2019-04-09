@@ -3,7 +3,6 @@ package com.konstantinisaev.youtrack.issuelist.viewmodels
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.IssueDTO
-import com.konstantinisaev.youtrack.issuelist.testCoroutineContextHolder
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.viewmodels.BaseViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
@@ -38,7 +37,9 @@ class IssueListViewModelTest {
 
     @Before
     fun setUp() {
-        issueListViewModel = IssueListViewModel(apiProvider,basePreferencesAdapter, testCoroutineContextHolder)
+        issueListViewModel = IssueListViewModel(apiProvider,basePreferencesAdapter,
+            testCoroutineContextHolder
+        )
     }
 
     @Test

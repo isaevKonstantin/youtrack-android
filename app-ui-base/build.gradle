@@ -16,4 +16,9 @@ dependencies{
     kapt lifeCycleCompiler
     kapt daggerCompiler
     kapt daggerAnnotationProcessor
+
+    testImplementation junit
+    testImplementation mockito
+    testImplementation assertJ
+    testImplementation archCoreTesting
 }

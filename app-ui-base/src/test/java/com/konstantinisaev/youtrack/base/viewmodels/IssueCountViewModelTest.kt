@@ -1,12 +1,12 @@
-package com.konstantinisaev.youtrack.issuelist
+package com.konstantinisaev.youtrack.base.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
-import com.konstantinisaev.youtrack.core.api.CurrentUserDTO
-import com.konstantinisaev.youtrack.issuelist.viewmodels.ProfileViewModel
+import com.konstantinisaev.youtrack.core.api.IssueCountDTO
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.viewmodels.BaseViewModel
+import com.konstantinisaev.youtrack.ui.base.viewmodels.IssueCountViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import kotlinx.coroutines.*
 import org.assertj.core.api.Assertions
@@ -18,14 +18,15 @@ import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito
+import org.mockito.Mockito.times
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner.Silent::class)
 @Suppress("DeferredResultUnused")
-class ProfileViewModelTest {
+class IssueCountViewModelTest {
 
-    private lateinit var profileViewModel: BaseViewModel<String>
+    private lateinit var issueCountViewModel: BaseViewModel<String>
 
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
@@ -37,7 +38,7 @@ class ProfileViewModelTest {
 
     @Before
     fun setUp() {
-        profileViewModel = ProfileViewModel(
+        issueCountViewModel = IssueCountViewModel(
             apiProvider,
             basePreferencesAdapter,
             testCoroutineContextHolder
@@ -45,20 +46,25 @@ class ProfileViewModelTest {
     }
 
     @Test
-    fun `given error profile response should produce error state`() {
+    fun `given error issue list response should produce error state`() {
         Mockito.`when`(basePreferencesAdapter.getUrl()).thenReturn("")
-        Mockito.`when`(apiProvider.getProfile(ArgumentMatchers.anyString())).thenThrow(RuntimeException("test"))
-        profileViewModel.doAsyncRequest()
-        Assertions.assertThat(profileViewModel.lastViewState).isExactlyInstanceOf(ViewState.Error::class.java)
+        Mockito.`when`(apiProvider.getAllIssuesCount(
+            ArgumentMatchers.anyString(),
+            ArgumentMatchers.anyString())).thenThrow(RuntimeException("test"))
+        issueCountViewModel.doAsyncRequest("")
+        Assertions.assertThat(issueCountViewModel.lastViewState).isExactlyInstanceOf(ViewState.Error::class.java)
     }
 
     @Test
-    fun `given success profile response should produce success state`() {
+    fun `given success issue count response should produce success state`() {
         Mockito.`when`(basePreferencesAdapter.getUrl()).thenReturn("")
-        Mockito.`when`(apiProvider.getProfile(ArgumentMatchers.anyString())).thenReturn(GlobalScope.async {  CurrentUserDTO("","","","",false,false,"","") })
-        profileViewModel.doAsyncRequest()
-        Assertions.assertThat(profileViewModel.lastViewState).isExactlyInstanceOf(ViewState.Success::class.java)
+        Mockito.`when`(apiProvider.getAllIssuesCount(ArgumentMatchers.anyString(),ArgumentMatchers.anyString())).thenReturn(
+            GlobalScope.async {  IssueCountDTO(-1) })
+        issueCountViewModel.doAsyncRequest("")
+        Assertions.assertThat(issueCountViewModel.lastViewState).isExactlyInstanceOf(ViewState.Success::class.java)
+        Mockito.verify(apiProvider,times(3)).getAllIssuesCount(ArgumentMatchers.anyString(),ArgumentMatchers.anyString())
     }
+
 }
 
 @ExperimentalCoroutinesApi

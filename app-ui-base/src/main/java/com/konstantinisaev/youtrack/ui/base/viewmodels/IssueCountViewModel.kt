@@ -1,10 +1,8 @@
-package com.konstantinisaev.youtrack.issuelist.viewmodels
+package com.konstantinisaev.youtrack.ui.base.viewmodels
 
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
-import com.konstantinisaev.youtrack.ui.base.viewmodels.BaseViewModel
-import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import javax.inject.Inject
 
 class IssueCountViewModel @Inject constructor(private val apiProvider: ApiProvider,

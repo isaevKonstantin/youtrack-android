@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.konstantinisaev.youtrack.core.api.IssueCountDTO
 import com.konstantinisaev.youtrack.core.rv.*
 import com.konstantinisaev.youtrack.issuefilter.di.IssueFilterDiProvider
 import com.konstantinisaev.youtrack.ui.base.models.IssueFilterSuggest
 import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
 import com.konstantinisaev.youtrack.ui.base.utils.DeviceUtils
 import com.konstantinisaev.youtrack.ui.base.utils.Extra
+import com.konstantinisaev.youtrack.ui.base.viewmodels.IssueCountViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import kotlinx.android.synthetic.main.fragment_issue_filter.*
 
@@ -20,6 +22,7 @@ class IssueFilterFragment : BaseFragment(){
 
     private var initialCount = 0
     lateinit var issueServerFilterViewModel : IssueServerFilterViewModel
+    lateinit var issueCountViewModel: IssueCountViewModel
     private lateinit var issueFilterRvAdapter: BaseRvAdapter
     private val adapterList = mutableListOf<BaseRvItem>()
 
@@ -27,6 +30,7 @@ class IssueFilterFragment : BaseFragment(){
         super.onCreate(savedInstanceState)
         IssueFilterDiProvider.getInstance().injectFragment(this)
         issueServerFilterViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueServerFilterViewModel::class.java]
+        issueCountViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueCountViewModel::class.java]
         initialCount = arguments?.getInt(Extra.ISSUE_COUNT) ?: 0
 
     }
@@ -39,6 +43,16 @@ class IssueFilterFragment : BaseFragment(){
         tlbFilter.setTitle(R.string.issues_list_filter)
         if(initialCount > 0){
             tlbFilter.subtitle = getString(R.string.issues_list_count_format,initialCount.toString())
+        }
+
+        registerHandler(ViewState.Error::class.java,issueCountViewModel){
+            showError(it)
+        }
+        registerHandler(ViewState.Success::class.java,issueCountViewModel){
+            val count = (it.data as IssueCountDTO).value
+            vFilterSplash.visibility = View.GONE
+            pbFilterIssue.visibility = View.GONE
+            tlbFilter.subtitle = getString(R.string.issues_list_count_format,count.toString())
         }
 
         registerHandler(ViewState.Error::class.java,issueServerFilterViewModel){
@@ -87,12 +101,12 @@ class IssueFilterFragment : BaseFragment(){
                     if(rvItem.issueFilterSuggestionRvData.checked){
                         vFilterSplash.visibility = View.VISIBLE
                         pbFilterIssue.visibility = View.VISIBLE
-//                        issueListCountViewModel.getAllIssuesCount(filterReq)
+                        issueCountViewModel.doAsyncRequest(filterReq)
                     }else{
                         if(filterReq.isNotEmpty()){
                             vFilterSplash.visibility = View.VISIBLE
                             pbFilterIssue.visibility = View.VISIBLE
-//                            issueListCountViewModel.getAllIssuesCount(filterReq)
+                            issueCountViewModel.doAsyncRequest(filterReq)
                         }else{
                             if(initialCount > 0){
                                 tlbFilter.subtitle = getString(R.string.issues_list_count_format,initialCount.toString())

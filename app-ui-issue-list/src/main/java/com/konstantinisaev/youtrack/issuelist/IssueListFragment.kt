@@ -17,6 +17,7 @@ import com.konstantinisaev.youtrack.ui.base.utils.DeviceUtils
 import com.konstantinisaev.youtrack.ui.base.utils.IssueListRouter
 import com.konstantinisaev.youtrack.ui.base.utils.toFormattedString
 import com.konstantinisaev.youtrack.ui.base.utils.toHourAndMinutesString
+import com.konstantinisaev.youtrack.ui.base.viewmodels.IssueCountViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import kotlinx.android.synthetic.main.fragment_issue_list.*
 import java.util.*
