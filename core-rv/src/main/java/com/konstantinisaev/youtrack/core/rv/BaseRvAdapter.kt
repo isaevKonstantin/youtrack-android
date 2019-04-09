@@ -123,12 +123,11 @@ abstract class BaseRvViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(ite
 
 }
 
-open class MarginItemDecoration(private val topMargin: Int = 0, private val bottomMargin: Int = 0,
-                                private val leftMargin: Int = 0, private val rightMargin: Int = 0
+open class MarginItemDecoration(protected open val topMargin: Int = 0, protected open val bottomMargin: Int = 0,
+                                protected open val leftMargin: Int = 0, protected open val rightMargin: Int = 0
 ) : RecyclerView.ItemDecoration(){
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-        super.getItemOffsets(outRect, view, parent, state)
         if(parent.getChildAdapterPosition(view) == 0){
             outRect.set(leftMargin, 0, rightMargin, bottomMargin)
         }else{
@@ -141,15 +140,27 @@ class IssueItemDecoration(private val topMargin: Int = 0, private val bottomMarg
                           private val leftMargin: Int = 0, private val rightMargin: Int = 0
 ) :  RecyclerView.ItemDecoration() {
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-        super.getItemOffsets(outRect, view, parent, state)
         when{
-            view.id == R.id.tvTextHeader && parent.getChildAdapterPosition(view) == 0-> outRect.set(leftMargin, (topMargin * 2.5).toInt(), rightMargin, bottomMargin / 2)
+            view.id == R.id.tvTextHeader && parent.getChildAdapterPosition(view) == 0-> outRect.set(leftMargin,
+                (topMargin * 2.5).toInt(), rightMargin, bottomMargin / 2)
             view.id == R.id.tvTextHeader -> outRect.set(leftMargin, topMargin * 2, rightMargin, bottomMargin / 2)
             else -> outRect.set(leftMargin, topMargin, rightMargin, bottomMargin)
         }
     }
 }
 
+class FilterItemDecoration(override val topMargin: Int = 0, override val bottomMargin: Int = 0,
+                           override val leftMargin: Int = 0, override val rightMargin: Int = 0
+) :  MarginItemDecoration() {
+
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+        when{
+            view.id == R.id.chIssueSuggestion -> outRect.set(
+                (leftMargin * 2),topMargin, rightMargin, bottomMargin)
+            else -> outRect.set(leftMargin, topMargin, rightMargin, bottomMargin)
+        }
+    }
+}
 
 @Suppress("UNUSED_PARAMETER")
 class RvTypeFactory{

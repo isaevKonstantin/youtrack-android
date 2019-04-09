@@ -104,7 +104,7 @@ class IssueFilterFragment : BaseFragment(){
         })
 
         rvIssueFilter.layoutManager = LinearLayoutManager(context)
-        rvIssueFilter.addItemDecoration(MarginItemDecoration(
+        rvIssueFilter.addItemDecoration(FilterItemDecoration(
             leftMargin = DeviceUtils.convertDpToPixel(16f, checkNotNull(context)),
             rightMargin = DeviceUtils.convertDpToPixel(16f, checkNotNull(context)),
             topMargin = DeviceUtils.convertDpToPixel(5f, checkNotNull(context)),
