@@ -156,8 +156,8 @@ class FilterItemDecoration(override val topMargin: Int = 0, override val bottomM
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         when{
             view.id == R.id.chIssueSuggestion -> outRect.set(
-                (leftMargin * 2),topMargin, rightMargin, bottomMargin)
-            else -> outRect.set(leftMargin, topMargin, rightMargin, bottomMargin)
+                leftMargin,topMargin, rightMargin, bottomMargin)
+            else -> outRect.set(0, topMargin, 0, bottomMargin)
         }
     }
 }
