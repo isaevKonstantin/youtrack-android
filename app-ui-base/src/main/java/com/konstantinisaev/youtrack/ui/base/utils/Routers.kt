@@ -7,7 +7,7 @@ interface BaseRouter {
     fun setNavigator(navigator: Navigator)
 }
 
-interface AuthRouter : BaseRouter{
+interface AuthRouter : BaseRouter {
 
     fun showSplash()
 
@@ -18,7 +18,7 @@ interface AuthRouter : BaseRouter{
     fun showMain()
 }
 
-interface MainRouter : BaseRouter{
+interface MainRouter : BaseRouter {
 
     fun showIssueList()
 
@@ -32,9 +32,9 @@ interface MainRouter : BaseRouter{
 
 }
 
-interface IssueListRouter : BaseRouter{
+interface IssueListRouter : BaseRouter {
 
-    fun showFilter()
+    fun showFilter(initialIssueCount: Int)
 
     fun showSort()
 }

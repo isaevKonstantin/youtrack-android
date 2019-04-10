@@ -40,6 +40,8 @@ class IssueListFragment : BaseFragment() {
     private val issues = mutableListOf<Issue>()
     private var filterReq = ""
     private var sortReq = ""
+    private var fullIssueCount = 0
+
     private val endlessScrollListener = object : EndlessScrollListener({
         val sizeOfIssue = issueListRvAdapter.filter { it is IssueRvItem || it is IssueCompactRvItem || it is IssueDetailedRvItem }.size
         val formattedReq = buildReq()
@@ -101,8 +103,8 @@ class IssueListFragment : BaseFragment() {
             tvFilterCountBody.visibility = View.INVISIBLE
         }
         registerHandler(ViewState.Success::class.java,issueCountViewModel){
-            val value = (it.data as IssueCountDTO).value
-            tvFilterCountBody.text = getString(R.string.issues_list_count_format,value.toString())
+            fullIssueCount = (it.data as IssueCountDTO).value
+            tvFilterCountBody.text = getString(R.string.issues_list_count_format,fullIssueCount.toString())
             tvFilterCountBody.visibility = View.VISIBLE
         }
 
@@ -128,6 +130,7 @@ class IssueListFragment : BaseFragment() {
 
     private fun requestIssueList(){
         val formattedReq = buildReq()
+        fullIssueCount = 0
         issueCountViewModel.doAsyncRequest(formattedReq)
         issueListViewModel.doAsyncRequest(IssueListParam(filter = formattedReq))
         issues.clear()
@@ -264,7 +267,7 @@ class IssueListFragment : BaseFragment() {
 
     private fun initFilter() {
         val openFilterClickListener = View.OnClickListener {
-            issueListRouter.showFilter()
+            issueListRouter.showFilter(fullIssueCount)
         }
         val openSortClickListener = View.OnClickListener {
             issueListRouter.showSort()

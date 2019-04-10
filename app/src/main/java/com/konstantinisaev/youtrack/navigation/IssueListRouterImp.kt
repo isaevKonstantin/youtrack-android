@@ -1,7 +1,9 @@
 package com.konstantinisaev.youtrack.navigation
 
+import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.konstantinisaev.youtrack.issuefilter.IssueFilterFragment
+import com.konstantinisaev.youtrack.ui.base.utils.Extra
 import com.konstantinisaev.youtrack.ui.base.utils.IssueListRouter
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.Navigator
@@ -16,10 +18,12 @@ class IssueListRouterImp @Inject constructor(private val cicerone: Cicerone<Rout
         cicerone.navigatorHolder.setNavigator(navigator)
     }
 
-    override fun showFilter() {
+    override fun showFilter(initialIssueCount: Int) {
         cicerone.router.navigateTo(object : SupportAppScreen(){
             override fun getFragment(): Fragment {
-                return IssueFilterFragment()
+                return IssueFilterFragment().apply {
+                    arguments = Bundle().apply { putInt(Extra.ISSUE_COUNT,initialIssueCount) }
+                }
             }
         })
     }
