@@ -141,7 +141,9 @@ class IssueFilterFragment : BaseFragment(){
             issueFilterRvAdapter.notifyDataSetChanged()
         }
         tvSubmitFilter.setOnClickListener {
-            filterUpdatedViewModel.changeViewState(ViewState.Success(filterUpdatedViewModel::class.java,""))
+            val filterReq = issueServerFilterViewModel.formatCheckedValuesToStr(issueFilterRvAdapter.filter { it is IssueFilterSuggestionChildRvItem && it.issueFilterSuggestionRvData.checked } as List<IssueFilterSuggestionChildRvItem>)
+            issueServerFilterViewModel.saveFilterReq(filterReq)
+            filterUpdatedViewModel.changeViewState(ViewState.Success(filterUpdatedViewModel::class.java,filterReq))
         }
     }
 

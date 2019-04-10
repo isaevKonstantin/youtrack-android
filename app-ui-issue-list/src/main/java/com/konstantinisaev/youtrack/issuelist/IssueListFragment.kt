@@ -82,6 +82,7 @@ class IssueListFragment : BaseFragment() {
         }
 
         registerHandler(ViewState.Success::class.java,filterUpdatedViewModel){
+            filterReq = it.data as String
             requestIssueList()
         }
 

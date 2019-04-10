@@ -50,6 +50,10 @@ class IssueServerFilterViewModel @Inject constructor(private val apiProvider: Ap
         return sb.toString()
     }
 
+    fun saveFilterReq(filterReq: String){
+        basePreferencesAdapter.setSavedQuery(filterReq)
+    }
+
 }
 
 @Suppress("JoinDeclarationAndAssignment")
