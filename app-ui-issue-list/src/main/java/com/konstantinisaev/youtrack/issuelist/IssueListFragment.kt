@@ -129,11 +129,11 @@ class IssueListFragment : BaseFragment() {
             }
             filterReq.trim()
             sortReq.trim()
+            requestIssueList()
         }
 
         issueListTypeViewModel.doAsyncRequest()
         issueSavedFilterViewModel.doAsyncRequest()
-        savedInstanceState?: requestIssueList()
     }
 
     private fun requestIssueList(){
