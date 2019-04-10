@@ -25,6 +25,7 @@ class IssueFilterFragment : BaseFragment(){
     lateinit var issueCountViewModel: IssueCountViewModel
     private lateinit var issueFilterRvAdapter: BaseRvAdapter
     private val adapterList = mutableListOf<BaseRvItem>()
+    private val checkedItemsUuid = hashSetOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +70,7 @@ class IssueFilterFragment : BaseFragment(){
                     position.takeIf { it >= 0 }?.let { addedPosition ->
                         val insertPosition = addedPosition.inc()
                         if(data.isNotEmpty()){
-                            issueFilterRvAdapter.addAllByPosition(insertPosition, data.map { IssueFilterSuggestionChildRvItem(parentUuid, IssueFilterSuggestionRvData(it.option.orEmpty(), it.uuid, it.checked)) })
+                            issueFilterRvAdapter.addAllByPosition(insertPosition, data.map { IssueFilterSuggestionChildRvItem(parentUuid, IssueFilterSuggestionRvData(it.option.orEmpty(), it.uuid, checkedItemsUuid.contains(it.uuid))) })
                         }else{
                             issueFilterRvAdapter.addByPosition(insertPosition,IssueFilterSuggestionEmpty(parentUuid))
                         }
@@ -99,10 +100,12 @@ class IssueFilterFragment : BaseFragment(){
                 }else if(rvItem is IssueFilterSuggestionChildRvItem){
                     val filterReq = issueServerFilterViewModel.formatCheckedValuesToStr(issueFilterRvAdapter.filter { it is IssueFilterSuggestionChildRvItem && it.issueFilterSuggestionRvData.checked} as List<IssueFilterSuggestionChildRvItem>)
                     if(rvItem.issueFilterSuggestionRvData.checked){
+                        checkedItemsUuid.add(rvItem.issueFilterSuggestionRvData.uuid)
                         vFilterSplash.visibility = View.VISIBLE
                         pbFilterIssue.visibility = View.VISIBLE
                         issueCountViewModel.doAsyncRequest(filterReq)
                     }else{
+                        checkedItemsUuid.remove(rvItem.issueFilterSuggestionRvData.uuid)
                         if(filterReq.isNotEmpty()){
                             vFilterSplash.visibility = View.VISIBLE
                             pbFilterIssue.visibility = View.VISIBLE
