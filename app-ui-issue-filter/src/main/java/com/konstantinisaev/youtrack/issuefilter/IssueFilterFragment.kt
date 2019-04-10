@@ -11,6 +11,7 @@ import com.konstantinisaev.youtrack.ui.base.models.IssueFilterSuggest
 import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
 import com.konstantinisaev.youtrack.ui.base.utils.DeviceUtils
 import com.konstantinisaev.youtrack.ui.base.utils.Extra
+import com.konstantinisaev.youtrack.ui.base.viewmodels.FilterUpdatedViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.IssueCountViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import kotlinx.android.synthetic.main.fragment_issue_filter.*
@@ -20,20 +21,23 @@ class IssueFilterFragment : BaseFragment(){
 
     override val layoutId = R.layout.fragment_issue_filter
 
-    private var initialCount = 0
     lateinit var issueServerFilterViewModel : IssueServerFilterViewModel
     lateinit var issueCountViewModel: IssueCountViewModel
+    lateinit var filterUpdatedViewModel: FilterUpdatedViewModel
+
     private lateinit var issueFilterRvAdapter: BaseRvAdapter
     private val adapterList = mutableListOf<BaseRvItem>()
     private val checkedItemsUuid = hashSetOf<String>()
+
+    private var initialCount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         IssueFilterDiProvider.getInstance().injectFragment(this)
         issueServerFilterViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueServerFilterViewModel::class.java]
         issueCountViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueCountViewModel::class.java]
+        filterUpdatedViewModel = ViewModelProviders.of(this,viewModelFactory)[FilterUpdatedViewModel::class.java]
         initialCount = arguments?.getInt(Extra.ISSUE_COUNT) ?: 0
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -137,6 +141,7 @@ class IssueFilterFragment : BaseFragment(){
             issueFilterRvAdapter.notifyDataSetChanged()
         }
         tvSubmitFilter.setOnClickListener {
+            filterUpdatedViewModel.changeViewState(ViewState.Success(filterUpdatedViewModel::class.java,""))
         }
     }
 

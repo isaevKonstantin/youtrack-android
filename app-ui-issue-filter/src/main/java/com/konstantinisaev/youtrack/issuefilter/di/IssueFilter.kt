@@ -2,6 +2,7 @@ package com.konstantinisaev.youtrack.issuefilter.di
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
 import com.konstantinisaev.youtrack.issuefilter.IssueFilterFragment
@@ -9,14 +10,14 @@ import com.konstantinisaev.youtrack.issuefilter.IssueFilterSuggestionHolder
 import com.konstantinisaev.youtrack.issuefilter.IssueServerFilterViewModel
 import com.konstantinisaev.youtrack.issuefilter.R
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
-import com.konstantinisaev.youtrack.ui.base.di.BaseModelsModule
+import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelFactory
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelKey
 import dagger.*
 import dagger.multibindings.IntoMap
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [IssueFilterViewModelModule::class,BaseModelsModule::class,IssueFilterModule::class])
+@Component(modules = [IssueFilterModule::class])
 internal interface IssueFilterComponent {
 
     fun injectFragment(issueFilterFragment: IssueFilterFragment)
@@ -37,6 +38,9 @@ internal interface IssueFilterComponent {
 
         @BindsInstance
         fun context(context: Context): Builder
+
+        @BindsInstance
+        fun viewModelFactory(viewModelFactory: ViewModelProvider.Factory) : Builder
     }
 }
 
@@ -47,7 +51,7 @@ abstract class IssueFilterViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(IssueServerFilterViewModel::class)
-    internal abstract fun bindProfileViewModel(issueServerFilterViewModel: IssueServerFilterViewModel): ViewModel
+    internal abstract fun bindIssueServerFilterViewModel(issueServerFilterViewModel: IssueServerFilterViewModel): ViewModel
 
 }
 
@@ -57,7 +61,7 @@ class IssueFilterModule{
 
     @Provides
     @Singleton
-    fun provideIssueFilterSuggestionHolder(context: Context) : IssueFilterSuggestionHolder = IssueFilterSuggestionHolder(context.resources.getStringArray(        R.array.issue_filter_arr))
+    fun provideIssueFilterSuggestionHolder(context: Context) : IssueFilterSuggestionHolder = IssueFilterSuggestionHolder(context.resources.getStringArray(R.array.issue_filter_arr))
 }
 
 class IssueFilterDiProvider private constructor(){
@@ -74,9 +78,15 @@ class IssueFilterDiProvider private constructor(){
             IssueFilterDiProvider()
         }
 
-        fun init(apiProvider: ApiProvider, basePreferencesAdapter: BasePreferencesAdapter, coroutineContextHolder: CoroutineContextHolder,context: Context){
+        fun init(
+            apiProvider: ApiProvider,
+            basePreferencesAdapter: BasePreferencesAdapter,
+            coroutineContextHolder: CoroutineContextHolder,
+            context: Context,
+            viewModelFactory: ViewModelFactory
+        ){
             if(!this::component.isInitialized){
-                component = DaggerIssueFilterComponent.builder().apiProvider(apiProvider).preferenceAdapter(basePreferencesAdapter).
+                component = DaggerIssueFilterComponent.builder().apiProvider(apiProvider).preferenceAdapter(basePreferencesAdapter).viewModelFactory(viewModelFactory).
                     coroutineContextHolder(coroutineContextHolder).context(context).build()
             }
         }

@@ -9,7 +9,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel<P>(private val coroutineContextHolder: CoroutineContextHolder,private val validator: Validator<P>? = null) : ViewModel() {
+abstract class BaseViewModel<P>(private val coroutineContextHolder: CoroutineContextHolder? = null,private val validator: Validator<P>? = null) : ViewModel() {
 
     private val liveData = SingleLiveEvent<ViewState>()
 
@@ -34,6 +34,11 @@ abstract class BaseViewModel<P>(private val coroutineContextHolder: CoroutineCon
         if(job.isCompleted){
             reinitializeJob()
         }
+        coroutineContextHolder ?: let {
+            lastViewState = ViewState.Error(this@BaseViewModel::class.java,reasonException = RuntimeException("Coroutine context holder is null"))
+            liveData.postValue(lastViewState)
+            return
+        }
         GlobalScope.launch(coroutineContextHolder.io() + job) {
             try {
                 val resp = execute(params)
@@ -47,9 +52,13 @@ abstract class BaseViewModel<P>(private val coroutineContextHolder: CoroutineCon
         }
     }
 
+    open fun changeViewState(viewState: ViewState){
+        liveData.value = viewState
+    }
+
     abstract suspend fun execute(params: P? = null) : ViewState
 
-    fun observe(owner: LifecycleOwner,observer: Observer<ViewState>){
+    open fun observe(owner: LifecycleOwner,observer: Observer<ViewState>){
         liveData.observe(owner,observer)
     }
 

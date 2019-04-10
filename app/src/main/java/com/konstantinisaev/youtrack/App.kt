@@ -6,13 +6,13 @@ import androidx.multidex.MultiDexApplication
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
 import com.konstantinisaev.youtrack.di.AppComponent
-import com.konstantinisaev.youtrack.di.AppModule
 import com.konstantinisaev.youtrack.di.DaggerAppComponent
 import com.konstantinisaev.youtrack.issuefilter.di.IssueFilterDiProvider
 import com.konstantinisaev.youtrack.issuelist.di.IssueListDiProvider
 import com.konstantinisaev.youtrack.ui.auth.di.AuthDiProvider
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.utils.*
+import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelFactory
 import javax.inject.Inject
 
 class App : MultiDexApplication() {
@@ -27,7 +27,7 @@ class App : MultiDexApplication() {
         super.onCreate()
         context = applicationContext
         appComponent = DaggerAppComponent.builder().context(context).
-            appModule(AppModule()).build()
+            build()
         val appMediator = ApplicationMediator()
         appComponent.injectApplicationMediator(appMediator)
         appMediator.init(context)
@@ -51,11 +51,13 @@ class ApplicationMediator {
     lateinit var basePreferencesAdapter: BasePreferencesAdapter
     @Inject
     lateinit var base64Converter: Base64Converter
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 
     fun init(context: Context){
-        AuthDiProvider.init(authRouter,apiProvider,basePreferencesAdapter,coroutineContextHolder,base64Converter)
-        IssueListDiProvider.init(mainRouter,issueListRouter,apiProvider,basePreferencesAdapter,coroutineContextHolder)
-        IssueFilterDiProvider.init(apiProvider,basePreferencesAdapter,coroutineContextHolder,context)
+        AuthDiProvider.init(authRouter,apiProvider,basePreferencesAdapter,coroutineContextHolder,base64Converter,viewModelFactory)
+        IssueListDiProvider.init(mainRouter,issueListRouter,apiProvider,basePreferencesAdapter,coroutineContextHolder,viewModelFactory)
+        IssueFilterDiProvider.init(apiProvider,basePreferencesAdapter,coroutineContextHolder,context,viewModelFactory)
     }
 
 }

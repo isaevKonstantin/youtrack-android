@@ -1,6 +1,7 @@
 package com.konstantinisaev.youtrack.issuelist.di
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
 import com.konstantinisaev.youtrack.issuelist.IssueListContainerFragment
@@ -11,9 +12,9 @@ import com.konstantinisaev.youtrack.issuelist.viewmodels.IssueListViewModel
 import com.konstantinisaev.youtrack.issuelist.viewmodels.IssueSavedFilterViewModel
 import com.konstantinisaev.youtrack.issuelist.viewmodels.ProfileViewModel
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
-import com.konstantinisaev.youtrack.ui.base.di.BaseModelsModule
 import com.konstantinisaev.youtrack.ui.base.utils.IssueListRouter
 import com.konstantinisaev.youtrack.ui.base.utils.MainRouter
+import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelFactory
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelKey
 import dagger.Binds
 import dagger.BindsInstance
@@ -24,7 +25,7 @@ import javax.inject.Singleton
 
 
 @Singleton
-@Component(modules = [IssueListModelsModule::class, BaseModelsModule::class])
+@Component
 internal interface IssueListComponent{
 
     fun injectFragment(navigationMenuFragment: NavigationMenuFragment)
@@ -52,6 +53,9 @@ internal interface IssueListComponent{
 
         @BindsInstance
         fun coroutineContextHolder(coroutineContextHolder: CoroutineContextHolder) : Builder
+
+        @BindsInstance
+        fun viewModelFactory(viewModelFactory: ViewModelProvider.Factory) : Builder
 
     }
 
@@ -105,9 +109,17 @@ class IssueListDiProvider private constructor(){
             IssueListDiProvider()
         }
 
-        fun init(mainRouter: MainRouter,issueListRouter: IssueListRouter,apiProvider: ApiProvider,basePreferencesAdapter: BasePreferencesAdapter,coroutineContextHolder: CoroutineContextHolder){
+        fun init(
+            mainRouter: MainRouter,
+            issueListRouter: IssueListRouter,
+            apiProvider: ApiProvider,
+            basePreferencesAdapter: BasePreferencesAdapter,
+            coroutineContextHolder: CoroutineContextHolder,
+            viewModelFactory: ViewModelFactory
+        ){
             if(!this::component.isInitialized){
-                component = DaggerIssueListComponent.builder().mainRouter(mainRouter).apiProvider(apiProvider).issueListRouter(issueListRouter).preferenceAdapter(basePreferencesAdapter).
+                component = DaggerIssueListComponent.builder().mainRouter(mainRouter).apiProvider(apiProvider).issueListRouter(issueListRouter).
+                    preferenceAdapter(basePreferencesAdapter).viewModelFactory(viewModelFactory).
                     coroutineContextHolder(coroutineContextHolder).build()
             }
         }

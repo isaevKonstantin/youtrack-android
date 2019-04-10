@@ -1,6 +1,7 @@
 package com.konstantinisaev.youtrack.ui.auth.di
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
 import com.konstantinisaev.youtrack.ui.auth.AuthFragment
@@ -10,9 +11,9 @@ import com.konstantinisaev.youtrack.ui.auth.viewmodels.AuthByLoginPasswordViewMo
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.RefreshTokenViewModel
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.ServerConfigViewModel
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
-import com.konstantinisaev.youtrack.ui.base.di.BaseModelsModule
 import com.konstantinisaev.youtrack.ui.base.utils.AuthRouter
 import com.konstantinisaev.youtrack.ui.base.utils.Base64Converter
+import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelFactory
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelKey
 import dagger.Binds
 import dagger.BindsInstance
@@ -23,7 +24,7 @@ import javax.inject.Singleton
 
 
 @Singleton
-@Component(modules = [AuthViewModelsModule::class,BaseModelsModule::class])
+@Component
 internal interface AuthComponent{
 
     fun injectFragment(fragment: SplashFragment)
@@ -51,6 +52,9 @@ internal interface AuthComponent{
 
         @BindsInstance
         fun base64Converter(base64Converter: Base64Converter) : Builder
+
+        @BindsInstance
+        fun viewModelFactory(viewModelFactory: ViewModelProvider.Factory) : Builder
     }
 }
 
@@ -98,10 +102,10 @@ class AuthDiProvider private constructor(){
             AuthDiProvider()
         }
 
-        fun init(authRouter: AuthRouter,apiProvider: ApiProvider,basePreferencesAdapter: BasePreferencesAdapter,coroutineContextHolder: CoroutineContextHolder,base64Converter: Base64Converter){
+        fun init(authRouter: AuthRouter,apiProvider: ApiProvider,basePreferencesAdapter: BasePreferencesAdapter,coroutineContextHolder: CoroutineContextHolder,base64Converter: Base64Converter,viewModelFactory: ViewModelFactory){
             if(!this::authComponent.isInitialized){
                 authComponent = DaggerAuthComponent.builder().authRouter(authRouter).
-                    apiProvider(apiProvider).preferenceAdapter(basePreferencesAdapter).
+                    apiProvider(apiProvider).preferenceAdapter(basePreferencesAdapter).viewModelFactory(viewModelFactory).
                     coroutineContextHolder(coroutineContextHolder).base64Converter(base64Converter).build()
             }
         }

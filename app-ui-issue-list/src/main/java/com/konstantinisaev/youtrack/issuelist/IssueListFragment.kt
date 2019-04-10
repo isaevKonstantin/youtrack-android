@@ -17,6 +17,7 @@ import com.konstantinisaev.youtrack.ui.base.utils.DeviceUtils
 import com.konstantinisaev.youtrack.ui.base.utils.IssueListRouter
 import com.konstantinisaev.youtrack.ui.base.utils.toFormattedString
 import com.konstantinisaev.youtrack.ui.base.utils.toHourAndMinutesString
+import com.konstantinisaev.youtrack.ui.base.viewmodels.FilterUpdatedViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.IssueCountViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import kotlinx.android.synthetic.main.fragment_issue_list.*
@@ -33,6 +34,7 @@ class IssueListFragment : BaseFragment() {
     lateinit var issueListTypeViewModel: IssueListTypeViewModel
     lateinit var issueCountViewModel: IssueCountViewModel
     lateinit var issueSavedFilterViewModel: IssueSavedFilterViewModel
+    lateinit var filterUpdatedViewModel: FilterUpdatedViewModel
 
     @Inject
     lateinit var issueListRouter: IssueListRouter
@@ -64,6 +66,7 @@ class IssueListFragment : BaseFragment() {
         issueListTypeViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueListTypeViewModel::class.java]
         issueCountViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueCountViewModel::class.java]
         issueSavedFilterViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueSavedFilterViewModel::class.java]
+        filterUpdatedViewModel = ViewModelProviders.of(this,viewModelFactory)[FilterUpdatedViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -76,6 +79,10 @@ class IssueListFragment : BaseFragment() {
         }
         imgIssueListSwitcher.setOnClickListener {
             issueListTypeViewModel.doAsyncRequest()
+        }
+
+        registerHandler(ViewState.Success::class.java,filterUpdatedViewModel){
+            requestIssueList()
         }
 
         registerHandler(ViewState.Success::class.java,issueListTypeViewModel){

@@ -5,10 +5,13 @@ import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.konstantinisaev.youtrack.issuelist.di.IssueListDiProvider
 import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
 import com.konstantinisaev.youtrack.ui.base.utils.IssueListRouter
 import com.konstantinisaev.youtrack.ui.base.utils.MainRouter
+import com.konstantinisaev.youtrack.ui.base.viewmodels.FilterUpdatedViewModel
+import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import kotlinx.android.synthetic.main.fragment_issue_list_container.*
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import javax.inject.Inject
@@ -24,10 +27,12 @@ class IssueListContainerFragment : BaseFragment() {
 
     @Inject
     lateinit var issueListRouter: IssueListRouter
+    lateinit var filterUpdatedViewModel: FilterUpdatedViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         IssueListDiProvider.getInstance().injectFragment(this)
+        filterUpdatedViewModel = ViewModelProviders.of(this,viewModelFactory)[FilterUpdatedViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,6 +49,9 @@ class IssueListContainerFragment : BaseFragment() {
             }else if(!layDrawer.isDrawerOpen(GravityCompat.END) && childFragmentManager.findFragmentById(R.id.flFilter) != null){
                 layDrawer.openDrawer(GravityCompat.END)
             }
+        }
+        registerHandler(ViewState.Success::class.java,filterUpdatedViewModel){
+            closeRightDrawer()
         }
         savedInstanceState ?: mainRouter.showIssueList()
     }
@@ -97,6 +105,10 @@ class IssueListContainerFragment : BaseFragment() {
 
     fun closeLeftDrawer() {
         layDrawer.closeDrawer(GravityCompat.START)
+    }
+
+    fun closeRightDrawer() {
+        layDrawer.closeDrawer(GravityCompat.END)
     }
 
 

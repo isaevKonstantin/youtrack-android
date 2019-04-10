@@ -49,7 +49,9 @@ abstract class BaseFragment : Fragment()  {
         }
         handlers.getValue(viewStateClazz)[baseViewModel.javaClass] = handler as (ViewState) -> Unit
         if(!observersClass.contains(baseViewModel.javaClass)){
-            baseViewModel.observe(this, Observer { observe(it) })
+            baseViewModel.observe(this, Observer {
+                observe(it)
+            })
             observersClass.add(baseViewModel.javaClass)
         }
     }
