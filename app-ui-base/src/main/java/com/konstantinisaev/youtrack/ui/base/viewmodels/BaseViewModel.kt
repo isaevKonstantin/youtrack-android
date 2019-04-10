@@ -1,6 +1,7 @@
 package com.konstantinisaev.youtrack.ui.base.viewmodels
 
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
@@ -11,7 +12,9 @@ import kotlinx.coroutines.launch
 
 abstract class BaseViewModel<P>(private val coroutineContextHolder: CoroutineContextHolder? = null,private val validator: Validator<P>? = null) : ViewModel() {
 
-    private val liveData = SingleLiveEvent<ViewState>()
+    private val liveDataSingle = SingleLiveEvent<ViewState>()
+    private val liveDataMultiple = MutableLiveData<ViewState>()
+
 
     private lateinit var job: Job
 
@@ -27,7 +30,7 @@ abstract class BaseViewModel<P>(private val coroutineContextHolder: CoroutineCon
         validator?.apply {
             validate(params).takeIf { !it }?.let {
                 lastViewState = ViewState.ValidationError(this@BaseViewModel::class.java,msgId = validator.errorId)
-                liveData.postValue(lastViewState)
+                liveDataSingle.postValue(lastViewState)
                 return
             }
         }
@@ -36,30 +39,34 @@ abstract class BaseViewModel<P>(private val coroutineContextHolder: CoroutineCon
         }
         coroutineContextHolder ?: let {
             lastViewState = ViewState.Error(this@BaseViewModel::class.java,reasonException = RuntimeException("Coroutine context holder is null"))
-            liveData.postValue(lastViewState)
+            liveDataSingle.postValue(lastViewState)
             return
         }
         GlobalScope.launch(coroutineContextHolder.io() + job) {
             try {
                 val resp = execute(params)
                 lastViewState = resp
-                liveData.postValue(resp)
+                liveDataSingle.postValue(resp)
             }catch (ex: Exception){
                 ex.printStackTrace()
                 lastViewState = ViewState.Error(this@BaseViewModel::class.java,reasonException = ex)
-                liveData.postValue(lastViewState)
+                liveDataSingle.postValue(lastViewState)
             }
         }
     }
 
-    open fun changeViewState(viewState: ViewState){
-        liveData.value = viewState
+    fun changeViewState(viewState: ViewState){
+        liveDataMultiple.value = viewState
     }
 
     abstract suspend fun execute(params: P? = null) : ViewState
 
-    open fun observe(owner: LifecycleOwner,observer: Observer<ViewState>){
-        liveData.observe(owner,observer)
+    fun observe(owner: LifecycleOwner,observer: Observer<ViewState>){
+        if(this is BaseUiViewModel){
+            liveDataMultiple.observe(owner,observer)
+        }else{
+            liveDataSingle.observe(owner,observer)
+        }
     }
 
     private fun reinitializeJob(){
