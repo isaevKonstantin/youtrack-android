@@ -5,10 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
-import com.konstantinisaev.youtrack.issuefilter.IssueFilterFragment
-import com.konstantinisaev.youtrack.issuefilter.IssueFilterSuggestionHolder
-import com.konstantinisaev.youtrack.issuefilter.IssueServerFilterViewModel
-import com.konstantinisaev.youtrack.issuefilter.R
+import com.konstantinisaev.youtrack.issuefilter.*
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelFactory
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelKey
@@ -21,6 +18,8 @@ import javax.inject.Singleton
 internal interface IssueFilterComponent {
 
     fun injectFragment(issueFilterFragment: IssueFilterFragment)
+
+    fun injectFragment(issueSortFragment: IssueSortFragment)
 
     @Component.Builder
     interface Builder {
@@ -68,6 +67,10 @@ class IssueFilterDiProvider private constructor(){
 
     fun injectFragment(issueFilterFragment: IssueFilterFragment){
         component.injectFragment(issueFilterFragment)
+    }
+
+    fun injectFragment(issueSortFragment: IssueSortFragment){
+        component.injectFragment(issueSortFragment)
     }
 
     companion object {

@@ -82,8 +82,7 @@ class IssueListFragment : BaseFragment() {
         }
 
         registerHandler(ViewState.Success::class.java,filterUpdatedViewModel){
-            filterReq = it.data as String
-            requestIssueList()
+            issueSavedFilterViewModel.doAsyncRequest()
         }
 
         registerHandler(ViewState.Success::class.java,issueListTypeViewModel){
@@ -148,7 +147,7 @@ class IssueListFragment : BaseFragment() {
 
     private fun buildReq(): String {
         val formattedReq = if (sortReq.isNotEmpty()) {
-            "$filterReq ${getString(R.string.common_sort_by)}:$sortReq"
+            "$filterReq ${getString(R.string.base_sort_by)}:$sortReq"
         } else {
             filterReq
         }

@@ -21,9 +21,9 @@ class IssueFilterFragment : BaseFragment(){
 
     override val layoutId = R.layout.fragment_issue_filter
 
-    lateinit var issueServerFilterViewModel : IssueServerFilterViewModel
-    lateinit var issueCountViewModel: IssueCountViewModel
-    lateinit var filterUpdatedViewModel: FilterUpdatedViewModel
+    private lateinit var issueServerFilterViewModel : IssueServerFilterViewModel
+    private lateinit var issueCountViewModel: IssueCountViewModel
+    private lateinit var filterUpdatedViewModel: FilterUpdatedViewModel
 
     private lateinit var issueFilterRvAdapter: BaseRvAdapter
     private val adapterList = mutableListOf<BaseRvItem>()

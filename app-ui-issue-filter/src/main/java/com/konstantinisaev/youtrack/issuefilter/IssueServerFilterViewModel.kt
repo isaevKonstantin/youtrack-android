@@ -54,6 +54,10 @@ class IssueServerFilterViewModel @Inject constructor(private val apiProvider: Ap
         basePreferencesAdapter.setSavedQuery(filterReq)
     }
 
+    fun setSortQuery(sortedStr: String) {
+        basePreferencesAdapter.setSortQuery(sortedStr)
+    }
+
 }
 
 @Suppress("JoinDeclarationAndAssignment")

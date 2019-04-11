@@ -4,6 +4,8 @@
     <string name="base_confirm">Confirm</string>
     <string name="base_send">Send</string>
     <string name="base_reset">Reset</string>
+    <string name="base_sort">Sort</string>
+    <string name="base_sort_by">sort by</string>
 
     <string name="auth_check_url_invalid_error">Invalid url</string>
 
@@ -13,5 +15,7 @@
     <string name="issues_list_sort">Sort</string>
     <string name="issues_list_filter">Filter</string>
     <string name="issues_list_count_format">%s issues</string>
+
+
 
 </resources>
