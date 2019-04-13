@@ -11,3 +11,5 @@ open class BaseUiViewModel : BaseViewModel<String>(){
 }
 
 class FilterUpdatedViewModel @Inject constructor() : BaseUiViewModel()
+
+class UpdateIssueListViewModel @Inject constructor() : BaseUiViewModel()

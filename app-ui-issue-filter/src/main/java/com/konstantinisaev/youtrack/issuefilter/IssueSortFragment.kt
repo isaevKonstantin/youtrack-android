@@ -10,6 +10,7 @@ import com.konstantinisaev.youtrack.ui.base.models.IssueFilterSuggest
 import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
 import com.konstantinisaev.youtrack.ui.base.utils.DeviceUtils
 import com.konstantinisaev.youtrack.ui.base.viewmodels.FilterUpdatedViewModel
+import com.konstantinisaev.youtrack.ui.base.viewmodels.UpdateIssueListViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import kotlinx.android.synthetic.main.fragment_issue_sort.*
 
@@ -22,6 +23,7 @@ class IssueSortFragment : BaseFragment(){
 
     private lateinit var filterUpdatedViewModel: FilterUpdatedViewModel
     private lateinit var issueServerFilterViewModel : IssueServerFilterViewModel
+    private lateinit var updateIssueListViewModel: UpdateIssueListViewModel
     private val adapterMap = mutableMapOf<String, IssueFilterSuggest>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +31,7 @@ class IssueSortFragment : BaseFragment(){
         IssueFilterDiProvider.getInstance().injectFragment(this)
         filterUpdatedViewModel = ViewModelProviders.of(this,viewModelFactory)[FilterUpdatedViewModel::class.java]
         issueServerFilterViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueServerFilterViewModel::class.java]
+        updateIssueListViewModel = ViewModelProviders.of(this,viewModelFactory)[UpdateIssueListViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -80,7 +83,7 @@ class IssueSortFragment : BaseFragment(){
                             itemFullOption
                         }
                     issueServerFilterViewModel.setSortQuery(sortedStr)
-                    filterUpdatedViewModel.changeViewState(ViewState.Success(filterUpdatedViewModel.javaClass,""))
+                    updateIssueListViewModel.changeViewState(ViewState.Success(updateIssueListViewModel::class.java,""))
                 }
             }
         })

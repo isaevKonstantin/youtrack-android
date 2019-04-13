@@ -3,6 +3,7 @@ package com.konstantinisaev.youtrack.ui.base.di
 import androidx.lifecycle.ViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.FilterUpdatedViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.IssueCountViewModel
+import com.konstantinisaev.youtrack.ui.base.viewmodels.UpdateIssueListViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelKey
 import dagger.Binds
 import dagger.Module
@@ -24,5 +25,11 @@ abstract class BaseModelsModule {
     @ViewModelKey(FilterUpdatedViewModel::class)
     @Singleton
     internal abstract fun bindFilterUpdatedViewModel(filterUpdatedViewModel: FilterUpdatedViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(UpdateIssueListViewModel::class)
+    @Singleton
+    internal abstract fun bindUpdateIssueListViewModel(updateIssueListViewModel: UpdateIssueListViewModel): ViewModel
 }
 

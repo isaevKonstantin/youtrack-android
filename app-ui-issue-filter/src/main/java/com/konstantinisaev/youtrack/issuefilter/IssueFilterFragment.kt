@@ -13,6 +13,7 @@ import com.konstantinisaev.youtrack.ui.base.utils.DeviceUtils
 import com.konstantinisaev.youtrack.ui.base.utils.Extra
 import com.konstantinisaev.youtrack.ui.base.viewmodels.FilterUpdatedViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.IssueCountViewModel
+import com.konstantinisaev.youtrack.ui.base.viewmodels.UpdateIssueListViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import kotlinx.android.synthetic.main.fragment_issue_filter.*
 
@@ -24,6 +25,7 @@ class IssueFilterFragment : BaseFragment(){
     private lateinit var issueServerFilterViewModel : IssueServerFilterViewModel
     private lateinit var issueCountViewModel: IssueCountViewModel
     private lateinit var filterUpdatedViewModel: FilterUpdatedViewModel
+    private lateinit var updateIssueListViewModel: UpdateIssueListViewModel
 
     private lateinit var issueFilterRvAdapter: BaseRvAdapter
     private val adapterList = mutableListOf<BaseRvItem>()
@@ -37,6 +39,8 @@ class IssueFilterFragment : BaseFragment(){
         issueServerFilterViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueServerFilterViewModel::class.java]
         issueCountViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueCountViewModel::class.java]
         filterUpdatedViewModel = ViewModelProviders.of(this,viewModelFactory)[FilterUpdatedViewModel::class.java]
+        updateIssueListViewModel = ViewModelProviders.of(this,viewModelFactory)[UpdateIssueListViewModel::class.java]
+
         initialCount = arguments?.getInt(Extra.ISSUE_COUNT) ?: 0
     }
 
@@ -143,7 +147,8 @@ class IssueFilterFragment : BaseFragment(){
         tvSubmitFilter.setOnClickListener {
             val filterReq = issueServerFilterViewModel.formatCheckedValuesToStr(issueFilterRvAdapter.filter { it is IssueFilterSuggestionChildRvItem && it.issueFilterSuggestionRvData.checked } as List<IssueFilterSuggestionChildRvItem>)
             issueServerFilterViewModel.saveFilterReq(filterReq)
-            filterUpdatedViewModel.changeViewState(ViewState.Success(filterUpdatedViewModel::class.java,filterReq))
+            filterUpdatedViewModel.changeViewState(ViewState.Success(filterUpdatedViewModel::class.java,""))
+            updateIssueListViewModel.changeViewState(ViewState.Success(updateIssueListViewModel::class.java,""))
         }
     }
 

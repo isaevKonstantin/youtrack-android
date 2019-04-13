@@ -19,6 +19,7 @@ import com.konstantinisaev.youtrack.ui.base.utils.toFormattedString
 import com.konstantinisaev.youtrack.ui.base.utils.toHourAndMinutesString
 import com.konstantinisaev.youtrack.ui.base.viewmodels.FilterUpdatedViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.IssueCountViewModel
+import com.konstantinisaev.youtrack.ui.base.viewmodels.UpdateIssueListViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import kotlinx.android.synthetic.main.fragment_issue_list.*
 import java.util.*
@@ -30,11 +31,12 @@ class IssueListFragment : BaseFragment() {
     override val layoutId = R.layout.fragment_issue_list
 
     private lateinit var issueListRvAdapter: BaseRvAdapter
-    lateinit var issueListViewModel: IssueListViewModel
-    lateinit var issueListTypeViewModel: IssueListTypeViewModel
-    lateinit var issueCountViewModel: IssueCountViewModel
-    lateinit var issueSavedFilterViewModel: IssueSavedFilterViewModel
-    lateinit var filterUpdatedViewModel: FilterUpdatedViewModel
+    private lateinit var issueListViewModel: IssueListViewModel
+    private lateinit var issueListTypeViewModel: IssueListTypeViewModel
+    private lateinit var issueCountViewModel: IssueCountViewModel
+    private lateinit var issueSavedFilterViewModel: IssueSavedFilterViewModel
+    private lateinit var filterUpdatedViewModel: FilterUpdatedViewModel
+    private lateinit var updateIssueListViewModel: UpdateIssueListViewModel
 
     @Inject
     lateinit var issueListRouter: IssueListRouter
@@ -67,6 +69,7 @@ class IssueListFragment : BaseFragment() {
         issueCountViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueCountViewModel::class.java]
         issueSavedFilterViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueSavedFilterViewModel::class.java]
         filterUpdatedViewModel = ViewModelProviders.of(this,viewModelFactory)[FilterUpdatedViewModel::class.java]
+        updateIssueListViewModel = ViewModelProviders.of(this,viewModelFactory)[UpdateIssueListViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -81,7 +84,7 @@ class IssueListFragment : BaseFragment() {
             issueListTypeViewModel.doAsyncRequest()
         }
 
-        registerHandler(ViewState.Success::class.java,filterUpdatedViewModel){
+        registerHandler(ViewState.Success::class.java,updateIssueListViewModel){
             issueSavedFilterViewModel.doAsyncRequest()
         }
 
