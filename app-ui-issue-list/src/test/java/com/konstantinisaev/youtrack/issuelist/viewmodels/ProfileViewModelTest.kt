@@ -54,7 +54,8 @@ class ProfileViewModelTest {
     @Test
     fun `given success profile response should produce success state`() {
         Mockito.`when`(basePreferencesAdapter.getUrl()).thenReturn("")
-        Mockito.`when`(apiProvider.getProfile(ArgumentMatchers.anyString())).thenReturn(GlobalScope.async {  CurrentUserDTO("","","","",false,false,"","") })
+        Mockito.`when`(apiProvider.getProfile(ArgumentMatchers.anyString())).thenReturn(GlobalScope.async(
+            testCoroutineContextHolder.io()) {  CurrentUserDTO("","","","",false,false,"","") })
         profileViewModel.doAsyncRequest()
         Assertions.assertThat(profileViewModel.lastViewState).isExactlyInstanceOf(ViewState.Success::class.java)
     }

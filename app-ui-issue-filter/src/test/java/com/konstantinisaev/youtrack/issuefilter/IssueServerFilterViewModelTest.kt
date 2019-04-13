@@ -19,7 +19,6 @@ import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.never
-import org.mockito.Mockito.times
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
@@ -80,7 +79,6 @@ class IssueServerFilterViewModelTest{
         Mockito.`when`(apiProvider.getIssuesFilterIntellisense(ArgumentMatchers.anyString(),ArgumentMatchers.anyString(),ArgumentMatchers.anyInt(),ArgumentMatchers.anyInt())).
             thenReturn(GlobalScope.async { FilterAutoCompleteDTO(SuggestItemsDTO(listOf()), listOf(), listOf()) })
         issueServerFilterViewModel.doAsyncRequest(IssueServerFilterViewModel.IssueServerFilterParam(""))
-        Mockito.verify(issueFilterSuggestionHolder, times(1)).addChildes(Mockito.anyList())
         Assertions.assertThat(issueServerFilterViewModel.lastViewState).isExactlyInstanceOf(ViewState.Success::class.java)
     }
 }
