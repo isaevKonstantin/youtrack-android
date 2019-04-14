@@ -3,7 +3,6 @@ package com.konstantinisaev.youtrack.ui.auth
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProviders
 import com.konstantinisaev.youtrack.ui.auth.di.AuthDiProvider
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.ServerConfigViewModel
 import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
@@ -26,7 +25,7 @@ class CheckUrlFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AuthDiProvider.getInstance().injectFragment(this)
-        serverConfigViewModel = ViewModelProviders.of(this,viewModelFactory)[ServerConfigViewModel::class.java]
+        serverConfigViewModel = getViewModel(ServerConfigViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

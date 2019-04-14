@@ -3,7 +3,6 @@ package com.konstantinisaev.youtrack.issuelist
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.konstantinisaev.youtrack.core.api.DEFAULT_ISSUE_LIST_SIZE
@@ -64,12 +63,12 @@ class IssueListFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         IssueListDiProvider.getInstance().injectFragment(this)
-        issueListViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueListViewModel::class.java]
-        issueListTypeViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueListTypeViewModel::class.java]
-        issueCountViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueCountViewModel::class.java]
-        issueSavedFilterViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueSavedFilterViewModel::class.java]
-        filterUpdatedViewModel = ViewModelProviders.of(this,viewModelFactory)[FilterUpdatedViewModel::class.java]
-        updateIssueListViewModel = ViewModelProviders.of(this,viewModelFactory)[UpdateIssueListViewModel::class.java]
+        issueListViewModel = getViewModel(IssueListViewModel::class.java)
+        issueListTypeViewModel = getViewModel(IssueListTypeViewModel::class.java)
+        issueCountViewModel = getViewModel(IssueCountViewModel::class.java)
+        issueSavedFilterViewModel = getViewModel(IssueSavedFilterViewModel::class.java)
+        filterUpdatedViewModel = getViewModel(FilterUpdatedViewModel::class.java)
+        updateIssueListViewModel = getViewModel(UpdateIssueListViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

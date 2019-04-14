@@ -5,7 +5,6 @@ import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import com.konstantinisaev.youtrack.issuelist.di.IssueListDiProvider
 import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
 import com.konstantinisaev.youtrack.ui.base.utils.IssueListRouter
@@ -32,7 +31,7 @@ class IssueListContainerFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         IssueListDiProvider.getInstance().injectFragment(this)
-        filterUpdatedViewModel = ViewModelProviders.of(this,viewModelFactory)[FilterUpdatedViewModel::class.java]
+        filterUpdatedViewModel = getViewModel(FilterUpdatedViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

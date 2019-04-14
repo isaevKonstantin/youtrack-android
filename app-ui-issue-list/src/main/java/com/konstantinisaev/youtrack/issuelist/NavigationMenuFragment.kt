@@ -3,7 +3,6 @@ package com.konstantinisaev.youtrack.issuelist
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.konstantinisaev.youtrack.core.api.CurrentUserDTO
 import com.konstantinisaev.youtrack.core.rv.*
@@ -34,7 +33,7 @@ class NavigationMenuFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         IssueListDiProvider.getInstance().injectFragment(this)
-        profileViewModel = ViewModelProviders.of(this,viewModelFactory)[ProfileViewModel::class.java]
+        profileViewModel = getViewModel(ProfileViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

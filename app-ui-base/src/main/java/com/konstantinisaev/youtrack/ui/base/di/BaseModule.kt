@@ -1,19 +1,17 @@
+@file:Suppress("unused")
+
 package com.konstantinisaev.youtrack.ui.base.di
 
 import androidx.lifecycle.ViewModel
-import com.konstantinisaev.youtrack.ui.base.viewmodels.FilterUpdatedViewModel
-import com.konstantinisaev.youtrack.ui.base.viewmodels.IssueCountViewModel
-import com.konstantinisaev.youtrack.ui.base.viewmodels.UpdateIssueListViewModel
-import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelKey
+import com.konstantinisaev.youtrack.ui.base.viewmodels.*
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
+import javax.inject.Named
 import javax.inject.Singleton
 
-@Suppress("unused")
 @Module
 abstract class BaseModelsModule {
-
 
     @Binds
     @IntoMap
@@ -31,5 +29,13 @@ abstract class BaseModelsModule {
     @ViewModelKey(UpdateIssueListViewModel::class)
     @Singleton
     internal abstract fun bindUpdateIssueListViewModel(updateIssueListViewModel: UpdateIssueListViewModel): ViewModel
+}
+
+@Module
+abstract class FeatureViewModelFactoryModule {
+
+    @Binds
+    @Named("featureFactory")
+    internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelFactory
 }
 

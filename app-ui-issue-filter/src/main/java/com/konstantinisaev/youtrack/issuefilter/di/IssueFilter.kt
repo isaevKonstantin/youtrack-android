@@ -2,19 +2,20 @@ package com.konstantinisaev.youtrack.issuefilter.di
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
 import com.konstantinisaev.youtrack.issuefilter.*
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
+import com.konstantinisaev.youtrack.ui.base.di.FeatureViewModelFactoryModule
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelFactory
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelKey
 import dagger.*
 import dagger.multibindings.IntoMap
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [IssueFilterModule::class])
+@Component(modules = [IssueFilterViewModelModule::class])
 internal interface IssueFilterComponent {
 
     fun injectFragment(issueFilterFragment: IssueFilterFragment)
@@ -39,12 +40,12 @@ internal interface IssueFilterComponent {
         fun context(context: Context): Builder
 
         @BindsInstance
-        fun viewModelFactory(viewModelFactory: ViewModelProvider.Factory) : Builder
+        fun viewModelFactory(@Named("baseFactory") viewModelFactory: ViewModelFactory) : Builder
     }
 }
 
 @Suppress("unused")
-@Module
+@Module(includes = [FeatureViewModelFactoryModule::class,IssueFilterModule::class])
 abstract class IssueFilterViewModelModule {
 
     @Binds

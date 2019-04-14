@@ -2,7 +2,6 @@ package com.konstantinisaev.youtrack.issuefilter
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.konstantinisaev.youtrack.core.rv.*
 import com.konstantinisaev.youtrack.issuefilter.di.IssueFilterDiProvider
@@ -29,9 +28,9 @@ class IssueSortFragment : BaseFragment(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         IssueFilterDiProvider.getInstance().injectFragment(this)
-        filterUpdatedViewModel = ViewModelProviders.of(this,viewModelFactory)[FilterUpdatedViewModel::class.java]
-        issueServerFilterViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueServerFilterViewModel::class.java]
-        updateIssueListViewModel = ViewModelProviders.of(this,viewModelFactory)[UpdateIssueListViewModel::class.java]
+        filterUpdatedViewModel = getViewModel(FilterUpdatedViewModel::class.java)
+        issueServerFilterViewModel = getViewModel(IssueServerFilterViewModel::class.java)
+        updateIssueListViewModel = getViewModel(UpdateIssueListViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

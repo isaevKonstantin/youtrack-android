@@ -1,7 +1,6 @@
 package com.konstantinisaev.youtrack.issuelist.di
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
 import com.konstantinisaev.youtrack.issuelist.IssueListContainerFragment
@@ -12,6 +11,7 @@ import com.konstantinisaev.youtrack.issuelist.viewmodels.IssueListViewModel
 import com.konstantinisaev.youtrack.issuelist.viewmodels.IssueSavedFilterViewModel
 import com.konstantinisaev.youtrack.issuelist.viewmodels.ProfileViewModel
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
+import com.konstantinisaev.youtrack.ui.base.di.FeatureViewModelFactoryModule
 import com.konstantinisaev.youtrack.ui.base.utils.IssueListRouter
 import com.konstantinisaev.youtrack.ui.base.utils.MainRouter
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelFactory
@@ -21,11 +21,12 @@ import dagger.BindsInstance
 import dagger.Component
 import dagger.Module
 import dagger.multibindings.IntoMap
+import javax.inject.Named
 import javax.inject.Singleton
 
 
 @Singleton
-@Component
+@Component(modules = [IssueListModelsModule::class])
 internal interface IssueListComponent{
 
     fun injectFragment(navigationMenuFragment: NavigationMenuFragment)
@@ -55,14 +56,14 @@ internal interface IssueListComponent{
         fun coroutineContextHolder(coroutineContextHolder: CoroutineContextHolder) : Builder
 
         @BindsInstance
-        fun viewModelFactory(viewModelFactory: ViewModelProvider.Factory) : Builder
+        fun viewModelFactory(@Named("baseFactory") viewModelFactory: ViewModelFactory) : Builder
 
     }
 
 }
 
 @Suppress("unused")
-@Module
+@Module(includes = [FeatureViewModelFactoryModule::class])
 abstract class IssueListModelsModule {
 
     @Binds

@@ -1,7 +1,6 @@
 package com.konstantinisaev.youtrack.ui.auth.di
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
 import com.konstantinisaev.youtrack.ui.auth.AuthFragment
@@ -11,6 +10,7 @@ import com.konstantinisaev.youtrack.ui.auth.viewmodels.AuthByLoginPasswordViewMo
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.RefreshTokenViewModel
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.ServerConfigViewModel
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
+import com.konstantinisaev.youtrack.ui.base.di.FeatureViewModelFactoryModule
 import com.konstantinisaev.youtrack.ui.base.utils.AuthRouter
 import com.konstantinisaev.youtrack.ui.base.utils.Base64Converter
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelFactory
@@ -20,11 +20,12 @@ import dagger.BindsInstance
 import dagger.Component
 import dagger.Module
 import dagger.multibindings.IntoMap
+import javax.inject.Named
 import javax.inject.Singleton
 
 
 @Singleton
-@Component
+@Component(modules = [AuthViewModelsModule::class])
 internal interface AuthComponent{
 
     fun injectFragment(fragment: SplashFragment)
@@ -54,12 +55,12 @@ internal interface AuthComponent{
         fun base64Converter(base64Converter: Base64Converter) : Builder
 
         @BindsInstance
-        fun viewModelFactory(viewModelFactory: ViewModelProvider.Factory) : Builder
+        fun viewModelFactory(@Named("baseFactory") viewModelFactory: ViewModelFactory) : Builder
     }
 }
 
 @Suppress("unused")
-@Module
+@Module(includes = [FeatureViewModelFactoryModule::class])
 abstract class AuthViewModelsModule {
 
     @Binds

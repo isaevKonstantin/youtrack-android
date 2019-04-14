@@ -10,21 +10,27 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.konstantinisaev.youtrack.core.api.HttpProtocolException
 import com.konstantinisaev.youtrack.ui.base.R
 import com.konstantinisaev.youtrack.ui.base.utils.toast
 import com.konstantinisaev.youtrack.ui.base.viewmodels.BaseViewModel
+import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelFactory
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import javax.inject.Inject
+import javax.inject.Named
 
 abstract class BaseFragment : Fragment()  {
 
     @get:LayoutRes
     protected abstract val layoutId: Int
 
+    @field:[Inject Named("baseFactory")]
+    protected lateinit var baseViewModelFactory: ViewModelFactory
+
     @Inject
-    protected lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Named("featureFactory")
+    protected lateinit var featureViewModelFactory: ViewModelFactory
 
     private val observersClass = mutableSetOf<Class<out BaseViewModel<*>>>()
 
@@ -89,6 +95,14 @@ abstract class BaseFragment : Fragment()  {
         }
         val handlersMap = handlers.getValue(viewState.javaClass)
         handlersMap[owner]?.invoke(viewState)
+    }
+
+    fun <T : BaseViewModel<*>> getViewModel(clazz: Class<T>) : T {
+        return when {
+            baseViewModelFactory.contains(clazz) -> ViewModelProviders.of(this,baseViewModelFactory)[clazz]
+            featureViewModelFactory.contains(clazz) -> ViewModelProviders.of(this,featureViewModelFactory)[clazz]
+            else -> throw IllegalArgumentException("factory doesn't contain $clazz")
+        }
     }
 
 }

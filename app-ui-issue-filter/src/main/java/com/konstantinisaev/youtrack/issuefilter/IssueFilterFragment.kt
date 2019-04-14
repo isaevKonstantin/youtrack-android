@@ -2,7 +2,6 @@ package com.konstantinisaev.youtrack.issuefilter
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.konstantinisaev.youtrack.core.api.IssueCountDTO
 import com.konstantinisaev.youtrack.core.rv.*
@@ -36,10 +35,10 @@ class IssueFilterFragment : BaseFragment(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         IssueFilterDiProvider.getInstance().injectFragment(this)
-        issueServerFilterViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueServerFilterViewModel::class.java]
-        issueCountViewModel = ViewModelProviders.of(this,viewModelFactory)[IssueCountViewModel::class.java]
-        filterUpdatedViewModel = ViewModelProviders.of(this,viewModelFactory)[FilterUpdatedViewModel::class.java]
-        updateIssueListViewModel = ViewModelProviders.of(this,viewModelFactory)[UpdateIssueListViewModel::class.java]
+        issueServerFilterViewModel = getViewModel(IssueServerFilterViewModel::class.java)
+        issueCountViewModel = getViewModel(IssueCountViewModel::class.java)
+        filterUpdatedViewModel = getViewModel(FilterUpdatedViewModel::class.java)
+        updateIssueListViewModel = getViewModel(UpdateIssueListViewModel::class.java)
 
         initialCount = arguments?.getInt(Extra.ISSUE_COUNT) ?: 0
     }

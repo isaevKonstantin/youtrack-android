@@ -3,7 +3,6 @@ package com.konstantinisaev.youtrack.ui.auth
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
-import androidx.lifecycle.ViewModelProviders
 import com.konstantinisaev.youtrack.ui.auth.di.AuthDiProvider
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.AuthByLoginPasswordParam
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.AuthByLoginPasswordValidator
@@ -27,7 +26,7 @@ class AuthFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AuthDiProvider.getInstance().injectFragment(this)
-        authByLoginPasswordViewModel = ViewModelProviders.of(this,viewModelFactory)[AuthByLoginPasswordViewModel::class.java]
+        authByLoginPasswordViewModel = getViewModel(AuthByLoginPasswordViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

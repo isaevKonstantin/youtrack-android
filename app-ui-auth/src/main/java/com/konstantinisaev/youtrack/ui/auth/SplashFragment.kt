@@ -4,7 +4,6 @@ package com.konstantinisaev.youtrack.ui.auth
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
-import androidx.lifecycle.ViewModelProviders
 import com.konstantinisaev.youtrack.ui.auth.di.AuthDiProvider
 import com.konstantinisaev.youtrack.ui.auth.viewmodels.RefreshTokenViewModel
 import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
@@ -22,14 +21,14 @@ class SplashFragment : BaseFragment() {
 
     private var countDownTimer: CountDownTimer? = null
 
-    private lateinit var viewModel: RefreshTokenViewModel
+    private lateinit var refreshTokenViewModel: RefreshTokenViewModel
     @Inject
     lateinit var authRouter: AuthRouter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AuthDiProvider.getInstance().injectFragment(this)
-        viewModel = ViewModelProviders.of(this,viewModelFactory)[RefreshTokenViewModel::class.java]
+        refreshTokenViewModel = getViewModel(RefreshTokenViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,7 +44,7 @@ class SplashFragment : BaseFragment() {
 
             override fun onFinish() {
                 pbSplash.progress = pbSplash.max
-                when(viewModel.lastViewState){
+                when(refreshTokenViewModel.lastViewState){
                     is ViewState.Success<*> -> authRouter.showMain()
                     else -> authRouter.showServerUrl()
 
@@ -53,22 +52,22 @@ class SplashFragment : BaseFragment() {
             }
 
         }.start()
-        registerHandler(ViewState.Error::class.java,viewModel){
+        registerHandler(ViewState.Error::class.java,refreshTokenViewModel){
             pbSplash.progress = pbSplash.max
             countDownTimer?.cancel()
             authRouter.showServerUrl()
         }
-        registerHandler(ViewState.Empty::class.java,viewModel){
+        registerHandler(ViewState.Empty::class.java,refreshTokenViewModel){
             pbSplash.progress = pbSplash.max
             countDownTimer?.cancel()
             authRouter.showServerUrl()
         }
-        registerHandler(ViewState.Success::class.java,viewModel){
+        registerHandler(ViewState.Success::class.java,refreshTokenViewModel){
             pbSplash.progress = pbSplash.max
             countDownTimer?.cancel()
             authRouter.showMain()
         }
-        viewModel.doAsyncRequest()
+        refreshTokenViewModel.doAsyncRequest()
 
     }
 

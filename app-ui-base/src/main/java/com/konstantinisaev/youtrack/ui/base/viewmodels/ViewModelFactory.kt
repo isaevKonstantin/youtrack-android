@@ -14,6 +14,8 @@ class ViewModelFactory @Inject constructor(private val viewModels: MutableMap<Cl
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T = viewModels[modelClass]?.get() as T
 
+    fun <T : ViewModel> contains(modelClass: Class<T>) : Boolean = viewModels.contains(modelClass)
+
 }
 
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER)
