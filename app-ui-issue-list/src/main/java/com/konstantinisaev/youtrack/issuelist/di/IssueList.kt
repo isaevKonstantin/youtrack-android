@@ -12,6 +12,7 @@ import com.konstantinisaev.youtrack.issuelist.viewmodels.IssueSavedFilterViewMod
 import com.konstantinisaev.youtrack.issuelist.viewmodels.ProfileViewModel
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.di.FeatureViewModelFactoryModule
+import com.konstantinisaev.youtrack.ui.base.utils.IssueFilterRouter
 import com.konstantinisaev.youtrack.ui.base.utils.IssueListRouter
 import com.konstantinisaev.youtrack.ui.base.utils.MainRouter
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelFactory
@@ -45,6 +46,9 @@ internal interface IssueListComponent{
 
         @BindsInstance
         fun issueListRouter(issueListRouter: IssueListRouter): Builder
+
+        @BindsInstance
+        fun issueListRouter(issueFilterRouter: IssueFilterRouter): Builder
 
         @BindsInstance
         fun apiProvider(apiProvider: ApiProvider) : Builder
@@ -112,6 +116,7 @@ class IssueListDiProvider private constructor(){
 
         fun init(
             mainRouter: MainRouter,
+            issueFilterRouter: IssueFilterRouter,
             issueListRouter: IssueListRouter,
             apiProvider: ApiProvider,
             basePreferencesAdapter: BasePreferencesAdapter,
@@ -119,8 +124,8 @@ class IssueListDiProvider private constructor(){
             viewModelFactory: ViewModelFactory
         ){
             if(!this::component.isInitialized){
-                component = DaggerIssueListComponent.builder().mainRouter(mainRouter).apiProvider(apiProvider).issueListRouter(issueListRouter).
-                    preferenceAdapter(basePreferencesAdapter).viewModelFactory(viewModelFactory).
+                component = DaggerIssueListComponent.builder().mainRouter(mainRouter).apiProvider(apiProvider).issueListRouter(issueFilterRouter).
+                    preferenceAdapter(basePreferencesAdapter).viewModelFactory(viewModelFactory).issueListRouter(issueListRouter).
                     coroutineContextHolder(coroutineContextHolder).build()
             }
         }

@@ -22,6 +22,8 @@ internal interface IssueFilterComponent {
 
     fun injectFragment(issueSortFragment: IssueSortFragment)
 
+    fun injectFragment(issueAutoCompleteFilterFragment: IssueAutoCompleteFilterFragment)
+
     @Component.Builder
     interface Builder {
 
@@ -72,6 +74,10 @@ class IssueFilterDiProvider private constructor(){
 
     fun injectFragment(issueSortFragment: IssueSortFragment){
         component.injectFragment(issueSortFragment)
+    }
+
+    fun injectFragment(issueAutoCompleteFilterFragment: IssueAutoCompleteFilterFragment) {
+        component.injectFragment(issueAutoCompleteFilterFragment)
     }
 
     companion object {

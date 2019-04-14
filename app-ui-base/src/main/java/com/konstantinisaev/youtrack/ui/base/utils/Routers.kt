@@ -32,9 +32,16 @@ interface MainRouter : BaseRouter {
 
 }
 
-interface IssueListRouter : BaseRouter {
+interface IssueFilterRouter : BaseRouter {
 
     fun showFilter(initialIssueCount: Int)
 
     fun showSort()
+
+}
+
+interface IssueListRouter : BaseRouter {
+
+    fun showFilterAutoComplete()
+
 }

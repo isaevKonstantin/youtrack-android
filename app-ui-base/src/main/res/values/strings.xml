@@ -6,6 +6,7 @@
     <string name="base_reset">Reset</string>
     <string name="base_sort">Sort</string>
     <string name="base_sort_by">sort by</string>
+    <string name="base_search">Search</string>
 
     <string name="auth_check_url_invalid_error">Invalid url</string>
 

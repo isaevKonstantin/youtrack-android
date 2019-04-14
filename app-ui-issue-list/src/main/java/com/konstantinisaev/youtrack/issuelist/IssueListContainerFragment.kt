@@ -7,7 +7,7 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.konstantinisaev.youtrack.issuelist.di.IssueListDiProvider
 import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
-import com.konstantinisaev.youtrack.ui.base.utils.IssueListRouter
+import com.konstantinisaev.youtrack.ui.base.utils.IssueFilterRouter
 import com.konstantinisaev.youtrack.ui.base.utils.MainRouter
 import com.konstantinisaev.youtrack.ui.base.viewmodels.FilterUpdatedViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
@@ -25,7 +25,8 @@ class IssueListContainerFragment : BaseFragment() {
     lateinit var mainRouter: MainRouter
 
     @Inject
-    lateinit var issueListRouter: IssueListRouter
+    lateinit var issueFilterRouter: IssueFilterRouter
+    @Inject
     lateinit var filterUpdatedViewModel: FilterUpdatedViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +41,7 @@ class IssueListContainerFragment : BaseFragment() {
         setToolbarWithBackNavigation(toolbar,getString(R.string.nav_rv_issues))
         initDrawer()
         mainRouter.setNavigator(SupportAppNavigator(activity,childFragmentManager,R.id.flContainer))
-        issueListRouter.setNavigator(SupportAppNavigator(activity,childFragmentManager,R.id.flFilter))
+        issueFilterRouter.setNavigator(SupportAppNavigator(activity,childFragmentManager,R.id.flFilter))
         childFragmentManager.addOnBackStackChangedListener {
             if(layDrawer.isDrawerOpen(GravityCompat.START)){
                 closeLeftDrawer()
@@ -106,7 +107,7 @@ class IssueListContainerFragment : BaseFragment() {
         layDrawer.closeDrawer(GravityCompat.START)
     }
 
-    fun closeRightDrawer() {
+    private fun closeRightDrawer() {
         layDrawer.closeDrawer(GravityCompat.END)
     }
 

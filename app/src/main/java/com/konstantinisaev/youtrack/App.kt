@@ -42,7 +42,7 @@ class ApplicationMediator {
     @Inject
     lateinit var authRouter: AuthRouter
     @Inject
-    lateinit var issueListRouter: IssueListRouter
+    lateinit var issueFilterRouter: IssueFilterRouter
     @Inject
     lateinit var apiProvider: ApiProvider
     @Inject
@@ -53,10 +53,12 @@ class ApplicationMediator {
     lateinit var base64Converter: Base64Converter
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+    @Inject
+    lateinit var issueListRouter: IssueListRouter
 
     fun init(context: Context){
         AuthDiProvider.init(authRouter,apiProvider,basePreferencesAdapter,coroutineContextHolder,base64Converter,viewModelFactory)
-        IssueListDiProvider.init(mainRouter,issueListRouter,apiProvider,basePreferencesAdapter,coroutineContextHolder,viewModelFactory)
+        IssueListDiProvider.init(mainRouter,issueFilterRouter,issueListRouter,apiProvider,basePreferencesAdapter,coroutineContextHolder,viewModelFactory)
         IssueFilterDiProvider.init(apiProvider,basePreferencesAdapter,coroutineContextHolder,context,viewModelFactory)
     }
 

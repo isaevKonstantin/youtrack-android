@@ -5,6 +5,7 @@ import com.konstantinisaev.youtrack.App.Companion.context
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
 import com.konstantinisaev.youtrack.navigation.AuthRouterImp
+import com.konstantinisaev.youtrack.navigation.IssueFilterRouterImp
 import com.konstantinisaev.youtrack.navigation.IssueListRouterImp
 import com.konstantinisaev.youtrack.navigation.MainRouterImp
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
@@ -34,6 +35,11 @@ class AppModule {
     @Provides
     fun provideMainRouter(cicerone: Cicerone<Router>) : MainRouter =
         MainRouterImp(cicerone)
+
+    @Singleton
+    @Provides
+    fun provideIssueFilterRouter(cicerone: Cicerone<Router>) : IssueFilterRouter =
+        IssueFilterRouterImp(cicerone)
 
     @Singleton
     @Provides

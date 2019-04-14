@@ -17,4 +17,7 @@
         <item>type</item>
     </string-array>
 
+    <string name="issue_filter_query_hint">Enter query</string>
+
+
 </resources>

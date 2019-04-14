@@ -28,8 +28,7 @@ abstract class BaseFragment : Fragment()  {
     @field:[Inject Named("baseFactory")]
     protected lateinit var baseViewModelFactory: ViewModelFactory
 
-    @Inject
-    @Named("featureFactory")
+    @field:[Inject Named("featureFactory")]
     protected lateinit var featureViewModelFactory: ViewModelFactory
 
     private val observersClass = mutableSetOf<Class<out BaseViewModel<*>>>()

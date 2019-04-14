@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	>
+	<com.google.android.material.appbar.AppBarLayout
+		android:id="@+id/layAppBar"
+		android:layout_width="0dp"
+		android:layout_height="?actionBarSize"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintRight_toRightOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		>
+		<androidx.appcompat.widget.Toolbar
+			android:id="@+id/tlbSearch"
+			android:layout_width="match_parent"
+			android:layout_height="?actionBarSize"
+			app:theme = "@style/YouTrackMainTheme.Toolbar"
+			/>
+	</com.google.android.material.appbar.AppBarLayout>
+
+	<EditText
+		android:id="@+id/edtAutoCompleteFilter"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:inputType="text"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintRight_toRightOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/layAppBar"
+		android:layout_marginStart="16dp"
+		android:layout_marginEnd="16dp"
+		android:hint="@string/issue_filter_query_hint"
+		android:imeOptions="actionDone"
+		tools:ignore="Autofill" />
+
+	<androidx.recyclerview.widget.RecyclerView
+		android:id="@+id/rvAutoCompleteFilter"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintRight_toRightOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/edtAutoCompleteFilter"
+		app:layout_constraintBottom_toBottomOf="parent"
+		/>
+
+	<ProgressBar
+		android:id="@+id/pbAutoCompleteFilter"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintRight_toRightOf="parent"
+		app:layout_constraintTop_toTopOf="@id/rvAutoCompleteFilter"
+		app:layout_constraintBottom_toBottomOf="@id/rvAutoCompleteFilter"
+		android:visibility="gone"
+		/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

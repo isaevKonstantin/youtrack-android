@@ -5,15 +5,15 @@ import androidx.fragment.app.Fragment
 import com.konstantinisaev.youtrack.issuefilter.IssueFilterFragment
 import com.konstantinisaev.youtrack.issuefilter.IssueSortFragment
 import com.konstantinisaev.youtrack.ui.base.utils.Extra
-import com.konstantinisaev.youtrack.ui.base.utils.IssueListRouter
+import com.konstantinisaev.youtrack.ui.base.utils.IssueFilterRouter
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 import javax.inject.Inject
 
-class IssueListRouterImp @Inject constructor(private val cicerone: Cicerone<Router>
-) : IssueListRouter {
+class IssueFilterRouterImp @Inject constructor(private val cicerone: Cicerone<Router>
+) : IssueFilterRouter {
 
     override fun setNavigator(navigator: Navigator) {
         cicerone.navigatorHolder.setNavigator(navigator)
