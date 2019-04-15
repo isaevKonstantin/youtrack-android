@@ -18,6 +18,7 @@
     </string-array>
 
     <string name="issue_filter_query_hint">Enter query</string>
+    <string name="issue_filter_query_error">Query must not be empty</string>
 
 
 </resources>

@@ -58,6 +58,33 @@ class IssueServerFilterViewModel @Inject constructor(private val apiProvider: Ap
         basePreferencesAdapter.setSortQuery(sortedStr)
     }
 
+    fun buildQueryString(baseStr: String, option: String,prefix: String,suffix: String) : String {
+        return when{
+            baseStr.length <= option.length -> {
+                "$prefix$option$suffix "
+            }
+            baseStr.length > option.length -> {
+                val arr = baseStr.split(" ").toMutableList()
+                if(arr.isNotEmpty()){
+                    if(option.contains(arr.last(),true)) {
+                        arr[arr.size - 1] = "$prefix$option$suffix"
+                    }
+                    var result = ""
+                    arr.forEach {
+                        result += "$it "
+                    }
+                    result.replace("  "," ")
+                }else{
+                    "$baseStr $prefix$option$suffix "
+                }
+            }
+            else -> {
+                ""
+            }
+        }
+    }
+
+
 }
 
 @Suppress("JoinDeclarationAndAssignment")
