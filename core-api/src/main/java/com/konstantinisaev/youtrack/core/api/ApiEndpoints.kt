@@ -15,5 +15,6 @@ enum class ApiEndpoints(val url: String){
 	GET_ISSUE_FILTER_INTELLISENCE("rest/search/underlineAndSuggest"),
 	GET_ALL_ISSUES_COUNT("rest/issue/count"),
 	DRAFT("api/admin/users/me/drafts/%s"),
-	UPDATE_FIELD("${DRAFT.url}/fields/%s")
+	UPDATE_FIELD("${DRAFT.url}/fields/%s"),
+	PERMISSIONS("api/rest/permissions/cache");
 }

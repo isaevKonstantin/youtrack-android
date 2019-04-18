@@ -84,15 +84,13 @@ class ApiProvider {
 
     fun getAllIssuesCount(baseUrl: String, filter: String? = null) = httpRepository.getAllIssuesCount("$baseUrl${ApiEndpoints.GET_ALL_ISSUES_COUNT.url}",filter)
 
-//    fun createIssue(baseUrl: String, createIssueDTO: CreateIssueDTO) = httpRepository.createIssue("$baseUrl${ApiEndpoints.GET_ALL_ISSUES.url}",createIssueDTO)
-//
-//    fun getCustomFieldSettings(baseUrl: String,parentType: String,parentId: String) = httpRepository.getCustomFieldBundle("$baseUrl${String.format(ApiEndpoints.GET_CUSTOM_FIELD_SETTING.url,parentType,parentId)}")
-//
-//    fun initDraft(baseUrl: String,projectId: String) =
-//        httpRepository.initDraft("$baseUrl${String.format(ApiEndpoints.DRAFT.url,"")}",createIssueDTO = DefaultCreateIssueBodyDTO(project = CreateIssueProjectDTO(id = projectId)))
-//
-//    fun getIssueByDraftId(baseUrl: String, lastDraftId: String) = httpRepository.getIssueByDraftId("$baseUrl${String.format(ApiEndpoints.DRAFT.url,lastDraftId)}")
-//
+    fun getCustomFieldSettings(baseUrl: String,parentType: String,parentId: String) = httpRepository.getCustomFieldBundle("$baseUrl${String.format(ApiEndpoints.GET_CUSTOM_FIELD_SETTING.url,parentType,parentId)}")
+
+    fun initDraft(baseUrl: String,projectId: String) =
+        httpRepository.initDraft("$baseUrl${String.format(ApiEndpoints.DRAFT.url,"")}",createIssueDTO = DefaultCreateIssueBodyDTO(project = CreateIssueProjectDTO(id = projectId)))
+
+    fun getIssueByDraftId(baseUrl: String, lastDraftId: String) = httpRepository.getIssueByDraftId("$baseUrl${String.format(ApiEndpoints.DRAFT.url,lastDraftId)}")
+
 //    fun getCustomFieldUserSettings(baseUrl: String,parentType: String,parentId: String) = httpRepository.getCustomFieldUsers("$baseUrl${String.format(ApiEndpoints.GET_USER_CUSTOM_FIELD_SETTING.url,parentType,parentId)}")
 //
 //    fun updateDraft(baseUrl: String,lastDraftId: String,valueId: String,value: Any) = httpRepository.updateDraft("$baseUrl${String.format(ApiEndpoints.UPDATE_FIELD.url,lastDraftId,valueId)}",updateDraftDTO = UpdateDraftDTO(valueId,value))

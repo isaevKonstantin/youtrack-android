@@ -7,7 +7,7 @@ import java.net.HttpURLConnection
 class JsonInterceptor : Interceptor {
 	override fun intercept(chain: Interceptor.Chain?): Response {
 		val requestBuilder = chain!!.request().newBuilder()
-		requestBuilder.header("Accept", "application/json")
+		requestBuilder.header("Accept", "application/json, text/plain, */*")
 		requestBuilder.header("Content-Type", "application/x-www-form-urlencoded")
 		return chain.proceed(requestBuilder.build())
 	}
@@ -50,8 +50,7 @@ class ErrorInterceptor : Interceptor {
 
 	override fun intercept(chain: Interceptor.Chain): Response {
 		val request = chain.request()
-		val response = chain.proceed(request);
-
+		val response = chain.proceed(request)
 		when {
 			response.code() == HttpURLConnection.HTTP_UNAUTHORIZED -> throw HttpProtocolException.Unauthorized(response.message())
 			response.code() == HttpURLConnection.HTTP_FORBIDDEN -> throw HttpProtocolException.Forbidden(response.message())
@@ -59,8 +58,6 @@ class ErrorInterceptor : Interceptor {
 			else -> return response
 		}
 	}
-
-
 }
 
 private sealed class Credentials{

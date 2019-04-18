@@ -31,7 +31,7 @@ data class FieldContainerDTO(val projectCustomField: ProjectCustomFieldDto? = nu
 data class ProjectCustomFieldDto(val field: CustomFieldDTO? = null, val bundle: BundleDTO? = null, val emptyFieldText: String? = null, val canBeEmpty: Boolean = false,
                                  @SerializedName("\$type")val type: String? = null,val id: String? = null)
 
-data class CustomFieldDTO(val name: String?, val id: String?)
+data class CustomFieldDTO(val name: String?, val id: String?,val fieldType: FieldTypeDTO? = null)
 
 data class BundleDTO(val id: String?)
 
@@ -43,19 +43,21 @@ data class CommentDTO(val id: String?)
 
 data class IssueCountDTO(val value: Int)
 
-//data class CreateIssueDTO(val project: IssueProjectDTO,val summary: String)
-//
-//data class IssueProjectDTO(val id: String)
-//
-//data class CustomFieldAdminDTO(val id: String?,val name: String?,@SerializedName("\$type")val type: String?,val description: String?)
-//
-//data class UpdateTimeFieldDTO(val presentation: String?)
-//
-//data class DefaultCreateIssueBodyDTO(private val id: String? = "",private val summary: String? = "",private val description: String? = "",private val project: CreateIssueProjectDTO)
-//
-//data class UpdateDraftDTO(private val id: String? = "", val value: Any)
-//
-//data class CreateIssueProjectDTO(private val name:String? = "Not selected",private val id: String?)
+data class CreateIssueDTO(val project: IssueProjectDTO,val summary: String)
+
+data class IssueProjectDTO(val id: String)
+
+data class CustomFieldAdminDTO(val id: String?,val name: String?,@SerializedName("\$type")val type: String?,val description: String?)
+
+data class UpdateTimeFieldDTO(val presentation: String?)
+
+data class FieldTypeDTO(val isMultiValue: Boolean,val valueType: String?)
+
+data class DefaultCreateIssueBodyDTO(private val id: String? = "",private val summary: String? = "",private val description: String? = "",private val project: CreateIssueProjectDTO)
+
+data class UpdateDraftDTO(private val id: String? = "", val value: Any)
+
+data class CreateIssueProjectDTO(private val name:String? = "Not selected",private val id: String?)
 
 data class FilterAutoCompleteDTO(@SerializedName("suggest") val suggestDTO: SuggestItemsDTO, val recent: List<FilterSuggestDTO>, val highlight: List<FilterSuggestDTO>)
 
