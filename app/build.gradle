@@ -46,9 +46,11 @@ dependencies {
     implementation project(":app-ui-auth")
     implementation project(":app-ui-issue-list")
     implementation project(":app-ui-issue-filter")
+    implementation project(":app-ui-create-issue")
     implementation project(":core-api")
 
     implementation appCompat
+    implementation material
     implementation ciceRone
     implementation dagger
     implementation multiDex

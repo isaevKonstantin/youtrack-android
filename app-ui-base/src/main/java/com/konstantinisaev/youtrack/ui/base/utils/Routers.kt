@@ -1,5 +1,6 @@
 package com.konstantinisaev.youtrack.ui.base.utils
 
+import androidx.fragment.app.FragmentManager
 import ru.terrakok.cicerone.Navigator
 
 interface BaseRouter {
@@ -43,5 +44,7 @@ interface IssueFilterRouter : BaseRouter {
 interface IssueListRouter : BaseRouter {
 
     fun showFilterAutoComplete()
+
+    fun showAddIssue(supportFragmentManager: FragmentManager)
 
 }

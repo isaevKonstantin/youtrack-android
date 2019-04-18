@@ -87,6 +87,19 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="YouTrackMainTheme.GreenTextInputLayout" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="YouTrackMainTheme.EdtCreateIssueSummary" parent="YouTrackMainTheme.EdtAuth">
+        <item name="android:textSize">@dimen/text14</item>
+    </style>
+
+    <style name="YouTrackMainTheme.EdtCreateIssueDesc" parent="YouTrackMainTheme.EdtAuth">
+        <item name="android:textSize">@dimen/text16</item>
+    </style>
+
     <style name="YouTrackMainTheme.Card">
         <item name="android:background">?attr/selectableItemBackground</item>
     </style>

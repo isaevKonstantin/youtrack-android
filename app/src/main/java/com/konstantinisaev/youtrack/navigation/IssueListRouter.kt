@@ -1,6 +1,8 @@
 package com.konstantinisaev.youtrack.navigation
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import com.konstantinisaev.youtrack.createissue.CreateIssueDialog
 import com.konstantinisaev.youtrack.issuefilter.IssueAutoCompleteFilterFragment
 import com.konstantinisaev.youtrack.ui.base.utils.IssueListRouter
 import ru.terrakok.cicerone.Cicerone
@@ -21,6 +23,11 @@ class IssueListRouterImp @Inject constructor(private val cicerone: Cicerone<Rout
                 return IssueAutoCompleteFilterFragment()
             }
         })
+    }
+
+    override fun showAddIssue(supportFragmentManager: FragmentManager) {
+        val dialog = CreateIssueDialog()
+        dialog.show(supportFragmentManager,"")
     }
 
 }

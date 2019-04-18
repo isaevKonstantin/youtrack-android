@@ -81,6 +81,8 @@ class IssueListFragment : BaseFragment() {
         initFilter()
 
         fabAddIssue.setOnClickListener {
+            val supportFragmentManager = activity?.supportFragmentManager ?: return@setOnClickListener
+            issueListRouter.showAddIssue(supportFragmentManager)
         }
         imgIssueListSwitcher.setOnClickListener {
             issueListTypeViewModel.doAsyncRequest()

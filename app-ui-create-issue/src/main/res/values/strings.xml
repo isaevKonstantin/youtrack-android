@@ -1,0 +1,16 @@
+<resources>
+    <string name="create_issue_fragm_summary_hint">Summary</string>
+    <string name="create_issue_fragm_edt_desc_hint">Description</string>
+    <string name="create_issue_fragm_tv_attach">Attach file</string>
+    <string name="create_issue_fragm_toolbar_title">Create issue</string>
+    <string name="create_issue_fragm_project_hint">Project</string>
+    <string name="create_issue_fragm_assignee_hint">Assignee</string>
+    <string name="create_issue_fragm_type_hint">Type</string>
+    <string name="create_issue_fragm_priority_hint">Priority</string>
+    <string name="create_issue_fragm_state_hint">State</string>
+    <string name="create_issue_fragm_estimation_hint">Estimation</string>
+    <string name="create_issue_fragm_spent_time_hint">Spent time</string>
+    <string name="create_issue_fragm_sprint_hint">Sprint</string>
+    <string name="create_issue_fragm_error_label">Can\'t initialize draft</string>
+    <string name="create_issue_fragm_select_field_format">Select %s</string>
+</resources>

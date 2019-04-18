@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@android:color/white"
+	xmlns:tools="http://schemas.android.com/tools">
+
+	<com.google.android.material.appbar.AppBarLayout
+		android:id="@+id/layAppBar"
+		android:layout_width="match_parent"
+		android:layout_height="?actionBarSize"
+		app:layout_constraintTop_toTopOf="parent"
+		>
+		<androidx.appcompat.widget.Toolbar
+			android:id="@+id/tlbCreateIssue"
+			android:layout_width="match_parent"
+			android:layout_height="?actionBarSize"
+			app:theme = "@style/YouTrackMainTheme.Toolbar"
+			/>
+	</com.google.android.material.appbar.AppBarLayout>
+
+	<ProgressBar
+		android:id="@+id/pbCreateIssue"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:visibility="gone"
+		android:indeterminate="true"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintRight_toRightOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintBottom_toBottomOf="parent"
+		/>
+
+	<TextView
+		android:id="@+id/tvCreateIssueError"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:contentDescription="@null"
+		style="@style/YouTrackMainTheme.TextViewMediumTextPrimaryColor"
+		android:text="@string/create_issue_fragm_error_label"
+		android:layout_marginStart="16dp"
+		android:layout_marginEnd="16dp"
+		android:visibility="gone"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintRight_toRightOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintBottom_toBottomOf="parent"
+		tools:ignore="RtlSymmetry" />
+
+
+	<androidx.core.widget.NestedScrollView
+		android:id="@+id/nsvCreateIssueBody"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		android:focusable="true"
+		android:focusableInTouchMode="true"
+		app:layout_constraintTop_toBottomOf="@id/layAppBar"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintRight_toRightOf="parent"
+		app:layout_constraintBottom_toTopOf="@id/tvConfirmIssue"
+		>
+
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="16dp"
+			android:layout_marginEnd="16dp"
+			>
+
+			<com.google.android.material.textfield.TextInputLayout
+				android:id="@+id/tlSummary"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="40dp"
+				android:layout_marginBottom="20dp"
+				app:layout_constraintLeft_toLeftOf="parent"
+				app:layout_constraintRight_toRightOf="parent"
+				android:hint="@string/create_issue_fragm_summary_hint"
+				app:hintTextAppearance="@style/YouTrackMainTheme.GreenTextInputLayout"
+				app:layout_constraintTop_toTopOf="parent">
+
+				<androidx.appcompat.widget.AppCompatEditText
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:maxLines="2"
+					android:inputType="text"
+					android:gravity="start"
+					android:paddingTop="10dp"
+					android:paddingBottom="10dp"
+					android:theme="@style/YouTrackMainTheme.EdtCreateIssueSummary"
+					tools:ignore="LabelFor" />
+
+			</com.google.android.material.textfield.TextInputLayout>
+
+			<com.google.android.material.textfield.TextInputLayout
+				android:id="@+id/tlDesc"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="20dp"
+				android:hint="@string/create_issue_fragm_edt_desc_hint"
+				app:layout_constraintLeft_toLeftOf="parent"
+				app:layout_constraintRight_toRightOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/tlSummary"
+				app:hintTextAppearance="@style/YouTrackMainTheme.GreenTextInputLayout"
+				>
+
+				<androidx.appcompat.widget.AppCompatEditText
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:maxLines="5"
+					android:paddingTop="10dp"
+					android:paddingBottom="10dp"
+					android:layout_marginBottom="10dp"
+					android:layout_marginTop="20dp"
+					android:inputType="text"
+					android:theme="@style/YouTrackMainTheme.EdtCreateIssueDesc"
+					android:gravity="start"
+					tools:ignore="LabelFor" />
+
+			</com.google.android.material.textfield.TextInputLayout>
+
+			<TextView
+				android:id="@+id/tvCurrentProjectLabel"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:contentDescription="@null"
+				app:layout_constraintTop_toBottomOf="@id/tlDesc"
+				android:layout_marginTop="20dp"
+				style="@style/YouTrackMainTheme.TextViewSmallTextSecondaryColor"
+				app:layout_constraintRight_toLeftOf="@id/tlEstimation"
+				app:layout_constraintLeft_toLeftOf="parent"
+				android:paddingEnd="10dp"
+				android:text="@string/create_issue_fragm_project_hint"
+				tools:ignore="RtlSymmetry" />
+
+			<TextView
+				android:id="@+id/tvCurrentProject"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:contentDescription="@null"
+				app:layout_constraintTop_toBottomOf="@id/tvCurrentProjectLabel"
+				app:layout_constraintRight_toLeftOf="@id/tlEstimation"
+				app:layout_constraintLeft_toLeftOf="parent"
+				style="@style/YouTrackMainTheme.TextViewMediumTextPrimaryColor"
+				android:paddingTop="10dp"
+				android:paddingBottom="10dp"
+				android:paddingEnd="10dp"
+				tools:text="YoutrackAndroid"
+				tools:ignore="RtlSymmetry" />
+
+			<TextView
+				android:id="@+id/tvPriorityLabel"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:contentDescription="@null"
+				android:layout_marginTop="20dp"
+				app:layout_constraintTop_toBottomOf="@id/tvCurrentProject"
+				app:layout_constraintRight_toLeftOf="@id/tlSpentTime"
+				app:layout_constraintLeft_toLeftOf="parent"
+				style="@style/YouTrackMainTheme.TextViewSmallTextSecondaryColor"
+				android:paddingEnd="10dp"
+				android:text="@string/create_issue_fragm_priority_hint"
+				tools:ignore="RtlSymmetry" />
+
+			<TextView
+				android:id="@+id/tvPriority"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				app:layout_constraintLeft_toLeftOf="parent"
+				android:contentDescription="@null"
+				app:layout_constraintTop_toBottomOf="@id/tvPriorityLabel"
+				app:layout_constraintRight_toLeftOf="@id/tlSpentTime"
+				style="@style/YouTrackMainTheme.TextViewMediumTextPrimaryColor"
+				android:paddingTop="10dp"
+				android:paddingBottom="10dp"
+				android:paddingEnd="10dp"
+				tools:text="Major"
+				tools:ignore="RtlSymmetry" />
+
+			<TextView
+				android:id="@+id/tvStateLabel"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:contentDescription="@null"
+				android:layout_marginTop="20dp"
+				app:layout_constraintTop_toBottomOf="@id/tvPriority"
+				app:layout_constraintRight_toLeftOf="@id/tlSpentTime"
+				app:layout_constraintLeft_toLeftOf="parent"
+				style="@style/YouTrackMainTheme.TextViewSmallTextSecondaryColor"
+				android:paddingEnd="10dp"
+				android:text="@string/create_issue_fragm_state_hint"
+				tools:ignore="RtlSymmetry" />
+
+			<TextView
+				android:id="@+id/tvState"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				app:layout_constraintLeft_toLeftOf="parent"
+				android:contentDescription="@null"
+				app:layout_constraintTop_toBottomOf="@id/tvStateLabel"
+				app:layout_constraintRight_toLeftOf="@id/tlSpentTime"
+				style="@style/YouTrackMainTheme.TextViewMediumTextPrimaryColor"
+				android:paddingTop="10dp"
+				android:paddingBottom="10dp"
+				android:paddingEnd="10dp"
+				tools:text="Open"
+				tools:ignore="RtlSymmetry" />
+
+			<TextView
+				android:id="@+id/tvTypeLabel"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				app:layout_constraintLeft_toLeftOf="parent"
+				app:layout_constraintRight_toLeftOf="@id/tvSprintLabel"
+				android:contentDescription="@null"
+				android:layout_marginTop="20dp"
+				app:layout_constraintTop_toBottomOf="@id/tvState"
+				style="@style/YouTrackMainTheme.TextViewSmallTextSecondaryColor"
+				android:paddingEnd="10dp"
+				android:text="@string/create_issue_fragm_type_hint"
+				tools:ignore="RtlSymmetry" />
+
+			<TextView
+				android:id="@+id/tvType"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:contentDescription="@null"
+				app:layout_constraintTop_toBottomOf="@id/tvTypeLabel"
+				app:layout_constraintLeft_toLeftOf="@id/tvTypeLabel"
+				app:layout_constraintRight_toRightOf="@id/tvTypeLabel"
+				style="@style/YouTrackMainTheme.TextViewMediumTextPrimaryColor"
+				android:paddingTop="10dp"
+				android:paddingBottom="10dp"
+				android:paddingEnd="10dp"
+				tools:text="Task"
+				tools:ignore="RtlSymmetry" />
+
+			<TextView
+				android:id="@+id/tvAssigneeLabel"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:contentDescription="@null"
+				android:layout_marginTop="20dp"
+				app:layout_constraintTop_toBottomOf="@id/tvType"
+				app:layout_constraintLeft_toLeftOf="@id/tvTypeLabel"
+				app:layout_constraintRight_toRightOf="@id/tvTypeLabel"
+				style="@style/YouTrackMainTheme.TextViewSmallTextSecondaryColor"
+				android:paddingEnd="10dp"
+				android:text="@string/create_issue_fragm_assignee_hint"
+				tools:ignore="RtlSymmetry" />
+
+			<TextView
+				android:id="@+id/tvAssignee"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:contentDescription="@null"
+				app:layout_constraintTop_toBottomOf="@id/tvAssigneeLabel"
+				app:layout_constraintLeft_toLeftOf="@id/tvTypeLabel"
+				app:layout_constraintRight_toRightOf="@id/tvTypeLabel"
+				style="@style/YouTrackMainTheme.TextViewMediumTextPrimaryColor"
+				android:paddingTop="10dp"
+				android:paddingBottom="10dp"
+				android:paddingEnd="10dp"
+				tools:text="User"
+				tools:ignore="RtlSymmetry" />
+
+			<com.google.android.material.textfield.TextInputLayout
+				android:id="@+id/tlEstimation"
+				android:layout_width="0dp"
+				android:layout_height="0dp"
+				android:hint="@string/create_issue_fragm_estimation_hint"
+				app:layout_constraintRight_toRightOf="parent"
+				app:layout_constraintLeft_toRightOf="@id/tvCurrentProject"
+				app:layout_constraintTop_toTopOf="@id/tvCurrentProjectLabel"
+				app:layout_constraintBottom_toBottomOf="@id/tvCurrentProject"
+				app:hintTextAppearance="@style/YouTrackMainTheme.GreenTextInputLayout"
+				>
+
+				<androidx.appcompat.widget.AppCompatEditText
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:maxLines="1"
+					android:inputType="text"
+					android:theme="@style/YouTrackMainTheme.EdtCreateIssueDesc"
+					android:gravity="start|bottom"
+					tools:text="Estimation"
+					tools:ignore="LabelFor" />
+
+			</com.google.android.material.textfield.TextInputLayout>
+
+			<com.google.android.material.textfield.TextInputLayout
+				android:id="@+id/tlSpentTime"
+				android:layout_width="0dp"
+				android:layout_height="0dp"
+				android:hint="@string/create_issue_fragm_spent_time_hint"
+				app:layout_constraintRight_toRightOf="parent"
+				app:layout_constraintLeft_toRightOf="@id/tvPriorityLabel"
+				app:layout_constraintTop_toTopOf="@id/tvPriorityLabel"
+				app:layout_constraintBottom_toBottomOf="@id/tvPriority"
+				app:hintTextAppearance="@style/YouTrackMainTheme.GreenTextInputLayout"
+				>
+
+				<androidx.appcompat.widget.AppCompatEditText
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:maxLines="1"
+					android:inputType="text"
+					android:theme="@style/YouTrackMainTheme.EdtCreateIssueDesc"
+					android:gravity="start|bottom"
+					tools:ignore="LabelFor" />
+
+			</com.google.android.material.textfield.TextInputLayout>
+
+			<TextView
+				android:id="@+id/tvSprintLabel"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:contentDescription="@null"
+				android:layout_marginTop="20dp"
+				app:layout_constraintTop_toBottomOf="@id/tlSpentTime"
+				app:layout_constraintRight_toRightOf="parent"
+				app:layout_constraintLeft_toRightOf="@id/tvTypeLabel"
+				style="@style/YouTrackMainTheme.TextViewSmallTextSecondaryColor"
+				android:paddingEnd="10dp"
+				android:text="@string/create_issue_fragm_sprint_hint"
+				tools:ignore="RtlSymmetry" />
+
+			<TextView
+				android:id="@+id/tvSprint"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:contentDescription="@null"
+				app:layout_constraintTop_toBottomOf="@id/tvSprintLabel"
+				app:layout_constraintLeft_toLeftOf="@id/tvSprintLabel"
+				app:layout_constraintRight_toRightOf="@id/tvSprintLabel"
+				style="@style/YouTrackMainTheme.TextViewMediumTextPrimaryColor"
+				android:paddingTop="10dp"
+				android:paddingBottom="10dp"
+				android:paddingEnd="10dp"
+				tools:text="Sprint 1"
+				tools:ignore="RtlSymmetry" />
+
+		</androidx.constraintlayout.widget.ConstraintLayout>
+
+	</androidx.core.widget.NestedScrollView>
+
+	<TextView
+		android:id="@+id/tvAttach"
+		android:layout_width="wrap_content"
+		android:layout_height="0dp"
+		android:gravity="center_vertical"
+		android:contentDescription="@null"
+		android:drawableStart="@drawable/ic_attach_file_black_24dp"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintTop_toTopOf="@id/tvConfirmIssue"
+		android:text="@string/create_issue_fragm_tv_attach"
+		style="@style/YouTrackMainTheme.TextViewMediumTextPrimaryColor"
+		app:layout_constraintLeft_toLeftOf="parent"
+		tools:ignore="RtlSymmetry" />
+
+
+	<TextView
+		android:id="@+id/tvConfirmIssue"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:contentDescription="@null"
+		style="@style/YouTrackMainTheme.TextViewMediumTitleGreenColorRegular"
+		android:paddingBottom="10dp"
+		android:paddingEnd="16dp"
+		android:paddingTop="10dp"
+		android:paddingStart="10dp"
+		android:layout_marginStart="16dp"
+		app:layout_constraintRight_toRightOf="parent"
+		app:layout_constraintBottom_toBottomOf="parent"
+		android:text="@string/base_confirm"
+		android:textAllCaps="true"
+		tools:ignore="RtlSymmetry" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
