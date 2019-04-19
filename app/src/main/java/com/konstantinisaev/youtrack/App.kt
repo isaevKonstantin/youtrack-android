@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.multidex.MultiDexApplication
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
+import com.konstantinisaev.youtrack.createissue.CreateIssueDiProvider
 import com.konstantinisaev.youtrack.di.AppComponent
 import com.konstantinisaev.youtrack.di.DaggerAppComponent
 import com.konstantinisaev.youtrack.issuefilter.di.IssueFilterDiProvider
@@ -60,6 +61,7 @@ class ApplicationMediator {
         AuthDiProvider.init(authRouter,apiProvider,basePreferencesAdapter,coroutineContextHolder,base64Converter,viewModelFactory)
         IssueListDiProvider.init(mainRouter,issueFilterRouter,issueListRouter,apiProvider,basePreferencesAdapter,coroutineContextHolder,viewModelFactory)
         IssueFilterDiProvider.init(apiProvider,basePreferencesAdapter,coroutineContextHolder,context,viewModelFactory)
+        CreateIssueDiProvider.init(apiProvider,basePreferencesAdapter,coroutineContextHolder,viewModelFactory)
     }
 
 }

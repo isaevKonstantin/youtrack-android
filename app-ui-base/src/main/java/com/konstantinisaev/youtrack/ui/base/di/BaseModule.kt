@@ -29,6 +29,12 @@ abstract class BaseModelsModule {
     @ViewModelKey(UpdateIssueListViewModel::class)
     @Singleton
     internal abstract fun bindUpdateIssueListViewModel(updateIssueListViewModel: UpdateIssueListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(GetProjectsViewModel::class)
+    @Singleton
+    internal abstract fun bindGetProjectViewModel(getProjectsViewModel: GetProjectsViewModel): ViewModel
 }
 
 @Module

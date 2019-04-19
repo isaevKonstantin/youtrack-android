@@ -1,13 +1,10 @@
-package com.konstantinisaev.youtrack.base.viewmodels
+package com.konstantinisaev.youtrack.ui.base.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
 import com.konstantinisaev.youtrack.core.api.IssueCountDTO
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
-import com.konstantinisaev.youtrack.ui.base.viewmodels.BaseViewModel
-import com.konstantinisaev.youtrack.ui.base.viewmodels.IssueCountViewModel
-import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import kotlinx.coroutines.*
 import org.assertj.core.api.Assertions
 import org.junit.Before
