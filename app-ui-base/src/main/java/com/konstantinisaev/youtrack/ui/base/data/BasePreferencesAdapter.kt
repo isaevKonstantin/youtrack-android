@@ -6,14 +6,6 @@ import com.google.gson.Gson
 import com.konstantinisaev.youtrack.core.api.AuthTokenDTO
 import com.konstantinisaev.youtrack.core.api.ServerConfigDTO
 
-private const val COMMON_PREFERENCE_NAME = "base_preferences"
-private const val SERVER_URL = "base_server_url"
-private const val SERVER_CONFIG = "base_server_config"
-private const val TOKEN = "token"
-private const val ISSUE_LIST_TYPE = "issue_list_type"
-private const val SAVED_QUERY = "saved_query"
-private const val SORT_QUERY = "sort_query"
-
 class BasePreferencesAdapter private constructor() {
 
     companion object {
@@ -88,4 +80,26 @@ class BasePreferencesAdapter private constructor() {
     fun setSortQuery(query: String){
         sharedPreferences.edit().putString(SORT_QUERY,query).apply()
     }
+
+    fun getLastDraftId() = sharedPreferences.getString(LAST_DRAFT_ID,"").orEmpty()
+
+    fun setLastDraftId(lastDraftId: String){
+        sharedPreferences.edit().putString(LAST_DRAFT_ID,lastDraftId).apply()
+    }
+
+    fun getCurrentProjectId() = sharedPreferences.getString(CURRENT_PROJECT_ID,"").orEmpty()
+
+    fun setCurrentProjectId(projectId: String){
+        sharedPreferences.edit().putString(CURRENT_PROJECT_ID,projectId).apply()
+    }
 }
+
+private const val COMMON_PREFERENCE_NAME = "base_preferences"
+private const val SERVER_URL = "base_server_url"
+private const val SERVER_CONFIG = "base_server_config"
+private const val TOKEN = "token"
+private const val ISSUE_LIST_TYPE = "issue_list_type"
+private const val SAVED_QUERY = "saved_query"
+private const val SORT_QUERY = "sort_query"
+private const val LAST_DRAFT_ID = "last_draft_id"
+private const val CURRENT_PROJECT_ID = "current_project_id"

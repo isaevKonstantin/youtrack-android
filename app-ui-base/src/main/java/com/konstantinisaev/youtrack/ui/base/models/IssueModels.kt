@@ -2,10 +2,7 @@
 
 package com.konstantinisaev.youtrack.ui.base.models
 
-import com.konstantinisaev.youtrack.core.api.CommentDTO
-import com.konstantinisaev.youtrack.core.api.FieldContainerDTO
-import com.konstantinisaev.youtrack.core.api.FilterMatchDTO
-import com.konstantinisaev.youtrack.core.api.ProjectCustomFieldDto
+import com.konstantinisaev.youtrack.core.api.*
 import com.konstantinisaev.youtrack.ui.base.utils.DateUtils
 import com.konstantinisaev.youtrack.ui.base.utils.ObjectMapper
 import java.util.*
@@ -128,3 +125,12 @@ private const val ASSIGNEE_FIELD = "assignee"
 private const val ESTIMATION_FIELD = "estimation"
 private const val SPENT_TIME_FIELD = "spent time"
 private const val SPRINT_FIELD = "sprints"
+
+fun mapIssue(issueDTO: IssueDTO) = Issue(issueDTO.id.orEmpty(),issueDTO.idReadable.orEmpty(),issueDTO.summary.orEmpty(),issueDTO.resolved.orEmpty(),issueDTO.created.orEmpty(),issueDTO.updated.orEmpty(),
+	issueDTO.description.orEmpty(),issueDTO.fields.orEmpty(),
+	IssueUserField(issueDTO.reporter?.name.orEmpty(),issueDTO.reporter?.avatarUrl.orEmpty()),
+	issueDTO.votes ?: 0,
+	IssueWatcher(issueDTO.watchers?.id.orEmpty(),issueDTO.watchers?.hasStar == true),
+	Collections.emptyList(),
+	Project(issueDTO.project.id.orEmpty(),issueDTO.project.name.orEmpty(),issueDTO.project.shortName.orEmpty(),issueDTO.project.archived,issueDTO.project.type.orEmpty())
+)

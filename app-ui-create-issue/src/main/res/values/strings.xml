@@ -13,4 +13,6 @@
     <string name="create_issue_fragm_sprint_hint">Sprint</string>
     <string name="create_issue_fragm_error_label">Can\'t initialize draft</string>
     <string name="create_issue_fragm_select_field_format">Select %s</string>
+
+    <string name="create_issue_fragm_cannot_create_issue_error">You cannot create issue!</string>
 </resources>
