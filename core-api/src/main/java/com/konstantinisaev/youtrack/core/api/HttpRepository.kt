@@ -52,6 +52,8 @@ interface HttpRepository {
     @POST
     fun updateDraft(@Url url: String,@Query("top") top: Int = -1,@Body updateDraftDTO: UpdateDraftDTO) : Deferred<CustomFieldAdminDTO>
 
+    @GET
+    fun getPermissions(@Url url: String,@Query("query") query: String? = null,@Query("fields")fields: String? = Fields.PERMISSION) : Deferred<List<CachedPermissionsContainerDTO>>
 }
 
 private object Fields{
@@ -68,6 +70,6 @@ private object Fields{
 
     const val USER_CUSTOM_FIELD = "\$type,avatarUrl,fullName,name,id,ringId"
 
-    const val PERMISSION = "key,global,projects(id)"
+    const val PERMISSION = "global,permission(key),projects(id)"
 
 }

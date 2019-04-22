@@ -68,3 +68,9 @@ data class FilterSuggestDTO(val styleClass: String?, @SerializedName("pre") val 
 data class FilterMatchDTO(val start: Int, val end: String)
 
 data class SuggestItemsDTO(val items: List<FilterSuggestDTO>)
+
+data class CachedPermissionsContainerDTO(val cachedPermissions: List<CachedPermissionDTO>)
+
+data class CachedPermissionDTO(val global: Boolean,val permission:Permission,val projects: List<ProjectDTO>)
+
+data class Permission(val key: String?)

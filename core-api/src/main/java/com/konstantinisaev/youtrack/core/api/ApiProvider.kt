@@ -69,7 +69,7 @@ class ApiProvider {
 
     fun getServerConfig(url: String) = httpRepository.getServerConfig(url)
 
-    fun login(url: String,login: String,password: String,scope: String) = httpRepository.login(url,"offline","password",login,password,scope)
+    fun login(url: String,login: String,password: String,scope: String) = httpRepository.login(url,"offline","password",login,password,"0-0-0-0-0 $scope")
 
     fun refreshToken(url: String,token: String) = httpRepository.refreshToken(url,"refresh_token",token)
 
@@ -91,6 +91,8 @@ class ApiProvider {
 
     fun getIssueByDraftId(baseUrl: String, lastDraftId: String) = httpRepository.getIssueByDraftId("$baseUrl${String.format(ApiEndpoints.DRAFT.url,lastDraftId)}")
 
+    fun getPermissions(baseUrl: String,serviceId: String) = httpRepository.getPermissions("$baseUrl${ApiEndpoints.PERMISSIONS.url}","")
+//
 //    fun getCustomFieldUserSettings(baseUrl: String,parentType: String,parentId: String) = httpRepository.getCustomFieldUsers("$baseUrl${String.format(ApiEndpoints.GET_USER_CUSTOM_FIELD_SETTING.url,parentType,parentId)}")
 //
 //    fun updateDraft(baseUrl: String,lastDraftId: String,valueId: String,value: Any) = httpRepository.updateDraft("$baseUrl${String.format(ApiEndpoints.UPDATE_FIELD.url,lastDraftId,valueId)}",updateDraftDTO = UpdateDraftDTO(valueId,value))

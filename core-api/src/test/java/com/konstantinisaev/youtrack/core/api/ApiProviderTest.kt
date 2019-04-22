@@ -107,6 +107,7 @@ class ApiProviderTest {
                 apiProvider.enableAppCredentialsInHeader(Base64.getEncoder().encodeToString("${serverConfigDTO.mobile.serviceId}:${serverConfigDTO.mobile.serviceSecret}".toByteArray()))
                 getToken(System.getenv()[debugLoginKey] as String,System.getenv()[debugPasswordKey] as String,"${serverConfigDTO.mobile.serviceId} ${serverConfigDTO.ring.serviceId}")
                 getProjects()
+                getPermissions()
             }
         }
 
@@ -138,5 +139,15 @@ class ApiProviderTest {
             projects = resp
         }
 
+        private suspend fun getPermissions(){
+            apiProvider.enableUserCredentialsInHeader(authTokenDTO.accessToken, authTokenDTO.tokenType)
+            var hub = serverConfigDTO.ring.url
+            if(hub.startsWith("/")){
+                hub = hub.substring(1,hub.length)
+            }
+            val cachedPermissions = apiProvider.getPermissions("$testUrl$hub/", serverConfigDTO.ring.serviceId).await()
+            assertThat(cachedPermissions).isNotNull
+            assertThat(cachedPermissions).isNotEmpty
+        }
     }
 }
