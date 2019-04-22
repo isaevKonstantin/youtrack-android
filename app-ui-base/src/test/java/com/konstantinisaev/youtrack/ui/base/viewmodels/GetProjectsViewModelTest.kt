@@ -52,7 +52,7 @@ class GetProjectsViewModelTest {
     fun `given success issue count response should produce success state`() {
         Mockito.`when`(basePreferencesAdapter.getUrl()).thenReturn("")
         Mockito.`when`(apiProvider.getProjects(ArgumentMatchers.anyString())).thenReturn(
-            GlobalScope.async(testCoroutineContextHolder.main()) { listOf<ProjectDTO>(ProjectDTO("","","","",true))  })
+            GlobalScope.async(testCoroutineContextHolder.main()) { listOf(ProjectDTO("","","","",true,"ringId"))  })
         getProjectsViewModel.doAsyncRequest("")
         Mockito.verify(basePreferencesAdapter,times(1)).setCurrentProjectId(ArgumentMatchers.anyString())
         Assertions.assertThat(getProjectsViewModel.lastViewState).isExactlyInstanceOf(ViewState.Success::class.java)

@@ -1,5 +1,6 @@
 package com.konstantinisaev.youtrack.core.api
 
+import com.konstantinisaev.youtrack.core.api.models.PermissionHolder
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.BeforeClass
@@ -56,13 +57,13 @@ class ApiProviderTest {
     fun `should create issue`() {
         runBlocking {
             apiProvider.enableUserCredentialsInHeader(authTokenDTO.accessToken, authTokenDTO.tokenType)
-            println(projects)
-            val issueDTO = apiProvider.initDraft("$testUrl${ApiEndpoints.YOUTRACK.url}/", projects.firstOrNull{ it.shortName?.toLowerCase() == "ya" }?.id.orEmpty()).await()
+            val projects = projects.filter { !it.archived && permissionHolder.hasPermission(PermissionHolder.CREATE_ISSUE,it.ringId.orEmpty()) }
+            assertThat(projects).isNotEmpty
+            val issueDTO = apiProvider.initDraft("$testUrl${ApiEndpoints.YOUTRACK.url}/", projects[0].id.orEmpty()).await()
             assertThat(issueDTO).isNotNull
             val draftIssueDTO = apiProvider.getIssueByDraftId("$testUrl${ApiEndpoints.YOUTRACK.url}/",issueDTO.id.orEmpty()).await()
             assertThat(draftIssueDTO).isNotNull
             draftIssueDTO.fields?.forEach {fieldContainer ->
-                println(fieldContainer)
                 fieldContainer.projectCustomField?.bundle.takeIf { it != null }?.let {bundle ->
                     val fieldDTO = apiProvider.getCustomFieldSettings(
                         "$testUrl${ApiEndpoints.YOUTRACK.url}/",
@@ -72,8 +73,6 @@ class ApiProviderTest {
                     assertThat(fieldDTO).isNotEmpty
                 }
             }
-
-
         }
     }
 
@@ -84,6 +83,7 @@ class ApiProviderTest {
         private lateinit var authTokenDTO: AuthTokenDTO
         private lateinit var projects: List<ProjectDTO>
         private lateinit var testUrl: String
+        private lateinit var permissionHolder: PermissionHolder
 
         @BeforeClass
         @JvmStatic
@@ -147,7 +147,7 @@ class ApiProviderTest {
             }
             val cachedPermissions = apiProvider.getPermissions("$testUrl$hub/", serverConfigDTO.ring.serviceId).await()
             assertThat(cachedPermissions).isNotNull
-            assertThat(cachedPermissions).isNotEmpty
+            permissionHolder = PermissionHolder(cachedPermissions)
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.konstantinisaev.youtrack.core.api
 
+import com.konstantinisaev.youtrack.core.api.models.CachedPermissionDTO
 import kotlinx.coroutines.Deferred
 import retrofit2.http.*
 
@@ -53,14 +54,14 @@ interface HttpRepository {
     fun updateDraft(@Url url: String,@Query("top") top: Int = -1,@Body updateDraftDTO: UpdateDraftDTO) : Deferred<CustomFieldAdminDTO>
 
     @GET
-    fun getPermissions(@Url url: String,@Query("query") query: String? = null,@Query("fields")fields: String? = Fields.PERMISSION) : Deferred<List<CachedPermissionsContainerDTO>>
+    fun getPermissions(@Url url: String,@Query("query") query: String? = null,@Query("fields")fields: String? = Fields.PERMISSION) : Deferred<List<CachedPermissionDTO>>
 }
 
 private object Fields{
 
     const val ISSUE_LIST = "comments,watchers(hasStar,id),reporter(id,login,name,avatarUrl),id,idReadable,summary,resolved,created,updated,description,type,fields(projectCustomField(field(name,value)),value(name,minutes,presentation,id,color(background,foreground)))"
 
-    const val PROJECT = "\$id,type,name,shortName,id"
+    const val PROJECT = "\$id,type,name,shortName,id,ringId,archived"
 
     const val CUSTOM_FIELDS = "type,name,id"
 
@@ -70,6 +71,6 @@ private object Fields{
 
     const val USER_CUSTOM_FIELD = "\$type,avatarUrl,fullName,name,id,ringId"
 
-    const val PERMISSION = "global,permission(key),projects(id)"
+    const val PERMISSION = "global,permission(key),projects(id,ringId)"
 
 }
