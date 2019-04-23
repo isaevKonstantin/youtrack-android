@@ -6,17 +6,16 @@ data class CachedPermissionDTO(val global: Boolean,val permission:Permission?,va
 
 data class Permission(val key: String?)
 
-class PermissionHolder(val permissions: List<CachedPermissionDTO>){
+class PermissionHolder(){
 
     private val permissionsMap = mutableMapOf<String,CachedPermissionDTO>()
 
-    init {
+    fun init(permissions: List<CachedPermissionDTO>){
         permissions.forEach {
             val key = it.permission?.key.orEmpty()
             permissionsMap[key] = it
         }
     }
-
 
     fun hasPermission(permissionKey: String, projectRingId: String): Boolean {
         val cachedPermission = permissionsMap[permissionKey] ?: return false

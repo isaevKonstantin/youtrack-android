@@ -18,6 +18,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputLayout
 import com.konstantinisaev.youtrack.ui.base.models.Issue
 import com.konstantinisaev.youtrack.ui.base.utils.DeviceUtils
+import com.konstantinisaev.youtrack.ui.base.viewmodels.GetPermissionsViewModel
+import com.konstantinisaev.youtrack.ui.base.viewmodels.GetProjectsViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelFactory
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import javax.inject.Inject
@@ -32,7 +34,9 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
     @field:[Inject Named("featureFactory")]
     lateinit var featureViewModelFactory: ViewModelFactory
 
-    lateinit var draftViewModel: DraftViewModel
+    private lateinit var draftViewModel: DraftViewModel
+    private lateinit var getProjectsViewModel: GetProjectsViewModel
+    private lateinit var getPermissionsViewModel: GetPermissionsViewModel
 
     private lateinit var nsvCreateIssueBody: NestedScrollView
     private lateinit var tvAttach: TextView
@@ -61,6 +65,8 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
         super.onCreate(savedInstanceState)
         CreateIssueDiProvider.getInstance().injectFragment(this)
         draftViewModel = ViewModelProviders.of(this,featureViewModelFactory)[DraftViewModel::class.java]
+        getProjectsViewModel = ViewModelProviders.of(this,baseViewModelFactory)[GetProjectsViewModel::class.java]
+        getPermissionsViewModel = ViewModelProviders.of(this,baseViewModelFactory)[GetPermissionsViewModel::class.java]
     }
 
     override fun setupDialog(dialog: Dialog?, style: Int) {
@@ -135,7 +141,9 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
 
         pbCreateIssue.visibility = View.VISIBLE
         switchVisibilityOfMainView(View.INVISIBLE)
+
         draftViewModel.doAsyncRequest()
+        getProjectsViewModel.doAsyncRequest()
 
     }
 

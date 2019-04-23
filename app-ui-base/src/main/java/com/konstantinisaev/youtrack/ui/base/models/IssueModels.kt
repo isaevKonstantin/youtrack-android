@@ -132,5 +132,5 @@ fun mapIssue(issueDTO: IssueDTO) = Issue(issueDTO.id.orEmpty(),issueDTO.idReadab
 	issueDTO.votes ?: 0,
 	IssueWatcher(issueDTO.watchers?.id.orEmpty(),issueDTO.watchers?.hasStar == true),
 	Collections.emptyList(),
-	Project(issueDTO.project.id.orEmpty(),issueDTO.project.name.orEmpty(),issueDTO.project.shortName.orEmpty(),issueDTO.project.archived,issueDTO.project.type.orEmpty())
+	Project(issueDTO.project?.id.orEmpty(),issueDTO.project?.name.orEmpty(),issueDTO.project?.shortName.orEmpty(),issueDTO.project?.archived == true,issueDTO.project?.type.orEmpty())
 )

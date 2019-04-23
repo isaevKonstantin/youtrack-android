@@ -24,7 +24,7 @@ data class CurrentUserDTO(val id: String?, val fullName: String?, val login: Str
 data class ProjectDTO(val id: String?, val name: String?, val shortName: String?,val type: String?,val archived: Boolean,val ringId: String?)
 
 data class IssueDTO(val id: String?, val idReadable: String?, val summary: String?, val resolved: String?, val created: String?, val updated: String?, val description: String?,
-                    val fields: List<FieldContainerDTO>?, val reporter: UserDTO?, val votes: Int?, val watchers: WatcherDTO?, val comments: List<CommentDTO>?, val project: ProjectDTO)
+                    val fields: List<FieldContainerDTO>?, val reporter: UserDTO?, val votes: Int?, val watchers: WatcherDTO?, val comments: List<CommentDTO>?, val project: ProjectDTO?)
 
 data class FieldContainerDTO(val projectCustomField: ProjectCustomFieldDto? = null, val value: JsonElement? = null)
 

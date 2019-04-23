@@ -27,6 +27,25 @@ object UrlFormatter {
         return "$url/${ApiEndpoints.LOGIN.url}"
     }
 
+    fun formatToPermissionUrl(baseUrl: String, hubUrl: String) : String {
+        var url = baseUrl
+        if(!url.endsWith("/")){
+            url = "$url/"
+        }
+        if(url.endsWith("${ApiEndpoints.YOUTRACK.url}/")){
+            url = url.replace("${ApiEndpoints.YOUTRACK.url}/","")
+        }
+        var formatedUrl = if(hubUrl.startsWith("/")){
+            "$url${hubUrl.substring(1,hubUrl.length)}"
+        }else{
+            "$url$hubUrl"
+        }
+        if(!formatedUrl.endsWith("/")){
+           formatedUrl = "$formatedUrl/"
+        }
+        return formatedUrl
+    }
+
     fun formatToImageUrl(baseUrl: String,imageUrl: String): String {
         val formattedImageUrl = if(imageUrl.startsWith("/")){
             imageUrl.replaceFirst("/","")

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.konstantinisaev.youtrack.App.Companion.context
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
+import com.konstantinisaev.youtrack.core.api.models.PermissionHolder
 import com.konstantinisaev.youtrack.navigation.AuthRouterImp
 import com.konstantinisaev.youtrack.navigation.IssueFilterRouterImp
 import com.konstantinisaev.youtrack.navigation.IssueListRouterImp
@@ -57,6 +58,10 @@ class AppModule {
     @Provides
     @Singleton
     fun provideBase64Converter() : Base64Converter = Base64ConverterImp()
+
+    @Provides
+    @Singleton
+    fun providePermissionHolder() = PermissionHolder()
 
     @Provides
     @Singleton
