@@ -15,6 +15,18 @@ class Extra {
     companion object {
 
         const val ISSUE_COUNT = "issue_count"
+
+        const val SELECT_LIST_ITEMS = "names"
+        const val SELECT_LIST_TITLE = "title"
+        const val SELECT_LIST_OPTIONS = "options"
+    }
+}
+
+class RequestCode{
+
+    companion object {
+
+        const val UPDATE_FIELD = 100
     }
 
 }

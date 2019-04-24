@@ -12,7 +12,6 @@ import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.screens.BaseFragment
 import com.konstantinisaev.youtrack.ui.base.utils.DeviceUtils
 import com.konstantinisaev.youtrack.ui.base.utils.MainRouter
-import com.konstantinisaev.youtrack.ui.base.viewmodels.GetPermissionsViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.GetProjectsViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import kotlinx.android.synthetic.main.fragment_navigation.*
@@ -27,7 +26,6 @@ class NavigationMenuFragment : BaseFragment() {
     private lateinit var navRvAdapter: BaseRvAdapter
     private lateinit var profileViewModel: ProfileViewModel
     private lateinit var getProjectsViewModel: GetProjectsViewModel
-    private lateinit var getPermissionsViewModel: GetPermissionsViewModel
     @Inject
     lateinit var mainRouter: MainRouter
     @Inject
@@ -39,7 +37,6 @@ class NavigationMenuFragment : BaseFragment() {
         IssueListDiProvider.getInstance().injectFragment(this)
         profileViewModel = getViewModel(ProfileViewModel::class.java)
         getProjectsViewModel = getViewModel(GetProjectsViewModel::class.java)
-        getPermissionsViewModel = getViewModel(GetPermissionsViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -78,7 +75,6 @@ class NavigationMenuFragment : BaseFragment() {
         }
         profileViewModel.doAsyncRequest()
         getProjectsViewModel.doAsyncRequest()
-        getPermissionsViewModel.doAsyncRequest()
     }
 
     @SuppressLint("RtlHardcoded")

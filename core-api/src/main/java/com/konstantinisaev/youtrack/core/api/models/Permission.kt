@@ -29,6 +29,8 @@ class PermissionHolder(){
 
     fun canCreateIssue(projectId: String) = hasPermission(CREATE_ISSUE,projectId)
 
+    fun isEmpty() = permissionsMap.isEmpty()
+
     companion object {
 
         const val CREATE_ISSUE = "JetBrains.YouTrack.CREATE_ISSUE"

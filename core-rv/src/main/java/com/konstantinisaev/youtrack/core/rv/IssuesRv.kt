@@ -3,6 +3,7 @@ package com.konstantinisaev.youtrack.core.rv
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.os.Parcelable
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextUtils
@@ -13,7 +14,12 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.konstantinisaev.youtrack.ui.base.models.FieldColor
 import com.konstantinisaev.youtrack.ui.base.utils.DeviceUtils
+import com.squareup.picasso.Callback
+import com.squareup.picasso.Picasso
+import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 import kotlinx.android.synthetic.main.vh_issue_compact.tvIssueOwners
 import kotlinx.android.synthetic.main.vh_issue_compact.tvIssueState
 import kotlinx.android.synthetic.main.vh_issue_compact.tvIssueType
@@ -28,6 +34,8 @@ import kotlinx.android.synthetic.main.vh_issue_single.tvIssueNumber
 import kotlinx.android.synthetic.main.vh_issue_single.tvIssuePriority
 import kotlinx.android.synthetic.main.vh_issue_single.tvIssueTime
 import kotlinx.android.synthetic.main.vh_issue_single.tvIssueTitle
+import kotlinx.android.synthetic.main.vh_select_list.*
+import kotlinx.android.synthetic.main.vh_select_user.*
 import kotlinx.android.synthetic.main.vh_suggestion_full_search.*
 import kotlinx.android.synthetic.main.vh_text_header.*
 import kotlin.math.roundToInt
@@ -176,8 +184,44 @@ class IssueSuggestionFullSearchViewHolder(override val containerView: View) : Ba
 
 class EmptyViewHolder(override val containerView: View) : BaseRvViewHolder<IssueFilterSuggestionEmpty>(containerView),LayoutContainer {
 	override fun bind(rvItem: IssueFilterSuggestionEmpty, clickListener: BaseRvClickListener?) {}
-
 }
+
+class SelectListViewHolder(override val containerView: View) : BaseRvViewHolder<BaseSelectRvItem>(containerView),LayoutContainer{
+
+	override fun bind(rvItem: BaseSelectRvItem, clickListener: BaseRvClickListener?) {
+		tvSelectListHeader.text = rvItem.name
+		itemView.setOnClickListener { clickListener?.onItemClickListener(rvItem) }
+	}
+}
+
+
+
+class SelectUserViewHolder(override val containerView: View) : BaseRvViewHolder<SelectUserRvItem>(containerView), LayoutContainer {
+
+	override fun bind(rvItem: SelectUserRvItem, clickListener: BaseRvClickListener?) {
+		if(rvItem.avatarUrl.isNotEmpty()){
+			Picasso.with(itemView.context).load(rvItem.avatarUrl)
+				.fit()
+				.centerCrop()
+				.transform(CropCircleTransformation())
+				.into(imgUserLogo,object : Callback {
+					override fun onSuccess() {}
+
+					override fun onError() {
+						setInitials(imgUserLogo,tvUserInitials,rvItem.initials)
+					}
+				})
+			tvUserInitials.visibility = View.GONE
+			imgUserLogo.visibility = View.VISIBLE
+		}else{
+			setInitials(imgUserLogo,tvUserInitials,rvItem.initials)
+		}
+		tvUserName.text = rvItem.name
+		itemView.setOnClickListener { clickListener?.onItemClickListener(rvItem) }
+	}
+}
+
+
 
 data class IssueRvItem(val issueCommonRvData: IssueCommonRvData) : BaseRvItem(){
 
@@ -237,6 +281,22 @@ data class IssueFullSearchSuggestionRvItem(val option: String,val prefix: String
 	override fun type(rvTypeFactory: RvTypeFactory) = rvTypeFactory.type(this)
 
 }
+
+@Parcelize
+data class BaseSelectListResult(val id: String,val name: String,val options: @RawValue Map<String,Any> = mapOf()) :
+	Parcelable
+
+@Parcelize
+data class BaseSelectRvItem(val id: String,val name:String) : ParcelableRvItem(){
+	override fun type(rvTypeFactory: RvTypeFactory) = rvTypeFactory.type(this)
+}
+
+
+@Parcelize
+data class SelectUserRvItem(val id: String,val name:String,val avatarUrl: String,val initials: String) : ParcelableRvItem() {
+	override fun type(rvTypeFactory: RvTypeFactory) = rvTypeFactory.type(this)
+}
+
 
 private fun setText(tvTextView: TextView,text: String){
 	tvTextView.text = text

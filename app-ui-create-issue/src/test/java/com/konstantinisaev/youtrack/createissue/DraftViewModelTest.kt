@@ -88,7 +88,7 @@ class DraftViewModelTest {
         Mockito.`when`(basePreferencesAdapter.getUrl()).thenReturn(url)
         Mockito.`when`(apiProvider.initDraft(ArgumentMatchers.anyString(),ArgumentMatchers.anyString())).thenReturn(GlobalScope.async(
             testCoroutineContextHolder.main()) { IssueDTO("","","","","","","", listOf(),null,0,null, listOf(),
-            ProjectDTO("","","","",false)
+            ProjectDTO("","","","",false,"")
         ) })
         draftViewModel.doAsyncRequest()
         Assertions.assertThat(draftViewModel.lastViewState).isInstanceOf(ViewState.Success::class.java)
@@ -101,7 +101,7 @@ class DraftViewModelTest {
         Mockito.`when`(basePreferencesAdapter.getUrl()).thenReturn(url)
         Mockito.`when`(apiProvider.getIssueByDraftId(ArgumentMatchers.anyString(),ArgumentMatchers.anyString())).thenReturn(GlobalScope.async(
             testCoroutineContextHolder.main()) { IssueDTO("","","","","","","", listOf(),null,0,null, listOf(),
-            ProjectDTO("","","","",false)
+            ProjectDTO("","","","",false,"")
         ) })
         draftViewModel.doAsyncRequest()
         Assertions.assertThat(draftViewModel.lastViewState).isInstanceOf(ViewState.Success::class.java)
@@ -115,7 +115,7 @@ class DraftViewModelTest {
         Mockito.`when`(apiProvider.getIssueByDraftId(ArgumentMatchers.anyString(),ArgumentMatchers.anyString())).thenThrow(RuntimeException("test"))
         Mockito.`when`(apiProvider.initDraft(ArgumentMatchers.anyString(),ArgumentMatchers.anyString())).thenReturn(GlobalScope.async(
             testCoroutineContextHolder.main()) { IssueDTO("","","","","","","", listOf(),null,0,null, listOf(),
-            ProjectDTO("","","","",false)
+            ProjectDTO("","","","",false,"")
         ) })
         draftViewModel.doAsyncRequest()
         Assertions.assertThat(draftViewModel.lastViewState).isInstanceOf(ViewState.Success::class.java)

@@ -147,7 +147,8 @@ class ApiProviderTest {
             }
             val cachedPermissions = apiProvider.getPermissions("$testUrl$hub/", serverConfigDTO.ring.serviceId).await()
             assertThat(cachedPermissions).isNotNull
-            permissionHolder = PermissionHolder(cachedPermissions)
+            permissionHolder = PermissionHolder()
+            permissionHolder.init(cachedPermissions)
         }
     }
 }

@@ -91,8 +91,8 @@ private fun createViewHolder(type: Int, view: View) : BaseRvViewHolder<BaseRvIte
         R.layout.vh_issue_filter_suggestion_child -> IssueFilterChildSuggestionViewHolder(view)
         R.layout.vh_issue_filter_suggestion_empty -> EmptyViewHolder(view)
         R.layout.vh_suggestion_full_search -> IssueSuggestionFullSearchViewHolder(view)
-//        R.layout.vh_select_list -> SelectListViewHolder(view)
-//        R.layout.vh_select_user -> SelectUserViewHolder(view)
+        R.layout.vh_select_list -> SelectListViewHolder(view)
+        R.layout.vh_select_user -> SelectUserViewHolder(view)
         else -> throw IllegalArgumentException("Wrong type of view holder!")
     }
     return holder as BaseRvViewHolder<BaseRvItem>
@@ -184,10 +184,10 @@ class RvTypeFactory{
     fun type(rvItem: IssueFilterSuggestionEmpty) = R.layout.vh_issue_filter_suggestion_empty
 
     fun type(rvItem: IssueFullSearchSuggestionRvItem) = R.layout.vh_suggestion_full_search
-//
-//    fun type(rvItem: BaseSelectRvItem) = R.layout.vh_select_list
-//
-//    fun type(rvItem: SelectUserRvItem) = R.layout.vh_select_user
+
+    fun type(rvItem: BaseSelectRvItem) = R.layout.vh_select_list
+
+    fun type(rvItem: SelectUserRvItem) = R.layout.vh_select_user
 
 }
 

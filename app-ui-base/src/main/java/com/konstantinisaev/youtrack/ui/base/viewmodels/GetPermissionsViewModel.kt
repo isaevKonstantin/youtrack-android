@@ -18,7 +18,6 @@ class GetPermissionsViewModel @Inject constructor(private val apiProvider: ApiPr
         val config = basePreferencesAdapter.getServerConfig() ?: return ViewState.Error(this::class.java)
         val permissions = apiProvider.getPermissions(UrlFormatter.formatToPermissionUrl(basePreferencesAdapter.getUrl(),config.ring.url),config.ring.serviceId).await()
         permissionHolder.init(permissions)
-
         return ViewState.Success(this::class.java,permissions)
     }
 }

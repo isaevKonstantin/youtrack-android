@@ -16,8 +16,11 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputLayout
+import com.konstantinisaev.youtrack.core.rv.BaseSelectRvItem
+import com.konstantinisaev.youtrack.core.rv.ParcelableRvItem
 import com.konstantinisaev.youtrack.ui.base.models.Issue
 import com.konstantinisaev.youtrack.ui.base.utils.DeviceUtils
+import com.konstantinisaev.youtrack.ui.base.utils.RequestCode
 import com.konstantinisaev.youtrack.ui.base.viewmodels.GetPermissionsViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.GetProjectsViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelFactory
@@ -59,6 +62,16 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
         }
 
         override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+    }
+
+    private val clickListener = View.OnClickListener { view ->
+        if(view.id == tvCurrentProject.id){
+            val projects = getProjectsViewModel.projects
+            showSelectDialog(getSelectedTitle(tvCurrentProject.id),
+                projects.map { BaseSelectRvItem(it.id.orEmpty(),it.name.orEmpty()) }, mapOf("id" to R.id.tvCurrentProject))
+        }else{
+//            createIssueViewModel.getFieldListByViewId(it.id)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,6 +129,13 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
         params.height = screenHeight
         parent.layoutParams = params
 
+        tvPriority.setOnClickListener(clickListener)
+        tvAssignee.setOnClickListener(clickListener)
+        tvState.setOnClickListener(clickListener)
+        tvSprint.setOnClickListener(clickListener)
+        tvType.setOnClickListener(clickListener)
+        tvCurrentProject.setOnClickListener(clickListener)
+
         draftViewModel.observe(this, Observer {viewState ->
             pbCreateIssue.visibility = View.GONE
             if(viewState is ViewState.Error){
@@ -136,15 +156,12 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
             setValue(tlEstimation.editText!!,issue.estimation.value.presentation,issue.estimation.projectCustomField.emptyFieldText.orEmpty())
             setValue(tlSpentTime.editText!!,issue.spentTime.value.presentation,issue.spentTime.projectCustomField.emptyFieldText.orEmpty())
             switchVisibilityOfMainView(View.VISIBLE)
-
         })
 
         pbCreateIssue.visibility = View.VISIBLE
         switchVisibilityOfMainView(View.INVISIBLE)
 
         draftViewModel.doAsyncRequest()
-        getProjectsViewModel.doAsyncRequest()
-
     }
 
     private fun switchVisibilityOfMainView(visibility: Int){
@@ -160,5 +177,24 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
             tv.text = emptyLabel
         }
     }
+
+    private fun showSelectDialog(title: String, data: List<ParcelableRvItem>, options: Map<String,Any>) {
+        val baseDialog = BaseSelectListDialog.newInstance(title, data, options )
+        baseDialog.setTargetFragment(this, RequestCode.UPDATE_FIELD)
+        baseDialog.show(activity?.supportFragmentManager, "")
+    }
+
+
+    private fun getSelectedTitle(id: Int) =
+        when(id) {
+            tvPriority.id -> getString(R.string.create_issue_fragm_select_field_format,getString(R.string.create_issue_fragm_priority_hint).toLowerCase())
+            tvState.id -> getString(R.string.create_issue_fragm_select_field_format,getString(R.string.create_issue_fragm_state_hint).toLowerCase())
+            tvType.id -> getString(R.string.create_issue_fragm_select_field_format,getString(R.string.create_issue_fragm_type_hint).toLowerCase())
+            tvAssignee.id -> getString(R.string.create_issue_fragm_select_field_format,getString(R.string.create_issue_fragm_assignee_hint).toLowerCase())
+            tvCurrentProject.id -> getString(R.string.create_issue_fragm_select_field_format,getString(R.string.create_issue_fragm_project_hint).toLowerCase())
+            tvSprint.id -> getString(R.string.create_issue_fragm_select_field_format,getString(R.string.create_issue_fragm_sprint_hint).toLowerCase())
+            else -> ""
+        }
+
 
 }
