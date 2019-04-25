@@ -23,7 +23,6 @@ import org.mockito.junit.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner.Silent::class)
 class DraftViewModelTest {
 
-
     private lateinit var draftViewModel: DraftViewModel
 
     @get:Rule
@@ -65,6 +64,7 @@ class DraftViewModelTest {
         Mockito.`when`(basePreferencesAdapter.getLastDraftId()).thenReturn(draftOrProjectId)
         Mockito.`when`(basePreferencesAdapter.getUrl()).thenReturn(url)
         Mockito.`when`(apiProvider.getIssueByDraftId(ArgumentMatchers.anyString(),ArgumentMatchers.anyString())).thenThrow(RuntimeException("test"))
+        Mockito.`when`(apiProvider.initDraft(ArgumentMatchers.anyString(),ArgumentMatchers.anyString())).thenThrow(RuntimeException("test"))
         draftViewModel.doAsyncRequest()
         Assertions.assertThat(draftViewModel.lastViewState).isInstanceOf(ViewState.Error::class.java)
     }

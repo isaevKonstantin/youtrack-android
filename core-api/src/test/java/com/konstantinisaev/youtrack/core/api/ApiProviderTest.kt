@@ -64,13 +64,23 @@ class ApiProviderTest {
             val draftIssueDTO = apiProvider.getIssueByDraftId("$testUrl${ApiEndpoints.YOUTRACK.url}/",issueDTO.id.orEmpty()).await()
             assertThat(draftIssueDTO).isNotNull
             draftIssueDTO.fields?.forEach {fieldContainer ->
-                fieldContainer.projectCustomField?.bundle.takeIf { it != null }?.let {bundle ->
-                    val fieldDTO = apiProvider.getCustomFieldSettings(
-                        "$testUrl${ApiEndpoints.YOUTRACK.url}/",
-                        fieldContainer.projectCustomField?.field?.fieldType?.valueType.orEmpty(),
-                        bundle.id.orEmpty()
-                    ).await()
-                    assertThat(fieldDTO).isNotEmpty
+                fieldContainer.projectCustomField?.bundle.takeIf { it != null }?.let { bundle ->
+                    if(fieldContainer.projectCustomField?.field?.fieldType?.valueType == "user"){
+                        val userDTO = apiProvider.getCustomFieldUserSettings(
+                            "$testUrl${ApiEndpoints.YOUTRACK.url}/",
+                            fieldContainer.projectCustomField?.field?.fieldType?.valueType.orEmpty(),
+                            bundle.id.orEmpty()
+                        ).await()
+                        println(userDTO)
+                        assertThat(userDTO).isNotNull
+                    }else{
+                        val fieldDTO = apiProvider.getCustomFieldSettings(
+                            "$testUrl${ApiEndpoints.YOUTRACK.url}/",
+                            fieldContainer.projectCustomField?.field?.fieldType?.valueType.orEmpty(),
+                            bundle.id.orEmpty()
+                        ).await()
+                        assertThat(fieldDTO).isNotEmpty
+                    }
                 }
             }
         }

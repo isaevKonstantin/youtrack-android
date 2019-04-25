@@ -49,6 +49,11 @@ abstract class CreateIssueViewModels{
     @IntoMap
     @ViewModelKey(DraftViewModel::class)
     internal abstract fun bindDraftViewModel(draftViewModel: DraftViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(GetFieldSettingsViewModel::class)
+    internal abstract fun bindGetFieldSettingsViewModel(getFieldSettingsViewModel: GetFieldSettingsViewModel): ViewModel
 }
 
 class CreateIssueDiProvider private constructor(){

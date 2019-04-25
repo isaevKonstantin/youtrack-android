@@ -16,12 +16,14 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputLayout
+import com.konstantinisaev.youtrack.core.api.BundleDTO
+import com.konstantinisaev.youtrack.core.api.CustomFieldAdminDTO
+import com.konstantinisaev.youtrack.core.api.ProjectCustomFieldDto
 import com.konstantinisaev.youtrack.core.rv.BaseSelectRvItem
 import com.konstantinisaev.youtrack.core.rv.ParcelableRvItem
 import com.konstantinisaev.youtrack.ui.base.models.Issue
 import com.konstantinisaev.youtrack.ui.base.utils.DeviceUtils
 import com.konstantinisaev.youtrack.ui.base.utils.RequestCode
-import com.konstantinisaev.youtrack.ui.base.viewmodels.GetPermissionsViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.GetProjectsViewModel
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelFactory
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
@@ -39,7 +41,7 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
 
     private lateinit var draftViewModel: DraftViewModel
     private lateinit var getProjectsViewModel: GetProjectsViewModel
-    private lateinit var getPermissionsViewModel: GetPermissionsViewModel
+    private lateinit var getFieldSettingsViewModel: GetFieldSettingsViewModel
 
     private lateinit var nsvCreateIssueBody: NestedScrollView
     private lateinit var tvAttach: TextView
@@ -52,6 +54,9 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
     private lateinit var tvState: TextView
     private lateinit var tlEstimation: TextInputLayout
     private lateinit var tlSpentTime: TextInputLayout
+
+    private val bundleMap = mutableMapOf<Int,Pair<String,BundleDTO>>()
+    private var clickedItemId = 0
 
     private val bottomSheetBehaviorCallback = object : BottomSheetBehavior.BottomSheetCallback() {
 
@@ -70,7 +75,10 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
             showSelectDialog(getSelectedTitle(tvCurrentProject.id),
                 projects.map { BaseSelectRvItem(it.id.orEmpty(),it.name.orEmpty()) }, mapOf("id" to R.id.tvCurrentProject))
         }else{
-//            createIssueViewModel.getFieldListByViewId(it.id)
+            bundleMap.takeIf { it.containsKey(view.id) }?.get(view.id)?.let {
+                clickedItemId = view.id
+                getFieldSettingsViewModel.doAsyncRequest(GetFieldSettingsViewModel.Param(it.first,it.second.id.orEmpty()))
+            }
         }
     }
 
@@ -79,7 +87,7 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
         CreateIssueDiProvider.getInstance().injectFragment(this)
         draftViewModel = ViewModelProviders.of(this,featureViewModelFactory)[DraftViewModel::class.java]
         getProjectsViewModel = ViewModelProviders.of(this,baseViewModelFactory)[GetProjectsViewModel::class.java]
-        getPermissionsViewModel = ViewModelProviders.of(this,baseViewModelFactory)[GetPermissionsViewModel::class.java]
+        getFieldSettingsViewModel = ViewModelProviders.of(this,featureViewModelFactory)[GetFieldSettingsViewModel::class.java]
     }
 
     override fun setupDialog(dialog: Dialog?, style: Int) {
@@ -155,7 +163,22 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
             setValue(tvState,issue.state.value.name,issue.state.projectCustomField.emptyFieldText.orEmpty())
             setValue(tlEstimation.editText!!,issue.estimation.value.presentation,issue.estimation.projectCustomField.emptyFieldText.orEmpty())
             setValue(tlSpentTime.editText!!,issue.spentTime.value.presentation,issue.spentTime.projectCustomField.emptyFieldText.orEmpty())
+
+            bundleMap.clear()
+            setBundle(tvPriority.id,issue.priority.projectCustomField)
+            setBundle(tvType.id,issue.type.projectCustomField)
+            setBundle(tvSprint.id,issue.sprint.projectCustomField)
+            setBundle(tvState.id,issue.state.projectCustomField)
+
             switchVisibilityOfMainView(View.VISIBLE)
+        })
+
+        getFieldSettingsViewModel.observe(this, Observer {viewState ->
+            if(viewState is ViewState.Success<*>){
+                val data = viewState.data as List<CustomFieldAdminDTO>
+                showSelectDialog(getSelectedTitle(clickedItemId),data.map { BaseSelectRvItem(it.id.orEmpty(),it.name.orEmpty()) },mapOf("id" to clickedItemId))
+
+            }
         })
 
         pbCreateIssue.visibility = View.VISIBLE
@@ -175,6 +198,12 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
             tv.text = value
         }else{
             tv.text = emptyLabel
+        }
+    }
+
+    private fun setBundle(id: Int, projectCustomFieldDto: ProjectCustomFieldDto){
+        projectCustomFieldDto.bundle?.let {
+            bundleMap.put(id,Pair(projectCustomFieldDto.field?.fieldType?.valueType.orEmpty(),it))
         }
     }
 
