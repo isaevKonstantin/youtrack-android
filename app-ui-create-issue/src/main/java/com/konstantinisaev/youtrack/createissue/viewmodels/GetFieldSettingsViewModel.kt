@@ -1,4 +1,4 @@
-package com.konstantinisaev.youtrack.createissue
+package com.konstantinisaev.youtrack.createissue.viewmodels
 
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
@@ -9,13 +9,11 @@ import javax.inject.Inject
 
 class GetFieldSettingsViewModel @Inject constructor(private val apiProvider: ApiProvider,
                                                     private val basePreferencesAdapter: BasePreferencesAdapter,
-                                                    coroutineContextHolder: CoroutineContextHolder) : BaseViewModel<GetFieldSettingsViewModel.Param>(coroutineContextHolder){
+                                                    coroutineContextHolder: CoroutineContextHolder) : BaseViewModel<CreateIssueFieldParam>(coroutineContextHolder){
 
-    override suspend fun execute(params: Param?): ViewState {
+    override suspend fun execute(params: CreateIssueFieldParam?): ViewState {
         checkNotNull(params)
         val fields = apiProvider.getCustomFieldSettings(basePreferencesAdapter.getUrl(),params.parentType,params.parentId).await()
         return ViewState.Success(this::class.java,fields)
     }
-
-    data class Param(val parentType: String,val parentId: String)
 }

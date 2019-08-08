@@ -19,8 +19,13 @@ import com.google.android.material.textfield.TextInputLayout
 import com.konstantinisaev.youtrack.core.api.BundleDTO
 import com.konstantinisaev.youtrack.core.api.CustomFieldAdminDTO
 import com.konstantinisaev.youtrack.core.api.ProjectCustomFieldDto
+import com.konstantinisaev.youtrack.core.api.UserDTO
 import com.konstantinisaev.youtrack.core.rv.BaseSelectRvItem
 import com.konstantinisaev.youtrack.core.rv.ParcelableRvItem
+import com.konstantinisaev.youtrack.createissue.viewmodels.CreateIssueFieldParam
+import com.konstantinisaev.youtrack.createissue.viewmodels.DraftViewModel
+import com.konstantinisaev.youtrack.createissue.viewmodels.GetFieldSettingsViewModel
+import com.konstantinisaev.youtrack.createissue.viewmodels.GetFieldUserSettingsViewModel
 import com.konstantinisaev.youtrack.ui.base.models.Issue
 import com.konstantinisaev.youtrack.ui.base.utils.DeviceUtils
 import com.konstantinisaev.youtrack.ui.base.utils.RequestCode
@@ -42,6 +47,7 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
     private lateinit var draftViewModel: DraftViewModel
     private lateinit var getProjectsViewModel: GetProjectsViewModel
     private lateinit var getFieldSettingsViewModel: GetFieldSettingsViewModel
+    private lateinit var getFieldUserSettingsViewModel: GetFieldUserSettingsViewModel
 
     private lateinit var nsvCreateIssueBody: NestedScrollView
     private lateinit var tvAttach: TextView
@@ -77,7 +83,12 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
         }else{
             bundleMap.takeIf { it.containsKey(view.id) }?.get(view.id)?.let {
                 clickedItemId = view.id
-                getFieldSettingsViewModel.doAsyncRequest(GetFieldSettingsViewModel.Param(it.first,it.second.id.orEmpty()))
+                val param = CreateIssueFieldParam(it.first,it.second.id.orEmpty())
+                if(clickedItemId == tvAssignee.id){
+                    getFieldUserSettingsViewModel.doAsyncRequest(param)
+                }else{
+                    getFieldSettingsViewModel.doAsyncRequest(param)
+                }
             }
         }
     }
@@ -88,6 +99,7 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
         draftViewModel = ViewModelProviders.of(this,featureViewModelFactory)[DraftViewModel::class.java]
         getProjectsViewModel = ViewModelProviders.of(this,baseViewModelFactory)[GetProjectsViewModel::class.java]
         getFieldSettingsViewModel = ViewModelProviders.of(this,featureViewModelFactory)[GetFieldSettingsViewModel::class.java]
+        getFieldUserSettingsViewModel = ViewModelProviders.of(this,featureViewModelFactory)[GetFieldUserSettingsViewModel::class.java]
     }
 
     override fun setupDialog(dialog: Dialog?, style: Int) {
@@ -169,6 +181,7 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
             setBundle(tvType.id,issue.type.projectCustomField)
             setBundle(tvSprint.id,issue.sprint.projectCustomField)
             setBundle(tvState.id,issue.state.projectCustomField)
+            setBundle(tvAssignee.id,issue.assignee.projectCustomField)
 
             switchVisibilityOfMainView(View.VISIBLE)
         })
@@ -176,8 +189,14 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
         getFieldSettingsViewModel.observe(this, Observer {viewState ->
             if(viewState is ViewState.Success<*>){
                 val data = viewState.data as List<CustomFieldAdminDTO>
-                showSelectDialog(getSelectedTitle(clickedItemId),data.map { BaseSelectRvItem(it.id.orEmpty(),it.name.orEmpty()) },mapOf("id" to clickedItemId))
+                showSelectDialog(getSelectedTitle(clickedItemId),data.map { BaseSelectRvItem(it.id.orEmpty(), it.name.orEmpty()) },mapOf("id" to clickedItemId))
+            }
+        })
 
+        getFieldUserSettingsViewModel.observe(this, Observer {viewState ->
+            if(viewState is ViewState.Success<*>){
+                val data = viewState.data as List<UserDTO>
+                showSelectDialog(getSelectedTitle(clickedItemId),data.map { BaseSelectRvItem(it.id.orEmpty(), it.name.orEmpty()) },mapOf("id" to clickedItemId))
             }
         })
 

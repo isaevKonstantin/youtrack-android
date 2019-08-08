@@ -1,4 +1,4 @@
-package com.konstantinisaev.youtrack.createissue
+package com.konstantinisaev.youtrack.createissue.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.konstantinisaev.youtrack.core.api.ApiProvider
@@ -37,7 +37,11 @@ class DraftViewModelTest {
 
     @Before
     fun setUp() {
-        draftViewModel = DraftViewModel(apiProvider,basePreferencesAdapter, testCoroutineContextHolder)
+        draftViewModel = DraftViewModel(
+            apiProvider,
+            basePreferencesAdapter,
+            testCoroutineContextHolder
+        )
     }
 
     @Test

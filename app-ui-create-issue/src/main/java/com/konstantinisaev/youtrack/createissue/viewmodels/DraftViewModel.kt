@@ -1,7 +1,8 @@
-package com.konstantinisaev.youtrack.createissue
+package com.konstantinisaev.youtrack.createissue.viewmodels
 
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
+import com.konstantinisaev.youtrack.createissue.R
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.models.mapIssue
 import com.konstantinisaev.youtrack.ui.base.viewmodels.BaseViewModel
@@ -18,7 +19,9 @@ class DraftViewModel @Inject constructor(val apiProvider: ApiProvider,
         val currentProjectId = basePreferencesAdapter.getCurrentProjectId()
         val url = basePreferencesAdapter.getUrl()
         if(draftId.isEmpty() && currentProjectId.isEmpty()){
-            return ViewState.ValidationError(this::class.java,R.string.create_issue_fragm_cannot_create_issue_error)
+            return ViewState.ValidationError(this::class.java,
+                R.string.create_issue_fragm_cannot_create_issue_error
+            )
         }
         val issueDTO = if(draftId.isNotEmpty()){
             try {

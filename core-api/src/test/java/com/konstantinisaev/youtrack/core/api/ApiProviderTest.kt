@@ -4,6 +4,7 @@ import com.konstantinisaev.youtrack.core.api.models.PermissionHolder
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.BeforeClass
+import org.junit.Ignore
 import org.junit.Test
 import java.util.*
 
@@ -53,6 +54,7 @@ class ApiProviderTest {
         }
     }
 
+    @Ignore
     @Test
     fun `should create issue`() {
         runBlocking {

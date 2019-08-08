@@ -1,4 +1,4 @@
-package com.konstantinisaev.youtrack.createissue
+package com.konstantinisaev.youtrack.createissue.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.konstantinisaev.youtrack.core.api.ApiProvider
@@ -31,19 +31,22 @@ class GetFieldSettingsViewModelTest {
     private lateinit var apiProvider: ApiProvider
     @Mock
     private lateinit var basePreferencesAdapter: BasePreferencesAdapter
-    private val param = GetFieldSettingsViewModel.Param("", "")
+
+    private val testParam = CreateIssueFieldParam("", "")
 
     @Before
     fun setUp() {
-        getFieldSettingsViewModel = GetFieldSettingsViewModel(apiProvider,basePreferencesAdapter,
-            testCoroutineContextHolder)
+        getFieldSettingsViewModel = GetFieldSettingsViewModel(
+            apiProvider, basePreferencesAdapter,
+            testCoroutineContextHolder
+        )
     }
 
     @Test
     fun `given error response should produce error state`() {
         Mockito.`when`(basePreferencesAdapter.getUrl()).thenReturn("")
         Mockito.`when`(apiProvider.getCustomFieldSettings(ArgumentMatchers.anyString(),ArgumentMatchers.anyString(),ArgumentMatchers.anyString())).thenThrow(RuntimeException("test"))
-        getFieldSettingsViewModel.doAsyncRequest(param)
+        getFieldSettingsViewModel.doAsyncRequest(testParam)
         Assertions.assertThat(getFieldSettingsViewModel.lastViewState).isInstanceOf(ViewState.Error::class.java)
     }
 
@@ -52,7 +55,7 @@ class GetFieldSettingsViewModelTest {
         Mockito.`when`(basePreferencesAdapter.getUrl()).thenReturn("")
         Mockito.`when`(apiProvider.getCustomFieldSettings(ArgumentMatchers.anyString(),ArgumentMatchers.anyString(),ArgumentMatchers.anyString())).
             thenReturn(GlobalScope.async(testCoroutineContextHolder.main()) { listOf<CustomFieldAdminDTO>() })
-        getFieldSettingsViewModel.doAsyncRequest(param)
+        getFieldSettingsViewModel.doAsyncRequest(testParam)
         Assertions.assertThat(getFieldSettingsViewModel.lastViewState).isInstanceOf(ViewState.Success::class.java)
     }
 }
