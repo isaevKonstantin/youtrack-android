@@ -35,7 +35,10 @@ data class CustomFieldDTO(val name: String?, val id: String?,val fieldType: Fiel
 
 data class BundleDTO(val id: String?)
 
-data class UserDTO(val id: String?,val ringId: String?,val login: String?,val name: String?,val avatarUrl: String?,val fullName: String?)
+data class UserDTO(val id: String?,val ringId: String?,val login: String?,val name: String?,val avatarUrl: String?,val fullName: String?){
+
+    lateinit var initials: String
+}
 
 data class WatcherDTO(val id: String?,val hasStar: Boolean)
 

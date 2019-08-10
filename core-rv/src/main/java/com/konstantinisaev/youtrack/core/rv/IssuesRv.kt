@@ -3,7 +3,6 @@ package com.konstantinisaev.youtrack.core.rv
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
-import android.os.Parcelable
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextUtils
@@ -19,7 +18,6 @@ import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.parcel.RawValue
 import kotlinx.android.synthetic.main.vh_issue_compact.tvIssueOwners
 import kotlinx.android.synthetic.main.vh_issue_compact.tvIssueState
 import kotlinx.android.synthetic.main.vh_issue_compact.tvIssueType
@@ -194,8 +192,6 @@ class SelectListViewHolder(override val containerView: View) : BaseRvViewHolder<
 	}
 }
 
-
-
 class SelectUserViewHolder(override val containerView: View) : BaseRvViewHolder<SelectUserRvItem>(containerView), LayoutContainer {
 
 	override fun bind(rvItem: SelectUserRvItem, clickListener: BaseRvClickListener?) {
@@ -281,10 +277,6 @@ data class IssueFullSearchSuggestionRvItem(val option: String,val prefix: String
 	override fun type(rvTypeFactory: RvTypeFactory) = rvTypeFactory.type(this)
 
 }
-
-@Parcelize
-data class BaseSelectListResult(val id: String,val name: String,val options: @RawValue Map<String,Any> = mapOf()) :
-	Parcelable
 
 @Parcelize
 data class BaseSelectRvItem(val id: String,val name:String) : ParcelableRvItem(){
