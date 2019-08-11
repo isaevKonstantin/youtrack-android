@@ -95,7 +95,7 @@ class ApiProvider {
 
     fun getCustomFieldUserSettings(baseUrl: String,parentType: String,parentId: String) = httpRepository.getCustomFieldUsers("$baseUrl${String.format(ApiEndpoints.GET_USER_CUSTOM_FIELD_SETTING.url,parentType,parentId)}")
 
-    fun updateDraft(baseUrl: String,lastDraftId: String,valueId: String,value: Any) = httpRepository.updateDraft("$baseUrl${String.format(ApiEndpoints.UPDATE_FIELD.url,lastDraftId,valueId)}",updateDraftDTO = UpdateDraftDTO(valueId,value))
+    fun updateDraftField(baseUrl: String, lastDraftId: String, fieldId: String, value: Any) = httpRepository.updateDraft("$baseUrl${String.format(ApiEndpoints.UPDATE_FIELD.url,lastDraftId,fieldId)}",updateDraftFieldDTO = UpdateDraftFieldDTO(fieldId,value))
 
 }
 

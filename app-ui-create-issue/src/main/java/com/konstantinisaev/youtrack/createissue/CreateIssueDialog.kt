@@ -20,11 +20,11 @@ import com.konstantinisaev.youtrack.core.api.CustomFieldAdminDTO
 import com.konstantinisaev.youtrack.core.api.ProjectCustomFieldDto
 import com.konstantinisaev.youtrack.core.api.UserDTO
 import com.konstantinisaev.youtrack.core.rv.BaseSelectRvItem
-import com.konstantinisaev.youtrack.createissue.viewmodels.CreateIssueFieldParam
-import com.konstantinisaev.youtrack.createissue.viewmodels.DraftViewModel
-import com.konstantinisaev.youtrack.createissue.viewmodels.GetFieldSettingsViewModel
-import com.konstantinisaev.youtrack.createissue.viewmodels.GetFieldUserSettingsViewModel
+import com.konstantinisaev.youtrack.createissue.viewmodels.*
+import com.konstantinisaev.youtrack.ui.base.models.EnumValue
+import com.konstantinisaev.youtrack.ui.base.models.FieldContainer
 import com.konstantinisaev.youtrack.ui.base.models.Issue
+import com.konstantinisaev.youtrack.ui.base.models.UserValue
 import com.konstantinisaev.youtrack.ui.base.utils.DeviceUtils
 import com.konstantinisaev.youtrack.ui.base.utils.gone
 import com.konstantinisaev.youtrack.ui.base.utils.visible
@@ -47,6 +47,7 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
     private lateinit var getProjectsViewModel: GetProjectsViewModel
     private lateinit var getFieldSettingsViewModel: GetFieldSettingsViewModel
     private lateinit var getFieldUserSettingsViewModel: GetFieldUserSettingsViewModel
+    private lateinit var updateDraftFieldViewModel: UpdateDraftFieldViewModel
 
     private lateinit var nsvCreateIssueBody: NestedScrollView
     private lateinit var tvAttach: TextView
@@ -88,7 +89,7 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
                 }
             }
             else -> {
-                bundleMap.get(view.id)?.let {
+                bundleMap[view.id]?.let {
                     clickedItemId = view.id
                     val param = CreateIssueFieldParam(it.first, it.second)
                     if(clickedItemId == tvAssignee.id){
@@ -108,6 +109,7 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
         getProjectsViewModel = ViewModelProviders.of(this,baseViewModelFactory)[GetProjectsViewModel::class.java]
         getFieldSettingsViewModel = ViewModelProviders.of(this,featureViewModelFactory)[GetFieldSettingsViewModel::class.java]
         getFieldUserSettingsViewModel = ViewModelProviders.of(this,featureViewModelFactory)[GetFieldUserSettingsViewModel::class.java]
+        updateDraftFieldViewModel = ViewModelProviders.of(this,featureViewModelFactory)[UpdateDraftFieldViewModel::class.java]
     }
 
     override fun setupDialog(dialog: Dialog?, style: Int) {
@@ -197,26 +199,29 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
             setBundle(tvState.id,issue.state.projectCustomField)
             setBundle(tvAssignee.id,issue.assignee.projectCustomField)
 
+            tvPriority.tag = issue.priority.projectCustomField.id.orEmpty()
+            tvAssignee.tag = issue.assignee.projectCustomField.id.orEmpty()
+            tvType.tag = issue.type.projectCustomField.id.orEmpty()
+            tvSprint.tag = issue.sprint.projectCustomField.id.orEmpty()
+            tvState.tag = issue.state.projectCustomField.id.orEmpty()
             switchVisibilityOfMainView(View.VISIBLE)
+
         })
 
-        getFieldSettingsViewModel.observe(this, Observer {viewState ->
+        getFieldSettingsViewModel.observe(this, Observer { viewState ->
             if(viewState is ViewState.Success<*>){
                 val data = viewState.data as List<CustomFieldAdminDTO>
                 val param = BaseSelectListDialog.Param(getSelectedTitle(clickedItemId),data.map { BaseSelectRvItem(it.id.orEmpty(),it.name.orEmpty()) })
                 showSelectDialog(param) { selectedId ->
-                    data.find { it.id.orEmpty() == selectedId }?.let {field ->
-                        val tv = updateViews[clickedItemId]
-                        tv?.let {textView ->
-                            setValue(textView,field.name.orEmpty(),"")
-                            updateBundle(textView, selectedId)
-                        }
-                    }
+                    pbCreateIssue.visible()
+                    switchVisibilityOfMainView(View.INVISIBLE)
+                    val tv = updateViews.getValue(clickedItemId)
+                    updateDraftFieldViewModel.doAsyncRequest(UpdateDraftField(tv.tag?.toString().orEmpty(),"",selectedId))
                 }
             }
         })
 
-        getFieldUserSettingsViewModel.observe(this, Observer {viewState ->
+        getFieldUserSettingsViewModel.observe(this, Observer { viewState ->
             if(viewState is ViewState.Success<*>){
                 val data = viewState.data as List<UserDTO>
                 val param = BaseSelectListDialog.Param(getSelectedTitle(clickedItemId),data.map { BaseSelectRvItem(it.id.orEmpty(),it.name.orEmpty()) })
@@ -229,6 +234,24 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
                         }
                     }
                 }
+            }
+        })
+        updateDraftFieldViewModel.observe(this, Observer { viewState ->
+            pbCreateIssue.gone()
+            switchVisibilityOfMainView(View.VISIBLE)
+            if(viewState is ViewState.Success<*>){
+                val data = (viewState.data as FieldContainer<*>).value
+                when(data){
+                    is EnumValue ->{
+                        val tv = updateViews.getValue(clickedItemId)
+                        setValue(tv, data.name,"")
+//                        updateBundle(tv, data..orEmpty())
+                    }
+                    is UserValue -> {
+
+                    }
+                }
+
             }
         })
 

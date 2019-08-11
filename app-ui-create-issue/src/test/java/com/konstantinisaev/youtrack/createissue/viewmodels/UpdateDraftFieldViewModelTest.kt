@@ -2,7 +2,8 @@ package com.konstantinisaev.youtrack.createissue.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.konstantinisaev.youtrack.core.api.ApiProvider
-import com.konstantinisaev.youtrack.core.api.UserDTO
+import com.konstantinisaev.youtrack.core.api.FieldContainerDTO
+import com.konstantinisaev.youtrack.core.api.ProjectCustomFieldDto
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewState
 import kotlinx.coroutines.GlobalScope
@@ -20,23 +21,22 @@ import org.mockito.junit.MockitoJUnitRunner
 
 @Suppress("EXPERIMENTAL_API_USAGE")
 @RunWith(MockitoJUnitRunner.Silent::class)
-class GetFieldUserSettingsViewModelTest {
+class UpdateDraftFieldViewModelTest {
 
-    private lateinit var getFieldUserSettingViewModel: GetFieldUserSettingsViewModel
+    private lateinit var updateDraftFieldViewModel: UpdateDraftFieldViewModel
 
     @Mock
     private lateinit var apiProvider: ApiProvider
     @Mock
     private lateinit var basePreferencesAdapter: BasePreferencesAdapter
-
-    private val testParam = CreateIssueFieldParam("", "")
+    private val param = UpdateDraftField("", "", "")
 
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
 
     @Before
     fun setUp() {
-        getFieldUserSettingViewModel = GetFieldUserSettingsViewModel(
+        updateDraftFieldViewModel = UpdateDraftFieldViewModel(
             apiProvider, basePreferencesAdapter,
             testCoroutineContextHolder
         )
@@ -45,22 +45,30 @@ class GetFieldUserSettingsViewModelTest {
     @Test
     fun `given error response should produce error state`() {
         Mockito.`when`(basePreferencesAdapter.getUrl()).thenReturn("")
-        Mockito.`when`(apiProvider.getCustomFieldUserSettings(
+        Mockito.`when`(basePreferencesAdapter.getLastDraftId()).thenReturn("")
+        Mockito.`when`(apiProvider.updateDraftField(
             ArgumentMatchers.anyString(),
             ArgumentMatchers.anyString(),
-            ArgumentMatchers.anyString())).thenThrow(RuntimeException("test"))
-        getFieldUserSettingViewModel.doAsyncRequest(testParam)
-        Assertions.assertThat(getFieldUserSettingViewModel.lastViewState).isInstanceOf(ViewState.Error::class.java)
+            ArgumentMatchers.anyString(),
+            ArgumentMatchers.anyMap<String,String>()
+        )).thenThrow(RuntimeException("test"))
+        updateDraftFieldViewModel.doAsyncRequest(param)
+        Assertions.assertThat(updateDraftFieldViewModel.lastViewState).isInstanceOf(ViewState.Error::class.java)
     }
 
     @Test
     fun `given success response should produce success state`() {
         Mockito.`when`(basePreferencesAdapter.getUrl()).thenReturn("")
-        Mockito.`when`(apiProvider.getCustomFieldUserSettings(ArgumentMatchers.anyString(),ArgumentMatchers.anyString(),ArgumentMatchers.anyString())).
-            thenReturn(GlobalScope.async(testCoroutineContextHolder.main()) { listOf<UserDTO>() })
-        getFieldUserSettingViewModel.doAsyncRequest(testParam)
-        Assertions.assertThat(getFieldUserSettingViewModel.lastViewState).isInstanceOf(ViewState.Success::class.java)
+        Mockito.`when`(basePreferencesAdapter.getLastDraftId()).thenReturn("")
+        Mockito.`when`(apiProvider.updateDraftField(
+            ArgumentMatchers.anyString(),
+            ArgumentMatchers.anyString(),
+            ArgumentMatchers.anyString(),
+            ArgumentMatchers.anyMap<String,String>()
+        )).
+            thenReturn(GlobalScope.async(testCoroutineContextHolder.main()) { FieldContainerDTO(projectCustomField = ProjectCustomFieldDto()) })
+        updateDraftFieldViewModel.doAsyncRequest(param)
+        Assertions.assertThat(updateDraftFieldViewModel.lastViewState).isInstanceOf(ViewState.Success::class.java)
     }
-
 
 }

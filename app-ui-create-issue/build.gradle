@@ -26,5 +26,5 @@ dependencies {
     testImplementation mockito
     testImplementation assertJ
     testImplementation archCoreTesting
-
+    testImplementation gson
 }

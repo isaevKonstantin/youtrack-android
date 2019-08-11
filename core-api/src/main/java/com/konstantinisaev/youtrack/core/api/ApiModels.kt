@@ -58,7 +58,7 @@ data class FieldTypeDTO(val isMultiValue: Boolean,val valueType: String?)
 
 data class DefaultCreateIssueBodyDTO(private val id: String? = "",private val summary: String? = "",private val description: String? = "",private val project: CreateIssueProjectDTO)
 
-data class UpdateDraftDTO(private val id: String? = "", val value: Any)
+data class UpdateDraftFieldDTO(private val id: String? = "", val value: Any)
 
 data class CreateIssueProjectDTO(private val name:String? = "Not selected",private val id: String?)
 

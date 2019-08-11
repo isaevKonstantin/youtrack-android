@@ -7,8 +7,9 @@ import com.konstantinisaev.youtrack.ui.base.utils.DateUtils
 import com.konstantinisaev.youtrack.ui.base.utils.ObjectMapper
 import java.util.*
 
+@Suppress("UNCHECKED_CAST")
 data class Issue(val id: String, val idReadable: String, val summary: String, val resolved: String, val created: String, val updated: String, val description: String,
-                 private val fields: List<FieldContainerDTO>, val reporter: IssueUserField, val votes: Int, val watchers: IssueWatcher, val comments: List<CommentDTO>, val project: Project?){
+				 private val fields: List<FieldContainerDTO>, val reporter: IssueUserField, val votes: Int, val watchers: IssueWatcher, val comments: List<CommentDTO>, val project: Project?){
 
 	val mappedCreatedDate: Date? = DateUtils.toDate(created.toLongOrNull())
 	val mappedUpdatedDate: Date? = DateUtils.toDate(updated.toLongOrNull())
@@ -32,32 +33,16 @@ data class Issue(val id: String, val idReadable: String, val summary: String, va
 	init {
 		fields.forEach {
 			val fieldName = it.projectCustomField?.field?.name.orEmpty()
-
-			when {
-				FieldContainer.isEnum(it.projectCustomField?.type.orEmpty()) || FieldContainer.isState(it.projectCustomField?.type.orEmpty()) || FieldContainer.isVersion(it.projectCustomField?.type.orEmpty())-> {
-					val parsedValue = ObjectMapper.mapCustomFieldFromJson(it.value)
-					val field = FieldContainer(it.projectCustomField ?: ProjectCustomFieldDto(),EnumValue(parsedValue.name,FieldColor(parsedValue.colors.first,parsedValue.colors.second)))
-					when(fieldName.toLowerCase()){
-						PRIORITY_FIELD -> priority = field
-						TYPE_FIELD -> type = field
-						STATE_FIELD -> state = field
-						SPRINT_FIELD -> sprint = field
-					}
-				}
-				FieldContainer.isUser(it.projectCustomField?.type.orEmpty()) -> {
-					val parsedValue = ObjectMapper.mapUserFieldFromJson(it.value)
-					val field = FieldContainer(it.projectCustomField ?: ProjectCustomFieldDto(),UserValue(parsedValue.name,parsedValue.avatarUrl))
-					when(fieldName.toLowerCase()){
-						ASSIGNEE_FIELD -> assignee = field
-					}
-				}
-				FieldContainer.isTime(it.projectCustomField?.type.orEmpty()) -> {
-					val parsedValue = ObjectMapper.mapPeriodicFieldFromJson(it.value)
-					val field = FieldContainer(it.projectCustomField ?: ProjectCustomFieldDto(),TimeValue(parsedValue.minutes,parsedValue.presentation))
-					when(fieldName.toLowerCase()){
-						SPENT_TIME_FIELD -> spentTime = field
-						ESTIMATION_FIELD -> estimation = field
-					}
+			val field = mapFieldContainer(it)
+			field?.let { notNullField ->
+				when(fieldName.toLowerCase()) {
+					PRIORITY_FIELD -> priority = notNullField as FieldContainer<EnumValue>
+					TYPE_FIELD -> type = notNullField as FieldContainer<EnumValue>
+					STATE_FIELD -> state = notNullField as FieldContainer<EnumValue>
+					SPRINT_FIELD -> sprint = notNullField as FieldContainer<EnumValue>
+					ASSIGNEE_FIELD -> assignee = notNullField as FieldContainer<UserValue>
+					SPENT_TIME_FIELD -> spentTime = notNullField as FieldContainer<TimeValue>
+					ESTIMATION_FIELD -> estimation = notNullField as FieldContainer<TimeValue>
 				}
 			}
 		}
@@ -134,3 +119,20 @@ fun mapIssue(issueDTO: IssueDTO) = Issue(issueDTO.id.orEmpty(),issueDTO.idReadab
 	Collections.emptyList(),
 	Project(issueDTO.project?.id.orEmpty(),issueDTO.project?.name.orEmpty(),issueDTO.project?.shortName.orEmpty(),issueDTO.project?.archived == true,issueDTO.project?.type.orEmpty())
 )
+
+fun mapFieldContainer(fieldContainerDTO: FieldContainerDTO) : FieldContainer<*>?{
+	return when{
+		FieldContainer.isEnum(fieldContainerDTO.projectCustomField?.type.orEmpty()) || FieldContainer.isState(fieldContainerDTO.projectCustomField?.type.orEmpty()) || FieldContainer.isVersion(fieldContainerDTO.projectCustomField?.type.orEmpty())-> {
+			val parsedValue = ObjectMapper.mapCustomFieldFromJson(fieldContainerDTO.value)
+			FieldContainer(fieldContainerDTO.projectCustomField ?: ProjectCustomFieldDto(),EnumValue(parsedValue.name,FieldColor(parsedValue.colors.first,parsedValue.colors.second)))
+		}
+		FieldContainer.isUser(fieldContainerDTO.projectCustomField?.type.orEmpty()) -> {
+			val parsedValue = ObjectMapper.mapUserFieldFromJson(fieldContainerDTO.value)
+			FieldContainer(fieldContainerDTO.projectCustomField ?: ProjectCustomFieldDto(),UserValue(parsedValue.name,parsedValue.avatarUrl))
+		}
+		FieldContainer.isTime(fieldContainerDTO.projectCustomField?.type.orEmpty()) -> {
+			val parsedValue = ObjectMapper.mapPeriodicFieldFromJson(fieldContainerDTO.value)
+			FieldContainer(fieldContainerDTO.projectCustomField ?: ProjectCustomFieldDto(),TimeValue(parsedValue.minutes,parsedValue.presentation))
+		}else -> null
+	}
+}

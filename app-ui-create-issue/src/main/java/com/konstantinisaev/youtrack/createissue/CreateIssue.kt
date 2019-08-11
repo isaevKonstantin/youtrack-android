@@ -6,6 +6,7 @@ import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
 import com.konstantinisaev.youtrack.createissue.viewmodels.DraftViewModel
 import com.konstantinisaev.youtrack.createissue.viewmodels.GetFieldSettingsViewModel
 import com.konstantinisaev.youtrack.createissue.viewmodels.GetFieldUserSettingsViewModel
+import com.konstantinisaev.youtrack.createissue.viewmodels.UpdateDraftFieldViewModel
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.di.FeatureViewModelFactoryModule
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelFactory
@@ -51,17 +52,22 @@ abstract class CreateIssueViewModels{
     @Binds
     @IntoMap
     @ViewModelKey(DraftViewModel::class)
-    internal abstract fun bindDraftViewModel(draftViewModel: DraftViewModel): ViewModel
+    internal abstract fun bindDraftViewModel(viewModel: DraftViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(GetFieldSettingsViewModel::class)
-    internal abstract fun bindGetFieldSettingsViewModel(getFieldSettingsViewModel: GetFieldSettingsViewModel): ViewModel
+    internal abstract fun bindGetFieldSettingsViewModel(viewModel: GetFieldSettingsViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(GetFieldUserSettingsViewModel::class)
-    internal abstract fun bindGetFieldUserSettingsViewModel(getFieldUserSettingsViewModel: GetFieldUserSettingsViewModel): ViewModel
+    internal abstract fun bindGetFieldUserSettingsViewModel(viewModel: GetFieldUserSettingsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(UpdateDraftFieldViewModel::class)
+    internal abstract fun bindUpdateDraftFieldViewModel(viewModel: UpdateDraftFieldViewModel): ViewModel
 }
 
 class CreateIssueDiProvider private constructor(){

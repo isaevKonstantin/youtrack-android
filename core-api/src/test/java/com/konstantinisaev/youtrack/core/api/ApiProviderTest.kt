@@ -1,10 +1,11 @@
 package com.konstantinisaev.youtrack.core.api
 
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 import com.konstantinisaev.youtrack.core.api.models.PermissionHolder
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.BeforeClass
-import org.junit.Ignore
 import org.junit.Test
 import java.util.*
 
@@ -54,7 +55,6 @@ class ApiProviderTest {
         }
     }
 
-    @Ignore
     @Test
     fun `should create issue`() {
         runBlocking {
@@ -65,7 +65,9 @@ class ApiProviderTest {
             assertThat(issueDTO).isNotNull
             val draftIssueDTO = apiProvider.getIssueByDraftId("$testUrl${ApiEndpoints.YOUTRACK.url}/",issueDTO.id.orEmpty()).await()
             assertThat(draftIssueDTO).isNotNull
-            draftIssueDTO.fields?.forEach {fieldContainer ->
+            var valueId = ""
+            var value:JsonElement = JsonObject()
+            draftIssueDTO.fields?.forEach { fieldContainer ->
                 fieldContainer.projectCustomField?.bundle.takeIf { it != null }?.let { bundle ->
                     if(fieldContainer.projectCustomField?.field?.fieldType?.valueType == "user"){
                         val userDTO = apiProvider.getCustomFieldUserSettings(
@@ -81,10 +83,23 @@ class ApiProviderTest {
                             fieldContainer.projectCustomField?.field?.fieldType?.valueType.orEmpty(),
                             bundle.id.orEmpty()
                         ).await()
-                        assertThat(fieldDTO).isNotEmpty
+                        println(fieldDTO)
+                        assertThat(fieldDTO).isNotNull
                     }
                 }
+                if(fieldContainer.projectCustomField?.field?.name.orEmpty() == "Priority"){
+                    valueId = fieldContainer.projectCustomField?.id.orEmpty()
+                    value = fieldContainer.value!!
+                }
             }
+            val updatedIssue = apiProvider.updateDraftField(
+                "$testUrl${ApiEndpoints.YOUTRACK.url}/",
+                draftIssueDTO.id.orEmpty(),
+                valueId,
+                value
+            ).await()
+            assertThat(updatedIssue).isNotNull
+            println(updatedIssue)
         }
     }
 

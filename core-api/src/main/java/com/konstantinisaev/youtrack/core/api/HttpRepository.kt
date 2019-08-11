@@ -45,13 +45,13 @@ interface HttpRepository {
     fun getCustomFieldUsers(@Url url: String,@Query("fields") fields: String? = Fields.USER_CUSTOM_FIELD,@Query("banned")banned:Boolean = false,@Query("sort")sort:Boolean = true,@Query("\$top") top: Int = -1) : Deferred<List<UserDTO>>
 
     @POST("")
-    fun initDraft(@Url url: String, @Query("fields") fields: String? = Fields.INIT_DRAFT,@Body createIssueDTO: DefaultCreateIssueBodyDTO?,@Query("top") top: Int = -1) : Deferred<IssueDTO>
+    fun initDraft(@Url url: String, @Query("fields") fields: String? = Fields.INIT_DRAFT,@Body createIssueDTO: DefaultCreateIssueBodyDTO?) : Deferred<IssueDTO>
 
     @GET("")
     fun getIssueByDraftId(@Url url: String, @Query("fields") fields: String? = Fields.INIT_DRAFT,@Query("top") top: Int = -1) : Deferred<IssueDTO>
 
     @POST
-    fun updateDraft(@Url url: String,@Query("top") top: Int = -1,@Body updateDraftDTO: UpdateDraftDTO) : Deferred<CustomFieldAdminDTO>
+    fun updateDraft(@Url url: String,@Body updateDraftFieldDTO: UpdateDraftFieldDTO,@Query("fields")fields: String? = Fields.CUSTOM_FIELD_DRAFT) : Deferred<FieldContainerDTO>
 
     @GET
     fun getPermissions(@Url url: String,@Query("query") query: String? = null,@Query("fields")fields: String? = Fields.PERMISSION) : Deferred<List<CachedPermissionDTO>>
@@ -72,5 +72,7 @@ private object Fields{
     const val USER_CUSTOM_FIELD = "\$type,avatarUrl,fullName,name,id,ringId"
 
     const val PERMISSION = "global,permission(key),projects(id,ringId)"
+
+    const val CUSTOM_FIELD_DRAFT = "projectCustomField(field(name,value)),value(name,minutes,presentation,id)"
 
 }
