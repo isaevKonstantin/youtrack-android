@@ -60,6 +60,7 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
     private lateinit var tvState: TextView
     private lateinit var tlEstimation: TextInputLayout
     private lateinit var tlSpentTime: TextInputLayout
+    private lateinit var pbCreateIssue: View
 
     private val bundleMap = mutableMapOf<Int,Pair<String,String>>()
     private val updateViews = mutableMapOf<Int,TextView>()
@@ -102,6 +103,14 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
         }
     }
 
+    private val selectedFieldListener: (String) -> Unit = { selectedId ->
+        pbCreateIssue.visible()
+        switchVisibilityOfMainView(View.INVISIBLE)
+        val tv = updateViews.getValue(clickedItemId)
+        updateDraftFieldViewModel.doAsyncRequest(UpdateDraftField(tv.tag?.toString().orEmpty(),selectedId))
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         CreateIssueDiProvider.getInstance().injectFragment(this)
@@ -129,6 +138,7 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
         tlEstimation = inflatedView.findViewById(R.id.tlEstimation)
         tlSpentTime = inflatedView.findViewById(R.id.tlSpentTime)
         tvState = inflatedView.findViewById(R.id.tvState)
+        pbCreateIssue = inflatedView.findViewById(R.id.pbCreateIssue)
         val pbCreateIssue = inflatedView.findViewById<ProgressBar>(R.id.pbCreateIssue)
         val tvCreateIssueError = inflatedView.findViewById<TextView>(R.id.tvCreateIssueError)
 
@@ -212,12 +222,7 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
             if(viewState is ViewState.Success<*>){
                 val data = viewState.data as List<CustomFieldAdminDTO>
                 val param = BaseSelectListDialog.Param(getSelectedTitle(clickedItemId),data.map { BaseSelectRvItem(it.id.orEmpty(),it.name.orEmpty()) })
-                showSelectDialog(param) { selectedId ->
-                    pbCreateIssue.visible()
-                    switchVisibilityOfMainView(View.INVISIBLE)
-                    val tv = updateViews.getValue(clickedItemId)
-                    updateDraftFieldViewModel.doAsyncRequest(UpdateDraftField(tv.tag?.toString().orEmpty(),"",selectedId))
-                }
+                showSelectDialog(param,selectedFieldListener)
             }
         })
 
@@ -225,30 +230,22 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
             if(viewState is ViewState.Success<*>){
                 val data = viewState.data as List<UserDTO>
                 val param = BaseSelectListDialog.Param(getSelectedTitle(clickedItemId),data.map { BaseSelectRvItem(it.id.orEmpty(),it.name.orEmpty()) })
-                showSelectDialog(param) { selectedId ->
-                    data.find { it.id.orEmpty() == selectedId }?.let {field ->
-                        val tv = updateViews[clickedItemId]
-                        tv?.let {textView ->
-                            setValue(textView,field.name.orEmpty(),"")
-                            updateBundle(textView, selectedId)
-                        }
-                    }
-                }
+                showSelectDialog(param,selectedFieldListener)
             }
         })
+
         updateDraftFieldViewModel.observe(this, Observer { viewState ->
             pbCreateIssue.gone()
             switchVisibilityOfMainView(View.VISIBLE)
             if(viewState is ViewState.Success<*>){
                 val data = (viewState.data as FieldContainer<*>).value
+                val tv = updateViews.getValue(clickedItemId)
                 when(data){
                     is EnumValue ->{
-                        val tv = updateViews.getValue(clickedItemId)
                         setValue(tv, data.name,"")
-//                        updateBundle(tv, data..orEmpty())
                     }
                     is UserValue -> {
-
+                        setValue(tv, data.name,"")
                     }
                 }
 
@@ -287,7 +284,6 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
             bundleMap[textView.id] = this
         }
     }
-
 
     private fun showSelectDialog(data: BaseSelectListDialog.Param,listener: (String) -> Unit) {
         val dialog = BaseSelectListDialog.Builder().setParam(data)

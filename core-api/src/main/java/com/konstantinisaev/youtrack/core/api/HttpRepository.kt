@@ -65,7 +65,7 @@ private object Fields{
 
     const val CUSTOM_FIELDS = "type,name,id"
 
-    const val INIT_DRAFT = "id,idReadable,project(\$type,id,name,archived,shortName),fields(projectCustomField(field(id,name,value,fieldType(valueType,isMultiValue)),canBeEmpty,id,emptyFieldText,bundle(id,isUpdateable)),value(name,minutes,fullName,ringId,avatarUrl,presentation,id,color(background,foreground)))"
+    const val INIT_DRAFT = "id,idReadable,project(\$type,id,name,archived,shortName),fields(projectCustomField(field(id,name,value,fieldType(valueType,isMultiValue)),canBeEmpty,id,emptyFieldText,bundle(id,isUpdateable)),value(name,minutes,fullName,ringId,avatarUrl,presentation,id))"
 
     const val SERVER_CONFIG = "ring(url,serviceId),mobile(serviceSecret,serviceId),version,statisticsEnabled"
 
@@ -73,6 +73,6 @@ private object Fields{
 
     const val PERMISSION = "global,permission(key),projects(id,ringId)"
 
-    const val CUSTOM_FIELD_DRAFT = "projectCustomField(field(name,value)),value(name,minutes,presentation,id)"
+    const val CUSTOM_FIELD_DRAFT = "projectCustomField(field(name,value)),value(name,minutes,fullName,ringId,avatarUrl,presentation,id)"
 
 }
