@@ -3,10 +3,7 @@ package com.konstantinisaev.youtrack.createissue
 import androidx.lifecycle.ViewModel
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
-import com.konstantinisaev.youtrack.createissue.viewmodels.DraftViewModel
-import com.konstantinisaev.youtrack.createissue.viewmodels.GetFieldSettingsViewModel
-import com.konstantinisaev.youtrack.createissue.viewmodels.GetFieldUserSettingsViewModel
-import com.konstantinisaev.youtrack.createissue.viewmodels.UpdateDraftFieldViewModel
+import com.konstantinisaev.youtrack.createissue.viewmodels.*
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
 import com.konstantinisaev.youtrack.ui.base.di.FeatureViewModelFactoryModule
 import com.konstantinisaev.youtrack.ui.base.viewmodels.ViewModelFactory
@@ -68,6 +65,11 @@ abstract class CreateIssueViewModels{
     @IntoMap
     @ViewModelKey(UpdateDraftFieldViewModel::class)
     internal abstract fun bindUpdateDraftFieldViewModel(viewModel: UpdateDraftFieldViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(UpdateDraftViewModel::class)
+    internal abstract fun bindUpdateDraftViewModel(viewModel: UpdateDraftViewModel): ViewModel
 }
 
 class CreateIssueDiProvider private constructor(){

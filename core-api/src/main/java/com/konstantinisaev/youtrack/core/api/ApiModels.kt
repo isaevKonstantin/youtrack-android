@@ -23,8 +23,8 @@ data class CurrentUserDTO(val id: String?, val fullName: String?, val login: Str
 
 data class ProjectDTO(val id: String?, val name: String?, val shortName: String?,val type: String?,val archived: Boolean,val ringId: String?)
 
-data class IssueDTO(val id: String?, val idReadable: String?, val summary: String?, val resolved: String?, val created: String?, val updated: String?, val description: String?,
-                    val fields: List<FieldContainerDTO>?, val reporter: UserDTO?, val votes: Int?, val watchers: WatcherDTO?, val comments: List<CommentDTO>?, val project: ProjectDTO?)
+data class IssueDTO(val id: String? = null, val idReadable: String? = null, val summary: String? = null, val resolved: String? = null, val created: String? = null, val updated: String? = null, val description: String? = null,
+                    val fields: List<FieldContainerDTO>? = null, val reporter: UserDTO? = null, val votes: Int? = null, val watchers: WatcherDTO? = null, val comments: List<CommentDTO>? = null, val project: ProjectDTO? = null)
 
 data class FieldContainerDTO(val projectCustomField: ProjectCustomFieldDto? = null, val value: JsonElement? = null)
 
@@ -59,6 +59,10 @@ data class FieldTypeDTO(val isMultiValue: Boolean,val valueType: String?)
 data class DefaultCreateIssueBodyDTO(private val id: String? = "",private val summary: String? = "",private val description: String? = "",private val project: CreateIssueProjectDTO)
 
 data class UpdateDraftFieldDTO(private val id: String? = "", val value: Any)
+
+data class UpdateProjectFieldDTO(private val id: String? = "", val value: Any)
+
+data class UpdateDraftDTO(private val id: String? = "",private val summary: String? = "",private val description: String? = "",private val project: ProjectDTO? = null)
 
 data class CreateIssueProjectDTO(private val name:String? = "Not selected",private val id: String?)
 

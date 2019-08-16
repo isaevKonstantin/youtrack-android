@@ -48,6 +48,7 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
     private lateinit var getFieldSettingsViewModel: GetFieldSettingsViewModel
     private lateinit var getFieldUserSettingsViewModel: GetFieldUserSettingsViewModel
     private lateinit var updateDraftFieldViewModel: UpdateDraftFieldViewModel
+    private lateinit var updateDraftViewModel: UpdateDraftViewModel
 
     private lateinit var nsvCreateIssueBody: NestedScrollView
     private lateinit var tvAttach: TextView
@@ -85,7 +86,10 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
                 val items = data.map { project -> BaseSelectRvItem(project.id.orEmpty(),project.name.orEmpty()) }
                 showSelectDialog(BaseSelectListDialog.Param(getSelectedTitle(clickedItemId),items)){ selectedId ->
                     data.find { it.id.orEmpty() == selectedId }?.let{ project ->
-                        setValue(tvCurrentProject,project.name.orEmpty(),"")
+                        val issue = draftViewModel.draftIssue ?: return@let
+                        pbCreateIssue.visible()
+                        switchVisibilityOfMainView(View.INVISIBLE)
+                        updateDraftViewModel.doAsyncRequest(issue.copy(project = project))
                     }
                 }
             }
@@ -119,6 +123,7 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
         getFieldSettingsViewModel = ViewModelProviders.of(this,featureViewModelFactory)[GetFieldSettingsViewModel::class.java]
         getFieldUserSettingsViewModel = ViewModelProviders.of(this,featureViewModelFactory)[GetFieldUserSettingsViewModel::class.java]
         updateDraftFieldViewModel = ViewModelProviders.of(this,featureViewModelFactory)[UpdateDraftFieldViewModel::class.java]
+        updateDraftViewModel = ViewModelProviders.of(this,featureViewModelFactory)[UpdateDraftViewModel::class.java]
     }
 
     override fun setupDialog(dialog: Dialog?, style: Int) {
@@ -193,29 +198,7 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
             }
 
             val issue = (viewState as ViewState.Success<Issue>).data
-            setValue(tvPriority,issue.priority.value.name,issue.priority.projectCustomField.emptyFieldText.orEmpty())
-            setValue(tvAssignee,issue.assignee.value.name,issue.assignee.projectCustomField.emptyFieldText.orEmpty())
-            setValue(tvCurrentProject,issue.project?.name.orEmpty(),"")
-            setValue(tvType,issue.type.value.name,issue.type.projectCustomField.emptyFieldText.orEmpty())
-            setValue(tvSprint,issue.sprint.value.name,issue.sprint.projectCustomField.emptyFieldText.orEmpty())
-            setValue(tvState,issue.state.value.name,issue.state.projectCustomField.emptyFieldText.orEmpty())
-            setValue(tlEstimation.editText!!,issue.estimation.value.presentation,issue.estimation.projectCustomField.emptyFieldText.orEmpty())
-            setValue(tlSpentTime.editText!!,issue.spentTime.value.presentation,issue.spentTime.projectCustomField.emptyFieldText.orEmpty())
-
-            bundleMap.clear()
-            setBundle(tvPriority.id,issue.priority.projectCustomField)
-            setBundle(tvType.id,issue.type.projectCustomField)
-            setBundle(tvSprint.id,issue.sprint.projectCustomField)
-            setBundle(tvState.id,issue.state.projectCustomField)
-            setBundle(tvAssignee.id,issue.assignee.projectCustomField)
-
-            tvPriority.tag = issue.priority.projectCustomField.id.orEmpty()
-            tvAssignee.tag = issue.assignee.projectCustomField.id.orEmpty()
-            tvType.tag = issue.type.projectCustomField.id.orEmpty()
-            tvSprint.tag = issue.sprint.projectCustomField.id.orEmpty()
-            tvState.tag = issue.state.projectCustomField.id.orEmpty()
-            switchVisibilityOfMainView(View.VISIBLE)
-
+            updateIssue(issue)
         })
 
         getFieldSettingsViewModel.observe(this, Observer { viewState ->
@@ -248,7 +231,14 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
                         setValue(tv, data.name,"")
                     }
                 }
-
+            }
+        })
+        updateDraftViewModel.observe(this, Observer {viewState ->
+            pbCreateIssue.gone()
+            switchVisibilityOfMainView(View.VISIBLE)
+            if(viewState is ViewState.Success<*>){
+                val issue = (viewState.data as Issue)
+                updateIssue(issue)
             }
         })
 
@@ -256,6 +246,39 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
         switchVisibilityOfMainView(View.INVISIBLE)
 
         draftViewModel.doAsyncRequest()
+    }
+
+    private fun updateIssue(issue: Issue) {
+        setValue(tvPriority, issue.priority.value.name, issue.priority.projectCustomField.emptyFieldText.orEmpty())
+        setValue(tvAssignee, issue.assignee.value.name, issue.assignee.projectCustomField.emptyFieldText.orEmpty())
+        setValue(tvCurrentProject, issue.project?.name.orEmpty(), "")
+        setValue(tvType, issue.type.value.name, issue.type.projectCustomField.emptyFieldText.orEmpty())
+        setValue(tvSprint, issue.sprint.value.name, issue.sprint.projectCustomField.emptyFieldText.orEmpty())
+        setValue(tvState, issue.state.value.name, issue.state.projectCustomField.emptyFieldText.orEmpty())
+        setValue(
+            tlEstimation.editText!!,
+            issue.estimation.value.presentation,
+            issue.estimation.projectCustomField.emptyFieldText.orEmpty()
+        )
+        setValue(
+            tlSpentTime.editText!!,
+            issue.spentTime.value.presentation,
+            issue.spentTime.projectCustomField.emptyFieldText.orEmpty()
+        )
+
+        bundleMap.clear()
+        setBundle(tvPriority.id, issue.priority.projectCustomField)
+        setBundle(tvType.id, issue.type.projectCustomField)
+        setBundle(tvSprint.id, issue.sprint.projectCustomField)
+        setBundle(tvState.id, issue.state.projectCustomField)
+        setBundle(tvAssignee.id, issue.assignee.projectCustomField)
+
+        tvPriority.tag = issue.priority.projectCustomField.id.orEmpty()
+        tvAssignee.tag = issue.assignee.projectCustomField.id.orEmpty()
+        tvType.tag = issue.type.projectCustomField.id.orEmpty()
+        tvSprint.tag = issue.sprint.projectCustomField.id.orEmpty()
+        tvState.tag = issue.state.projectCustomField.id.orEmpty()
+        switchVisibilityOfMainView(View.VISIBLE)
     }
 
     private fun switchVisibilityOfMainView(visibility: Int){

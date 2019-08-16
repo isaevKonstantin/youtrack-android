@@ -51,7 +51,10 @@ interface HttpRepository {
     fun getIssueByDraftId(@Url url: String, @Query("fields") fields: String? = Fields.INIT_DRAFT,@Query("top") top: Int = -1) : Deferred<IssueDTO>
 
     @POST
-    fun updateDraft(@Url url: String,@Body updateDraftFieldDTO: UpdateDraftFieldDTO,@Query("fields")fields: String? = Fields.CUSTOM_FIELD_DRAFT) : Deferred<FieldContainerDTO>
+    fun updateDraftField(@Url url: String, @Body updateDraftFieldDTO: UpdateDraftFieldDTO, @Query("fields")fields: String? = Fields.CUSTOM_FIELD_DRAFT) : Deferred<FieldContainerDTO>
+
+    @POST
+    fun updateDraft(@Url url: String, @Query("fields") fields: String? = Fields.INIT_DRAFT, @Body issueDTO: UpdateDraftDTO) : Deferred<IssueDTO>
 
     @GET
     fun getPermissions(@Url url: String,@Query("query") query: String? = null,@Query("fields")fields: String? = Fields.PERMISSION) : Deferred<List<CachedPermissionDTO>>

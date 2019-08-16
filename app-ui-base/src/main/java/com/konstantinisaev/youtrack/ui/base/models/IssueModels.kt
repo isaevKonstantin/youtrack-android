@@ -100,8 +100,7 @@ data class FieldColor(val background: String = "", val foreground: String = ""){
 	val isWhiteBackground = background.toLowerCase() == "#ffffff"
 }
 
-data class Project(val id: String,val name: String,val shortName: String,val archived: Boolean,val type: String)
-
+data class Project(val id: String,val name: String,val shortName: String,val archived: Boolean,val type: String,val ringId: String)
 
 private const val PRIORITY_FIELD = "priority"
 private const val TYPE_FIELD = "type"
@@ -117,8 +116,28 @@ fun mapIssue(issueDTO: IssueDTO) = Issue(issueDTO.id.orEmpty(),issueDTO.idReadab
 	issueDTO.votes ?: 0,
 	IssueWatcher(issueDTO.watchers?.id.orEmpty(),issueDTO.watchers?.hasStar == true),
 	Collections.emptyList(),
-	Project(issueDTO.project?.id.orEmpty(),issueDTO.project?.name.orEmpty(),issueDTO.project?.shortName.orEmpty(),issueDTO.project?.archived == true,issueDTO.project?.type.orEmpty())
+	mapProject(issueDTO.project)
 )
+
+fun mapProject(project: ProjectDTO?) =
+	Project(
+		project?.id.orEmpty(),
+		project?.name.orEmpty(),
+		project?.shortName.orEmpty(),
+		project?.archived == true,
+		project?.type.orEmpty(),
+		project?.ringId.orEmpty()
+	)
+
+fun mapProject(project: Project?) =
+	ProjectDTO(
+		project?.id.orEmpty(),
+		project?.name.orEmpty(),
+		project?.shortName.orEmpty(),
+		project?.type.orEmpty(),
+		project?.archived == true,
+		project?.ringId.orEmpty()
+	)
 
 fun mapFieldContainer(fieldContainerDTO: FieldContainerDTO) : FieldContainer<*>?{
 	return when{

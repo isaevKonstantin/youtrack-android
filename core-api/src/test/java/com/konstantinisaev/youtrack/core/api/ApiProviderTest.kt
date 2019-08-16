@@ -63,7 +63,7 @@ class ApiProviderTest {
             assertThat(projects).isNotEmpty
             val issueDTO = apiProvider.initDraft("$testUrl${ApiEndpoints.YOUTRACK.url}/", projects[0].id.orEmpty()).await()
             assertThat(issueDTO).isNotNull
-            val draftIssueDTO = apiProvider.getIssueByDraftId("$testUrl${ApiEndpoints.YOUTRACK.url}/",issueDTO.id.orEmpty()).await()
+            var draftIssueDTO = apiProvider.getIssueByDraftId("$testUrl${ApiEndpoints.YOUTRACK.url}/",issueDTO.id.orEmpty()).await()
             assertThat(draftIssueDTO).isNotNull
             var valueId = ""
             var value:JsonElement = JsonObject()
@@ -92,14 +92,22 @@ class ApiProviderTest {
                     value = fieldContainer.value!!
                 }
             }
-            val updatedIssue = apiProvider.updateDraftField(
+            var updatedField = apiProvider.updateDraftField(
                 "$testUrl${ApiEndpoints.YOUTRACK.url}/",
                 draftIssueDTO.id.orEmpty(),
                 valueId,
                 value
             ).await()
-            assertThat(updatedIssue).isNotNull
-            println(updatedIssue)
+            assertThat(updatedField).isNotNull
+            println(updatedField)
+            draftIssueDTO = apiProvider.updateDraft(
+                "$testUrl${ApiEndpoints.YOUTRACK.url}/",
+                draftIssueDTO.id.orEmpty(),
+                draftIssueDTO.project!!
+            ).await()
+            assertThat(draftIssueDTO).isNotNull
+            println(draftIssueDTO)
+
         }
     }
 

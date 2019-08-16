@@ -2,10 +2,11 @@ package com.konstantinisaev.youtrack.ui.base.viewmodels
 
 import com.konstantinisaev.youtrack.core.api.ApiProvider
 import com.konstantinisaev.youtrack.core.api.CoroutineContextHolder
-import com.konstantinisaev.youtrack.core.api.ProjectDTO
 import com.konstantinisaev.youtrack.core.api.UrlFormatter
 import com.konstantinisaev.youtrack.core.api.models.PermissionHolder
 import com.konstantinisaev.youtrack.ui.base.data.BasePreferencesAdapter
+import com.konstantinisaev.youtrack.ui.base.models.Project
+import com.konstantinisaev.youtrack.ui.base.models.mapProject
 import javax.inject.Inject
 
 class GetProjectsViewModel @Inject constructor(private val apiProvider: ApiProvider,
@@ -13,7 +14,7 @@ class GetProjectsViewModel @Inject constructor(private val apiProvider: ApiProvi
                                                private val permissionHolder: PermissionHolder,
                                                coroutineContextHolder: CoroutineContextHolder) : BaseViewModel<String>(coroutineContextHolder) {
 
-    val projects = mutableListOf<ProjectDTO>()
+    val projects = mutableListOf<Project>()
 
     override suspend fun execute(params: String?): ViewState {
         if(this.projects.isNotEmpty()){
@@ -29,7 +30,7 @@ class GetProjectsViewModel @Inject constructor(private val apiProvider: ApiProvi
         val availableProjects = projects.filter { !it.archived && permissionHolder.canCreateIssue(it.ringId.orEmpty()) }
         basePreferencesAdapter.setCurrentProjectId(availableProjects.firstOrNull()?.id.orEmpty())
         this.projects.clear()
-        this.projects.addAll(availableProjects)
+        this.projects.addAll(availableProjects.map { mapProject(it) })
         return ViewState.Success(this::class.java, availableProjects)
     }
 
