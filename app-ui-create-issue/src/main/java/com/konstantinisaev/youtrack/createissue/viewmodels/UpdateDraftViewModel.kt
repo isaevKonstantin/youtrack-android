@@ -23,6 +23,4 @@ class UpdateDraftViewModel @Inject constructor(private val apiProvider: ApiProvi
         ).await()
         return ViewState.Success(this::class.java, mapIssue(updatedIssue))
     }
-
-
 }

@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
+import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -62,6 +63,9 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
     private lateinit var tlEstimation: TextInputLayout
     private lateinit var tlSpentTime: TextInputLayout
     private lateinit var pbCreateIssue: View
+    private lateinit var edtSummary: EditText
+    private lateinit var edtDesc: EditText
+
 
     private val bundleMap = mutableMapOf<Int,Pair<String,String>>()
     private val updateViews = mutableMapOf<Int,TextView>()
@@ -132,6 +136,8 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
         val toolbar = inflatedView.findViewById<Toolbar>(R.id.tlbCreateIssue)
         val tlSummary = inflatedView.findViewById<TextInputLayout>(R.id.tlSummary)
         val tlDesc = inflatedView.findViewById<TextInputLayout>(R.id.tlDesc)
+        edtSummary = requireNotNull(tlSummary.editText)
+        edtDesc = requireNotNull(tlDesc.editText)
         tvCurrentProject = inflatedView.findViewById(R.id.tvCurrentProject)
         tvPriority = inflatedView.findViewById(R.id.tvPriority)
         tvType = inflatedView.findViewById(R.id.tvType)
@@ -157,6 +163,24 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
         toolbar.title = getString(R.string.create_issue_fragm_toolbar_title)
         toolbar.navigationIcon = ContextCompat.getDrawable(context!!,R.drawable.ic_close_white_24dp)
         toolbar.setNavigationOnClickListener { dismiss() }
+
+        edtSummary.setOnFocusChangeListener { _, hasFocus ->
+            val issue = draftViewModel.draftIssue ?: return@setOnFocusChangeListener
+            if(!hasFocus && issue.summary != edtSummary.text?.toString()){
+                pbCreateIssue.visible()
+                switchVisibilityOfMainView(View.INVISIBLE)
+                updateDraftViewModel.doAsyncRequest(issue.copy(summary = edtSummary.text.toString()))
+            }
+        }
+
+        edtDesc.setOnFocusChangeListener { _, hasFocus ->
+            val issue = draftViewModel.draftIssue ?: return@setOnFocusChangeListener
+            if(!hasFocus && issue.description != edtDesc.text.toString()){
+                pbCreateIssue.visible()
+                switchVisibilityOfMainView(View.INVISIBLE)
+                updateDraftViewModel.doAsyncRequest(issue.copy(description = edtDesc.text.toString()))
+            }
+        }
 
         dialog?.setContentView(inflatedView)
 
@@ -233,7 +257,7 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
                 }
             }
         })
-        updateDraftViewModel.observe(this, Observer {viewState ->
+        updateDraftViewModel.observe(this, Observer { viewState ->
             pbCreateIssue.gone()
             switchVisibilityOfMainView(View.VISIBLE)
             if(viewState is ViewState.Success<*>){
@@ -260,11 +284,9 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
             issue.estimation.value.presentation,
             issue.estimation.projectCustomField.emptyFieldText.orEmpty()
         )
-        setValue(
-            tlSpentTime.editText!!,
-            issue.spentTime.value.presentation,
-            issue.spentTime.projectCustomField.emptyFieldText.orEmpty()
-        )
+        setValue(tlSpentTime.editText!!,issue.spentTime.value.presentation,issue.spentTime.projectCustomField.emptyFieldText.orEmpty())
+        setValue(edtSummary,issue.summary,"")
+        setValue(edtDesc,issue.description,"")
 
         bundleMap.clear()
         setBundle(tvPriority.id, issue.priority.projectCustomField)
