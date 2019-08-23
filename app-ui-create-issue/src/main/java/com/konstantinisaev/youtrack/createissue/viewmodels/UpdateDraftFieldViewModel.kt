@@ -19,7 +19,7 @@ class UpdateDraftFieldViewModel @Inject constructor(private val apiProvider: Api
             basePreferencesAdapter.getUrl(),
             basePreferencesAdapter.getLastDraftId(),
             params.fieldId,
-            mapOf("id" to params.valueId)
+            params.value
         ).await()
         return ViewState.Success(this::class.java, mapFieldContainer(updatedField))
     }

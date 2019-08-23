@@ -22,10 +22,7 @@ import com.konstantinisaev.youtrack.core.api.ProjectCustomFieldDto
 import com.konstantinisaev.youtrack.core.api.UserDTO
 import com.konstantinisaev.youtrack.core.rv.BaseSelectRvItem
 import com.konstantinisaev.youtrack.createissue.viewmodels.*
-import com.konstantinisaev.youtrack.ui.base.models.EnumValue
-import com.konstantinisaev.youtrack.ui.base.models.FieldContainer
-import com.konstantinisaev.youtrack.ui.base.models.Issue
-import com.konstantinisaev.youtrack.ui.base.models.UserValue
+import com.konstantinisaev.youtrack.ui.base.models.*
 import com.konstantinisaev.youtrack.ui.base.utils.DeviceUtils
 import com.konstantinisaev.youtrack.ui.base.utils.gone
 import com.konstantinisaev.youtrack.ui.base.utils.visible
@@ -60,11 +57,12 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
     private lateinit var tvAssignee: TextView
     private lateinit var tvSprint: TextView
     private lateinit var tvState: TextView
-    private lateinit var tlEstimation: TextInputLayout
     private lateinit var tlSpentTime: TextInputLayout
     private lateinit var pbCreateIssue: View
     private lateinit var edtSummary: EditText
     private lateinit var edtDesc: EditText
+    private lateinit var edtEstimation: EditText
+    private lateinit var edtSpentTime: EditText
 
 
     private val bundleMap = mutableMapOf<Int,Pair<String,String>>()
@@ -115,7 +113,7 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
         pbCreateIssue.visible()
         switchVisibilityOfMainView(View.INVISIBLE)
         val tv = updateViews.getValue(clickedItemId)
-        updateDraftFieldViewModel.doAsyncRequest(UpdateDraftField(tv.tag?.toString().orEmpty(),selectedId))
+        updateDraftFieldViewModel.doAsyncRequest(UpdateDraftField(tv.tag?.toString().orEmpty(),selectedId, mapOf(UpdateDraftField.ID to selectedId)))
 
     }
 
@@ -134,10 +132,10 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
         val inflatedView = View.inflate(context, R.layout.dialog_create_issue, null)
 
         val toolbar = inflatedView.findViewById<Toolbar>(R.id.tlbCreateIssue)
-        val tlSummary = inflatedView.findViewById<TextInputLayout>(R.id.tlSummary)
-        val tlDesc = inflatedView.findViewById<TextInputLayout>(R.id.tlDesc)
-        edtSummary = requireNotNull(tlSummary.editText)
-        edtDesc = requireNotNull(tlDesc.editText)
+        edtSummary = inflatedView.findViewById(R.id.edtSummary)
+        edtDesc = inflatedView.findViewById(R.id.edtDesc)
+        edtEstimation = inflatedView.findViewById(R.id.edtEstimation)
+        edtSpentTime = inflatedView.findViewById(R.id.edtSpentTime)
         tvCurrentProject = inflatedView.findViewById(R.id.tvCurrentProject)
         tvPriority = inflatedView.findViewById(R.id.tvPriority)
         tvType = inflatedView.findViewById(R.id.tvType)
@@ -146,12 +144,10 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
         tvConfirmIssue = inflatedView.findViewById(R.id.tvConfirmIssue)
         tvSprint = inflatedView.findViewById(R.id.tvSprint)
         nsvCreateIssueBody = inflatedView.findViewById(R.id.nsvCreateIssueBody)
-        tlEstimation = inflatedView.findViewById(R.id.tlEstimation)
         tlSpentTime = inflatedView.findViewById(R.id.tlSpentTime)
         tvState = inflatedView.findViewById(R.id.tvState)
         pbCreateIssue = inflatedView.findViewById(R.id.pbCreateIssue)
         val pbCreateIssue = inflatedView.findViewById<ProgressBar>(R.id.pbCreateIssue)
-        val tvCreateIssueError = inflatedView.findViewById<TextView>(R.id.tvCreateIssueError)
 
         updateViews[tvCurrentProject.id] = tvCurrentProject
         updateViews[tvPriority.id] = tvPriority
@@ -159,6 +155,7 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
         updateViews[tvAssignee.id] = tvAssignee
         updateViews[tvSprint.id] = tvSprint
         updateViews[tvState.id] = tvState
+        updateViews[edtEstimation.id] = edtEstimation
 
         toolbar.title = getString(R.string.create_issue_fragm_toolbar_title)
         toolbar.navigationIcon = ContextCompat.getDrawable(context!!,R.drawable.ic_close_white_24dp)
@@ -179,6 +176,14 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
                 pbCreateIssue.visible()
                 switchVisibilityOfMainView(View.INVISIBLE)
                 updateDraftViewModel.doAsyncRequest(issue.copy(description = edtDesc.text.toString()))
+            }
+        }
+        edtEstimation.setOnFocusChangeListener{ _, hasFocus ->
+            if(!hasFocus){
+                pbCreateIssue.visible()
+                switchVisibilityOfMainView(View.INVISIBLE)
+                clickedItemId = edtEstimation.id
+                updateDraftFieldViewModel.doAsyncRequest(UpdateDraftField(edtEstimation.tag?.toString().orEmpty(),"", mapOf(UpdateDraftField.PRESENTATION to edtEstimation.text.toString())))
             }
         }
 
@@ -254,6 +259,9 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
                     is UserValue -> {
                         setValue(tv, data.name,"")
                     }
+                    is TimeValue -> {
+                        setValue(tv, data.presentation,"")
+                    }
                 }
             }
         })
@@ -279,11 +287,7 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
         setValue(tvType, issue.type.value.name, issue.type.projectCustomField.emptyFieldText.orEmpty())
         setValue(tvSprint, issue.sprint.value.name, issue.sprint.projectCustomField.emptyFieldText.orEmpty())
         setValue(tvState, issue.state.value.name, issue.state.projectCustomField.emptyFieldText.orEmpty())
-        setValue(
-            tlEstimation.editText!!,
-            issue.estimation.value.presentation,
-            issue.estimation.projectCustomField.emptyFieldText.orEmpty()
-        )
+        setValue(edtEstimation,issue.estimation.value.presentation,issue.estimation.projectCustomField.emptyFieldText.orEmpty())
         setValue(tlSpentTime.editText!!,issue.spentTime.value.presentation,issue.spentTime.projectCustomField.emptyFieldText.orEmpty())
         setValue(edtSummary,issue.summary,"")
         setValue(edtDesc,issue.description,"")
@@ -300,6 +304,7 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
         tvType.tag = issue.type.projectCustomField.id.orEmpty()
         tvSprint.tag = issue.sprint.projectCustomField.id.orEmpty()
         tvState.tag = issue.state.projectCustomField.id.orEmpty()
+        edtEstimation.tag = issue.estimation.projectCustomField.id.orEmpty()
         switchVisibilityOfMainView(View.VISIBLE)
     }
 
@@ -320,13 +325,6 @@ class CreateIssueDialog : BottomSheetDialogFragment(){
     private fun setBundle(id: Int, projectCustomFieldDto: ProjectCustomFieldDto){
         projectCustomFieldDto.bundle?.let {
             bundleMap.put(id,Pair(projectCustomFieldDto.field?.fieldType?.valueType.orEmpty(),it.id.orEmpty()))
-        }
-    }
-
-    private fun updateBundle(textView: TextView, selectedId: String) {
-        val bundleValue = bundleMap[textView.id]?.copy(second = selectedId)
-        bundleValue?.apply {
-            bundleMap[textView.id] = this
         }
     }
 
